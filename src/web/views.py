@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 
 from .models import Customer, Massage
 
@@ -43,7 +44,8 @@ def massage_add(request, customer_pk: int):
         form = MassageForm(request.POST)
         if form.is_valid():
             massage = form.save()
-            return redirect(f'/massage_list/{massage.pk}/detail/')
+            return redirect(reverse('massage_detail', kwargs={'pk': massage.pk}))
+            # return redirect(f'/massage_list/{massage.pk}/detail/')
     else:
         form = MassageForm()
     return render(request, 'web/massage_add.html', {'form': form})
