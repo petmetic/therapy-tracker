@@ -3,7 +3,7 @@ from django.urls import reverse
 
 from .models import Customer, Massage
 
-from .forms import MassageForm
+from .forms import MassageForm, CustomerForm
 
 
 def index(request):
@@ -29,6 +29,15 @@ def customer_detail(request, pk):
                   'web/customer_detail.html',
                   {'massage_list': massage_list, 'customer': customer})
 
+def customer_add(request):
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            customer = form.save()
+            return redirect(reverse('customer_add'))
+    else:
+        form = CustomerForm()
+    return render(request, 'web/customer_add.html', {'form': form})
 
 def massage_detail(request, pk):
     massage = get_object_or_404(Massage, pk=pk)
@@ -45,7 +54,6 @@ def massage_add(request, customer_pk: int):
         if form.is_valid():
             massage = form.save()
             return redirect(reverse('massage_detail', kwargs={'pk': massage.pk}))
-            # return redirect(f'/massage_list/{massage.pk}/detail/')
     else:
         form = MassageForm()
     return render(request, 'web/massage_add.html', {'form': form})
