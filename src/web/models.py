@@ -15,8 +15,8 @@ class Massage(models.Model):
     personal_notes = models.TextField(default='', blank=True)
     duration = models.CharField(max_length=200, default='')
     amount = models.CharField(max_length=200, default='')
-    discount = models.CharField(max_length=200, default=0, blank=True)
-    # why discount add in form
+    discount = models.CharField(max_length=200, default='', blank=True)
+    discount_reason = models.CharField(max_length=200, default='', blank=True)
     repeat_visit = models.BooleanField(default=False)
 
     added = models.DateTimeField(auto_now_add=True)
