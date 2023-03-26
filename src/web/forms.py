@@ -12,5 +12,5 @@ class MassageForm(ModelForm):
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
-        fields = '__all__'
-
+        fields = ['name', 'surname', 'email', 'phone', 'occupation', 'previous_massage', 'salon_choice', 'frequency',
+                  'referral']

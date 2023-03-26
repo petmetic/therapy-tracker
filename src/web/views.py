@@ -29,15 +29,17 @@ def customer_detail(request, pk):
                   'web/customer_detail.html',
                   {'massage_list': massage_list, 'customer': customer})
 
+
 def customer_add(request):
     if request.method == 'POST':
         form = CustomerForm(request.POST)
         if form.is_valid():
             customer = form.save()
-            return redirect(reverse('customer_add'))
+            return redirect(reverse('customer_detail', kwargs={'pk': customer.pk}))
     else:
         form = CustomerForm()
     return render(request, 'web/customer_add.html', {'form': form})
+
 
 def massage_detail(request, pk):
     massage = get_object_or_404(Massage, pk=pk)
