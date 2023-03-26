@@ -39,7 +39,7 @@ know what work has been done on them.
 - Make a web app
 
 ## Non Goals
-1. At some point make an app that can be viewed on multiple devices. It is currently a test phase, so we should try 
+1. At some point make an app that can be viewed on multiple devices. It is currently a test phase, so we should try
    to make it work for the web and then expand, if the need arises.
 
 [//]: # (2. Explain why they are not goals)
@@ -51,10 +51,10 @@ know what work has been done on them.
 [//]: # (If we <achieve/enable X>, then <user behavior Y changes in this way> leading to positive metrics Z. Include guesses for size of the win on specific metrics, using past launches as a baseline. )
 
 ## Vision Narrative
-A small massage business (cca. 5 employees and roughly 25 clients/ week, some reoccurring) wants to digitize it's 
+A small massage business (cca. 5 employees and roughly 25 clients/ week, some reoccurring) wants to digitize it's
 logging of therapies for easy access and better time management.
-This app will make the therapist's life better, because she will have all her client's history on hand whenever she 
-needs to check up on it, whether she is on vacation or in the car, she has access to all the newest information with 
+This app will make the therapist's life better, because she will have all her client's history on hand whenever she
+needs to check up on it, whether she is on vacation or in the car, she has access to all the newest information with
 a click of a button. She does not need to rely on always carrying her log with her everywhere she goes.
 
 ## Rough Scoping & Timeline
@@ -66,13 +66,13 @@ In V1 there will be:
 
 It is a small scale project for now, with a max of 10 therapists and about 25 clients/week.
 
-Tha testing plan is to make a draft version and let it be tested by the client. And later iterate until it is 
+Tha testing plan is to make a draft version and let it be tested by the client. And later iterate until it is
 suitable for her.
-Consider the major pieces of functionality, Mobile, Platform, 
+Consider the major pieces of functionality, Mobile, Platform,
 Internationalization, Entry Points, User Onboarding, Premium.
 For the app we need:
 - a functioning internet connection
-- an authentication login 
+- an authentication login
 - authorizations specs
 - a database that stores the information of therapies and clients
 - a view of previous client history
@@ -96,7 +96,7 @@ For the app we need:
 ## Proposal
 The app has to have these required features:
 - **Login page as index page.**
-The information we are dealing with is private, so wee need restricted access to it. People who have access are 
+The information we are dealing with is private, so wee need restricted access to it. People who have access are
   employees of the company.
 
 - **Restricted access within the app and transparency**
@@ -117,7 +117,7 @@ The app also has an **analytic user** that keeps track of all the analytics and 
   - is it her first massage in our salon? # ADMIN
   - how frequently does she visit a massage salon? # ADMIN
   - what does she do for a living (regarding restricted posture)? # THERAPIST
-  
+
 - **Information about client for every visit:**
   - name and surname
   - history of therapy:
@@ -133,15 +133,15 @@ The app also has an **analytic user** that keeps track of all the analytics and 
   - date of current visit
   - name of therapist
   - current therapy (what therapy will be done today)
-  - notes on further therapy 
+  - notes on further therapy
   - notes on home therapy for client
 
 - **Search for client** on client page or in archive DB.
 
-- **Retrieve client** from DB archive because she is active again (finished therapy and comes back for a new one at 
+- **Retrieve client** from DB archive because she is active again (finished therapy and comes back for a new one at
   a later date)
 
-- **Certain information** from the sign-up form from the website incorporated into the sign-up form (name and 
+- **Certain information** from the sign-up form from the website incorporated into the sign-up form (name and
   surname, phone, email)
 
 
@@ -184,7 +184,7 @@ SEARCH:
 - patient
 
 ERROR PAGE:
-- error 404
+- error 404gti
 - login unsuccessful
 
 DATABASE MODEL:
@@ -204,7 +204,7 @@ For later:
 - monthly results from Google analitics
 
 
-## Key Flows 
+## Key Flows
 [Therapy log web app_therapist workflow.pdf](Therapy%20log%20web%20app_therapist%20workflow.pdf)
 
 
