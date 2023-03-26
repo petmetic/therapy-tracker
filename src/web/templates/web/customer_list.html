@@ -3,12 +3,14 @@
 
 {% block content %}
 
+<a class="btn btn-primary" href="{% url 'customer_add' %}">Add customer</a>
 <ul class="list-group">
     {% for customer in customers_list %}
 
     <li class="list-group-item d-flex justify-content-between align-items-center">
         {{ customer.surname }} , {{ customer.name }}
-        <a class="btn btn-primary" href="{% url 'customer_detail' pk=customer.pk %}">View <span class="badge text-bg-secondary">{{customer.massage_set.count}}</span>
+        <a class="btn btn-primary" href="{% url 'customer_detail' pk=customer.pk %}">View <span
+                class="badge text-bg-secondary">{{customer.massage_set.count}}</span>
 
         </a>
     </li>
@@ -16,4 +18,5 @@
     {% endfor %}
 
 </ul>
+
 {% endblock %}

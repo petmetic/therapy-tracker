@@ -194,7 +194,7 @@ GENERAL:
 - setup DB - MySQL
 - integration with Google Auth
 - integration with database
-- error handeling
+- error handling
 - deploy settings
 
 

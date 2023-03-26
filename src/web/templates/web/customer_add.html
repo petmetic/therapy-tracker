@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Add Customer{% endblock %}
+
+{% block content %}
+<form action="." method="post"> <!-- A DOT POSTS TO CURRENT URL -->
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
