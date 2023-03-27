@@ -14,6 +14,7 @@ class IndexTest(TestCase):
 
     def test_submit_new_massage(self):
         therapist = UserFactory()
+        self.client.force_login(therapist)  # logs in the user
         customer = CustomerFactory(email="test@example.com")
         data = {
             "customer": [customer.id],
