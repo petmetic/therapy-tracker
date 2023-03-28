@@ -1,0 +1,42 @@
+.logo {
+    color: transparent;
+    padding: 10px;
+    height: 60px;
+}
+
+
+.color-background {
+    background-color: #2d2e30;
+}
+
+.nav {
+    align-content: flex-end;
+}
+
+.btn-custom {
+    color: white;
+    background-color: #444444;
+    padding: 3px;
+    margin: 4px;
+}
+
+.btn-custom:click {
+    background-color: #555555;
+    color: dimgrey;
+}
+
+.btn-custom:hover {
+    color: coral;
+}
+
+.w-80 {
+    max-width: 80%;
+}
+
+
+.footer-text {
+    color: white;
+    padding: 5px;
+    margin-left: 20px;
+    font-size: 15px;
+}
