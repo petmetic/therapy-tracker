@@ -6,14 +6,24 @@ from .models import Massage
 
 
 class IndexTest(TestCase):
-    def test_homepage_loads(self):
+    def check_auth_user_login(self):
+        pass
+
+    def check_un_auth_user_login(self):
+        pass
+
+    def test_homepage_loads(self):  # therapist already logged in
+        therapist = UserFactory()
+        self.client.force_login(therapist)
         response = self.client.get("/")
+        # print(response.content)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Today's massage:")
 
-    def test_submit_new_massage(self):
+    def test_submit_new_massage(self):  # therapist already logged in
         therapist = UserFactory()
+        self.client.force_login(therapist)  # logs in the user
         customer = CustomerFactory(email="test@example.com")
         data = {
             "customer": [customer.id],

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
@@ -6,20 +7,19 @@ from .models import Customer, Massage
 from .forms import MassageForm, CustomerForm
 
 
+@login_required
 def index(request):
     return render(request, "web/index.html", {})
 
 
-def login(request):
-    return render(request, "web/login.html", {})
-
-
+@login_required
 def customer_list(request):
     customers = Customer.objects.all()
 
     return render(request, "web/customer_list.html", {"customers_list": customers})
 
 
+@login_required
 def customer_detail(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     massage_list = customer.massage_set.all()
@@ -30,6 +30,7 @@ def customer_detail(request, pk):
     )
 
 
+@login_required
 def customer_add(request):
     if request.method == "POST":
         form = CustomerForm(request.POST)
@@ -41,11 +42,13 @@ def customer_add(request):
     return render(request, "web/customer_add.html", {"form": form})
 
 
+@login_required
 def massage_detail(request, pk):
     massage = get_object_or_404(Massage, pk=pk)
     return render(request, "web/massage_detail.html", {"massage": massage})
 
 
+@login_required
 def massage_add(request, customer_pk: int):
     customer = get_object_or_404(Customer, pk=customer_pk)
 
