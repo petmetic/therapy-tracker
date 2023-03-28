@@ -16,7 +16,7 @@ class IndexTest(TestCase):
         therapist = UserFactory()
         self.client.force_login(therapist)
         response = self.client.get("/")
-        print(response.content)
+        # print(response.content)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Today's massage:")
