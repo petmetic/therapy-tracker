@@ -5,7 +5,7 @@
 }
 
 
-.color-background {
+.nav-background {
     background-color: #2d2e30;
 }
 
@@ -13,24 +13,19 @@
     align-content: flex-end;
 }
 
-.btn-custom {
+.btn-nav {
     color: white;
     background-color: #444444;
     padding: 3px;
     margin: 4px;
 }
 
-.btn-custom:click {
-    background-color: #555555;
-    color: dimgrey;
+.btn-nav:active {
+    color: lightcoral;
 }
 
-.btn-custom:hover {
+.btn-nav:hover {
     color: coral;
-}
-
-.w-80 {
-    max-width: 80%;
 }
 
 

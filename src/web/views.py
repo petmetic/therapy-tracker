@@ -65,7 +65,6 @@ def massage_add(request, customer_pk: int):
 
 def custom_logout(request):
     logout(request)
-    print("You have logged out")
     return redirect("/")
 
 

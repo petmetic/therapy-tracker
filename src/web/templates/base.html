@@ -11,19 +11,19 @@
     <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
-<header class="color-background d-flex justify-content-between">
+<header class="nav-background d-flex justify-content-between">
     <img src="/static/images/logo.png"
          alt="Alenka masaže"
-         href="/"
+         href="{% url 'index' %}"
          class="logo"/>
     <ul class="nav">
-        <a class="btn btn-custom" role="button" data-bs-toogle="button" aria-pressed="true"
+        <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
            href="{% url 'customer_add' %}">New Customer</a>
-        <a class="btn btn-custom" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Today's
+        <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Today's
             Appointments</a>
-        <a class="btn btn-custom" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Search</a>
+        <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Search</a>
         {% if request.user.is_authenticated %}
-            <a class="btn btn-custom" role="button" data-bs-toogle="button" aria-pressed="true"
+            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
                href="{% url 'logout' %}">Logout</a>
         {% endif %}
     </ul>
@@ -32,7 +32,7 @@
 <div class="container">{% block content %}
 {% endblock %}</div>
 
-<footer class="color-background d-flex">
+<footer class="nav-background d-flex">
     <p class="footer-text">Podatki za footer</p>
 
 </footer>
