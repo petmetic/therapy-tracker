@@ -1,0 +1,37 @@
+.logo {
+    color: transparent;
+    padding: 10px;
+    height: 60px;
+}
+
+
+.nav-background {
+    background-color: #2d2e30;
+}
+
+.nav {
+    align-content: flex-end;
+}
+
+.btn-nav {
+    color: white;
+    background-color: #444444;
+    padding: 3px;
+    margin: 4px;
+}
+
+.btn-nav:active {
+    color: lightcoral;
+}
+
+.btn-nav:hover {
+    color: coral;
+}
+
+
+.footer-text {
+    color: white;
+    padding: 5px;
+    margin-left: 20px;
+    font-size: 15px;
+}

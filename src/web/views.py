@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
@@ -60,6 +61,11 @@ def massage_add(request, customer_pk: int):
     else:
         form = MassageForm()
     return render(request, "web/massage_add.html", {"form": form})
+
+
+def custom_logout(request):
+    logout(request)
+    return redirect("/")
 
 
 def error(request):
