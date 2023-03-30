@@ -12,11 +12,18 @@ class IndexTest(TestCase):
     def check_un_auth_user_login(self):
         pass
 
+    def test_custom_logout(self):
+        therapist = UserFactory()
+        self.client.force_login(therapist)
+        response = self.client.get("/logout", follow=True)
+
+        self.assertRedirects(response, "/accounts/login/?next=/")
+        self.assertContains(response, text="Please log in to see Alenka masaže.")
+
     def test_homepage_loads(self):  # therapist already logged in
         therapist = UserFactory()
         self.client.force_login(therapist)
         response = self.client.get("/")
-        # print(response.content)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Today's massage:")
