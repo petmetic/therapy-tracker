@@ -8,6 +8,11 @@ urlpatterns = [
         "customer_list/<int:pk>/detail/", views.customer_detail, name="customer_detail"
     ),
     path("customer_list/add/", views.customer_add, name="customer_add"),
+    path(
+        "customer_exists/<int:customer_pk>/",
+        views.customer_exists,
+        name="customer_exists",
+    ),
     path("error/", views.error, name="error"),
     path("massage_list/<int:pk>/detail/", views.massage_detail, name="massage_detail"),
     path("massage_list/<int:customer_pk>/add/", views.massage_add, name="massage_add"),

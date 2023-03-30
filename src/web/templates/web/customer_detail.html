@@ -3,7 +3,7 @@
 
 {% block content %}
 <h1> {{ customer.name }} {{ customer.surname }}</h1>
-<a class="btn btn-primary" href="{% url 'massage_add' customer_pk=customer.pk %}">Add massage</a>
+<a class="btn btn-primary btn-body" href="{% url 'massage_add' customer_pk=customer.pk %}">Add massage</a>
 
 {% for massage in massage_list %}
 <ul class="list-group">

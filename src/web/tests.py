@@ -28,7 +28,7 @@ class IndexTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Today's massage:")
 
-    def test_submit_new_massage(self):  # therapist already logged in
+    def test_submit_add_massage(self):  # therapist already logged in
         therapist = UserFactory()
         self.client.force_login(therapist)  # logs in the user
         customer = CustomerFactory(email="test@example.com")
@@ -58,6 +58,14 @@ class IndexTest(TestCase):
         self.assertRedirects(
             response, reverse("massage_detail", kwargs={"pk": massage.pk})
         )
+
+    def add_customer(self):
+        pass
+        # therapist = UserFactory()
+        # self.client.force_login(therapist)
+        # customer = CustomerFactory()
+        #
+        # self.assertRedirects(response, )
 
     def test_check_listing_views(self):
         pass
