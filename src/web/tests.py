@@ -2,14 +2,14 @@ from django.test import TestCase
 from django.urls import reverse
 
 from .factories import UserFactory, CustomerFactory
-from .models import Massage
+from .models import Massage, Customer
 
 
-class IndexTest(TestCase):
-    def check_auth_user_login(self):
+class GeneralTest(TestCase):
+    def test_check_auth_user_login(self):
         pass
 
-    def check_un_auth_user_login(self):
+    def test_check_un_auth_user_login(self):
         pass
 
     def test_custom_logout(self):
@@ -28,6 +28,78 @@ class IndexTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Today's massage:")
 
+    def test_check_listing_views(self):
+        pass
+
+    def test_check_access_permission(self):
+        pass
+
+
+class CustomerTest(TestCase):
+    def test_customer_add(self):
+        therapist = UserFactory()
+        self.client.force_login(therapist)
+        data = {
+            "name": ["Bozo"],
+            "surname": ["Novak"],
+            "email": ["bozo@example.com"],
+            "phone": ["041 123 456"],
+            "occupation": ["na"],
+            "salon_choice": ["na"],
+            "frequency": ["na"],
+            "referral": ["na"],
+        }
+
+        response = self.client.post(
+            path=reverse("customer_add"), data=data, follow=True
+        )
+        print(response.content)
+
+        customer = Customer.objects.latest("pk")
+        self.assertEqual([customer.phone], data["phone"])
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, text="Bozo")
+
+    def test_customer_no_duplication(self):
+        therapist = UserFactory()
+        self.client.force_login(therapist)
+        data = {
+            "name": ["Bozo"],
+            "surname": ["Novak"],
+            "email": ["bozo@example.com"],
+            "phone": ["041 123 456"],
+            "occupation": ["na"],
+            "salon_choice": ["na"],
+            "frequency": ["na"],
+            "referral": ["na"],
+        }
+
+        response = self.client.post(
+            path=reverse("customer_add"), data=data, follow=True
+        )
+
+        customer = Customer.objects.latest("pk")
+        self.assertEqual([customer.phone], data["phone"])
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, text="Bozo")
+
+        data2 = {
+            "name": ["Bozo"],
+            "surname": ["Novak"],
+            "email": ["bozo@example.com"],
+            "phone": ["041 123 456"],
+            "occupation": ["na"],
+            "salon_choice": ["na"],
+            "frequency": ["na"],
+            "referral": ["na"],
+        }
+
+        response = self.client.post(path=reverse("customer_add"), data=data2)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, text="Customer already exists in database")
+
+
+class MassageTest(TestCase):
     def test_submit_add_massage(self):  # therapist already logged in
         therapist = UserFactory()
         self.client.force_login(therapist)  # logs in the user
@@ -58,20 +130,3 @@ class IndexTest(TestCase):
         self.assertRedirects(
             response, reverse("massage_detail", kwargs={"pk": massage.pk})
         )
-
-    def add_customer(self):
-        pass
-        # therapist = UserFactory()
-        # self.client.force_login(therapist)
-        # customer = CustomerFactory()
-        #
-        # self.assertRedirects(response, )
-
-    def test_check_listing_views(self):
-        pass
-
-    def check_access_permission(self):
-        pass
-
-
-# TODO: factories to create customers, therapists(users) and therapies

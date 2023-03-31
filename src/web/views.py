@@ -36,30 +36,12 @@ def customer_add(request):
     if request.method == "POST":
         form = CustomerForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data["name"]
-            surname = form.cleaned_data["surname"]
-            email = form.cleaned_data["email"]
-            phone = form.cleaned_data["phone"]
-            customer = Customer.objects.filter(
-                name=name, surname=surname, email=email, phone=phone
-            ).first()
-            print(customer)
-            if customer:
-                return redirect(
-                    reverse("customer_exists", kwargs={"customer_pk": customer.pk})
-                )
-            else:
-                customer = form.save()
-                return redirect(reverse("customer_detail", kwargs={"pk": customer.pk}))
+            customer = form.save()
+            return redirect(reverse("customer_detail", kwargs={"pk": customer.pk}))
+
     else:
         form = CustomerForm()
     return render(request, "web/customer_add.html", {"form": form})
-
-
-@login_required
-def customer_exists(request, customer_pk: int):
-    customer = get_object_or_404(Customer, pk=customer_pk)
-    return render(request, "web/customer_exists.html", {"customer": customer})
 
 
 @login_required
