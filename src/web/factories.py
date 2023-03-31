@@ -15,3 +15,6 @@ class CustomerFactory(factory.django.DjangoModelFactory):
 
     name = factory.Faker("name")
     email = factory.Faker("email")
+
+
+# TODO: create therapies

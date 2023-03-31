@@ -1,7 +1,7 @@
 .logo {
     color: transparent;
     padding: 10px;
-    height: 60px;
+    height: 80px;
 }
 
 
@@ -11,21 +11,32 @@
 
 .nav {
     align-content: flex-end;
+    padding-bottom: 8px;
 }
 
 .btn-nav {
     color: white;
     background-color: #444444;
     padding: 3px;
-    margin: 4px;
+    margin: 6px;
 }
 
 .btn-nav:active {
-    color: lightcoral;
+    color: coral;
 }
 
 .btn-nav:hover {
     color: coral;
+}
+
+.btn-body {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+
+.footer-space {
+    margin-top: 25px;
 }
 
 

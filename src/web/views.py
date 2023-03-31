@@ -38,6 +38,7 @@ def customer_add(request):
         if form.is_valid():
             customer = form.save()
             return redirect(reverse("customer_detail", kwargs={"pk": customer.pk}))
+
     else:
         form = CustomerForm()
     return render(request, "web/customer_add.html", {"form": form})
@@ -52,7 +53,6 @@ def massage_detail(request, pk):
 @login_required
 def massage_add(request, customer_pk: int):
     customer = get_object_or_404(Customer, pk=customer_pk)
-
     if request.method == "POST":
         form = MassageForm(request.POST)
         if form.is_valid():
