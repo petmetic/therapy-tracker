@@ -53,10 +53,9 @@ class CustomerTest(TestCase):
         response = self.client.post(
             path=reverse("customer_add"), data=data, follow=True
         )
-        print(response.content)
 
         customer = Customer.objects.latest("pk")
-        self.assertEqual([customer.phone], data["phone"])
+        self.assertEqual(customer.phone, data["phone"][0])
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Bozo")
 
@@ -79,7 +78,7 @@ class CustomerTest(TestCase):
         )
 
         customer = Customer.objects.latest("pk")
-        self.assertEqual([customer.phone], data["phone"])
+        self.assertEqual(customer.phone, data["phone"][0])
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Bozo")
 
