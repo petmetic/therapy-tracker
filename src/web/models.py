@@ -11,9 +11,9 @@ class Massage(models.Model):
         User,
         on_delete=models.CASCADE,
     )
-    massage_date = models.DateTimeField(
-        blank=True, null=True
-    )  # needs to be date of current massage; can be changed n request by user (not neccessarily entered the same date as therapy done)
+    massage_date = models.DateTimeField(blank=True, null=True)
+    # needs to be date of current massage; can be changed n request by user
+    # (not neccessarily entered the same date as therapy done)
     reason_for_visit = models.TextField(default="")
     kind = models.CharField(max_length=300)
     massage_notes = models.TextField(default="")
