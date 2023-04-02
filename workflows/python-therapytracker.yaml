@@ -2,9 +2,9 @@ name: Therapy Tracker
 
 on:
   push:
-    branches: [ main ]
+    branches:
   pull_request:
-    branches: [ main ]
+    branches:
 
 jobs:
   build:
@@ -43,7 +43,7 @@ jobs:
 
     - name: Run migrations
       run: python src/manage.py migrate
-    - name: Test with pytest
+    - name: Test
       run: |
-        pytest
+        ./manage.py test web
       working-directory: ./src
