@@ -3,6 +3,7 @@ name: Therapy Tracker
 on:
   push:
     branches:
+      - main
   pull_request:
     branches:
 
