@@ -15,9 +15,10 @@ class MassageForm(ModelForm):
         ),
     )
     reason_for_visit = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={"class": "form-control", "type": "text", "placeholder": "back pain"}
-        )
+        ),
     )
     kind = forms.CharField(
         label="Type of massage preformed:",
@@ -41,6 +42,7 @@ class MassageForm(ModelForm):
     )
     next_visit = forms.CharField(
         label="Massage at next visit:",
+        required=False,
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
@@ -51,6 +53,7 @@ class MassageForm(ModelForm):
     )
     recommendations = forms.CharField(
         label="Recommendations:",
+        required=False,
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
@@ -61,6 +64,7 @@ class MassageForm(ModelForm):
     )
     personal_notes = forms.CharField(
         label="Personal notes:",
+        required=False,
         widget=forms.Textarea(attrs={"class": "form-control", "type": "text"}),
     )
 
@@ -88,6 +92,7 @@ class MassageForm(ModelForm):
 
     discount = forms.CharField(
         label="Discount:",
+        required=False,
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
@@ -99,6 +104,7 @@ class MassageForm(ModelForm):
 
     discount_reason = forms.CharField(
         label="Reason for discount:",
+        # if discount=True, then this field required
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
 

@@ -45,13 +45,13 @@ def customer_add(request):
 
 
 @login_required
-def customer(request, customer_pk):
+def customer(request, customer_pk: int):
     customer = get_object_or_404(Customer, pk=customer_pk)
     return render(request, "web/customer.html", {"customer": customer})
 
 
 @login_required
-def massage_detail(request, pk):
+def massage_detail(request, pk: int):
     massage = get_object_or_404(Massage, pk=pk)
     return render(request, "web/massage_detail.html", {"massage": massage})
 
@@ -66,7 +66,7 @@ def massage_add(request, customer_pk: int):
             return redirect(reverse("massage_detail", kwargs={"pk": massage.pk}))
     else:
         form = MassageForm(initial={"customer": customer, "therapist": request.user})
-    return render(request, "web/massage_add.html", {"form": form})
+    return render(request, "web/massage_add.html", {"form": form, "customer": customer})
 
 
 def custom_logout(request):
