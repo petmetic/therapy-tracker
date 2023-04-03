@@ -66,7 +66,11 @@ def massage_add(request, customer_pk: int):
             return redirect(reverse("massage_detail", kwargs={"pk": massage.pk}))
     else:
         form = MassageForm(initial={"customer": customer, "therapist": request.user})
-    return render(request, "web/massage_add.html", {"form": form, "customer": customer})
+    return render(
+        request,
+        "web/massage_add.html",
+        {"form": form, "customer": customer, "therapist": request.user},
+    )
 
 
 def custom_logout(request):
