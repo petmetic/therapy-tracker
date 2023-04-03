@@ -37,11 +37,17 @@ def customer_add(request):
         form = CustomerForm(request.POST)
         if form.is_valid():
             customer = form.save()
-            return redirect(reverse("customer_detail", kwargs={"pk": customer.pk}))
+            return redirect(reverse("customer", kwargs={"customer_pk": customer.pk}))
 
     else:
         form = CustomerForm()
     return render(request, "web/customer_add.html", {"form": form})
+
+
+@login_required
+def customer(request, customer_pk):
+    customer = get_object_or_404(Customer, pk=customer_pk)
+    return render(request, "web/customer.html", {"customer": customer})
 
 
 @login_required

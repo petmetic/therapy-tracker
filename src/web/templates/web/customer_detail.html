@@ -2,16 +2,16 @@
 {% block title %}Customer Detail View{% endblock %}
 
 {% block content %}
-<h1> {{ customer.name }} {{ customer.surname }}</h1>
-<a class="btn btn-primary btn-body" href="{% url 'massage_add' customer_pk=customer.pk %}">Add massage</a>
+    <h1> {{ customer.name }} {{ customer.surname }}</h1>
+    <a class="btn btn-primary btn-body" href="{% url 'customer' customer_pk=customer.pk %}">View customer</a>
+    <a class="btn btn-primary btn-body" href="{% url 'massage_add' customer_pk=customer.pk %}">Add massage</a>
 
-{% for massage in massage_list %}
-<ul class="list-group">
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        {{ massage.massage_date }}
-        <a class="btn btn-primary" href="{% url 'massage_detail' pk=massage.pk %}">View</a>
-    </li>
-</ul>
-{% endfor %}
-
+    {% for massage in massage_list %}
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ massage.massage_date }}
+                <a class="btn btn-primary" href="{% url 'massage_detail' pk=massage.pk %}">View</a>
+            </li>
+        </ul>
+    {% endfor %}
 {% endblock %}

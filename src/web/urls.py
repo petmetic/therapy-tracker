@@ -7,6 +7,7 @@ urlpatterns = [
     path(
         "customer_list/<int:pk>/detail/", views.customer_detail, name="customer_detail"
     ),
+    path("customer/<int:customer_pk>/detail/", views.customer, name="customer"),
     path("customer_list/add/", views.customer_add, name="customer_add"),
     path("error/", views.error, name="error"),
     path("massage_list/<int:pk>/detail/", views.massage_detail, name="massage_detail"),
