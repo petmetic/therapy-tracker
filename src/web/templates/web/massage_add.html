@@ -2,9 +2,15 @@
 {% block title %}Massage Add New{% endblock %}
 
 {% block content %}
-<form action="." method="post"> <!-- A DOT POSTS TO CURRENT URL -->
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
+    <form action="." method="post"> <!-- A DOT POSTS TO CURRENT URL -->
+        {% csrf_token %}
+        {{ form.as_p }}
+        {#        <div class="foo-bar">#}
+        {#            {{ form.kind.errors }}#}
+        {#            {{ form.kind.label_tag }}#}
+        {#            {{ form.kind }}#}
+        {#            {{ form.non_field_errors }}#}
+        {#        </div>#}
+        <input type="submit" value="Submit">
+    </form>
 {% endblock %}
