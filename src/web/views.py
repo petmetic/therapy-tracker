@@ -15,7 +15,7 @@ def index(request):
 
 @login_required
 def customer_list(request):
-    customers = Customer.objects.all()
+    customers = Customer.objects.all().order_by("surname")
 
     return render(request, "web/customer_list.html", {"customers_list": customers})
 
