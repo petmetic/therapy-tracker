@@ -2,79 +2,79 @@
 {% block title %}Massage Detail View{% endblock %}
 
 {% block content %}
-<div class="container text-left">
-    <div>
-        <div class="row">
-            <div class="col-sm-4">Name and Surname of Customer:</div>
-            <div class="col-sm-8">{{massage.customer}}</div>
-        </div> <!-- name and surname of customer -->
-        <div class="row">
-            <div class="col-sm-4">Occupation:</div>
-            <div class="col-sm-8">{{massage.customer.occupation}}</div>
-        </div> <!-- occupation -->
+    <div class="container text-left">
+        <div>
+            <div class="row">
+                <div class="col-sm-4">Name and Surname of Customer:</div>
+                <div class="col-sm-8">{{ massage.customer }}</div>
+            </div> <!-- name and surname of customer -->
+            <div class="row">
+                <div class="col-sm-4">Occupation:</div>
+                <div class="col-sm-8">{{ massage.customer.occupation }}</div>
+            </div> <!-- occupation -->
+        </div>
+        <br>
+        <br>
+        <div>
+            <div class="row">
+                <div class="col-sm-4">Date of therapy:</div>
+                <div class="col-sm-8">{{ massage.massage_date }}</div>
+            </div> <!-- date of therapy -->
+            <div class="row">
+                <div class="col-sm-4">Name of Therapist:</div>
+                <div class="col-sm-8">{{ massage.therapist }}</div>
+            </div> <!-- name of therapist -->
+            <div class="row">
+                <div class="col-sm-4">Reason for visit:</div>
+                <div class="col-sm-8">{{ massage.reason_for_visit }}</div>
+            </div> <!-- reason for visit-->
+            <div class="row">
+                <div class="col-sm-4">Type of massage preformed:</div>
+                <div class="col-sm-8">{{ massage.kind }}</div>
+            </div> <!-- type of massage -->
+            <div class="row">
+                <div class="col-sm-4">Therapy performed:</div>
+                <div class="col-sm-8">{{ massage.massage_notes }}</div>
+            </div> <!-- therapy preformed -->
+            <div class="row">
+                <div class="col-sm-4">Therapy to be performed on next visit:</div>
+                <div class="col-sm-8">{{ massage.next_visit }}</div>
+            </div> <!-- therapy preformed on next visit -->
+            <div class="row">
+                <div class="col-sm-4">Recommendations:</div>
+                <div class="col-sm-8">{{ massage.recommendations }}</div>
+            </div> <!-- recommendations -->
+            <div class="row">
+                <div class="col-sm-4">Personal notes:</div>
+                <div class="col-sm-8">{{ massage.personal_notes }}</div>
+            </div> <!-- TODO: Personal notes  TO BE VIEWED ONLY BY SPECIFIC THERAPIST-->
+        </div>
+        <br>
+        <br>
+        <div>
+            <div class="row">
+                <div class="col-sm-4">Duration of massage:</div>
+                <div class="col-sm-8">{{ massage.duration }}</div>
+            </div> <!-- duration-->
+            <div class="row">
+                <div class="col-sm-4">Amount paid:</div>
+                <div class="col-sm-8">{{ massage.amount }}</div>
+            </div> <!-- amount paid-->
+            <div class="row">
+                <div class="col-sm-4">Discount:</div>
+                <div class="col-sm-8">{{ massage.discount }} %</div>
+            </div> <!-- discount-->
+            <div class="row">
+                <div class="col-sm-4">Repeat visit:</div>
+                <div class="col-sm-8">
+                    {% if massage.repeat_visit %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </div>
+            </div> <!-- repeat visit-->
+        </div>
     </div>
-    <br>
-    <br>
-    <div>
-        <div class="row">
-            <div class="col-sm-4">Date of therapy:</div>
-            <div class="col-sm-8">{{massage.massage_date}}</div>
-        </div> <!-- date of therapy -->
-        <div class="row">
-            <div class="col-sm-4">Name of Therapist:</div>
-            <div class="col-sm-8">{{massage.therapist}}</div>
-        </div> <!-- name of therapist -->
-                <div class="row">
-            <div class="col-sm-4">Reason for visit:</div>
-            <div class="col-sm-8">{{massage.reason_for_visit}}</div>
-        </div> <!-- reason for visit-->
-        <div class="row">
-            <div class="col-sm-4">Type of massage preformed:</div>
-            <div class="col-sm-8">{{massage.kind}}</div>
-        </div> <!-- type of massage -->
-        <div class="row">
-            <div class="col-sm-4">Therapy performed:</div>
-            <div class="col-sm-8">{{massage.massage_notes}}</div>
-        </div> <!-- therapy preformed -->
-        <div class="row">
-            <div class="col-sm-4">Therapy to be performed on next visit:</div>
-            <div class="col-sm-8">{{massage.next_visit}}</div>
-        </div> <!-- therapy preformed on next visit -->
-        <div class="row">
-            <div class="col-sm-4">Recommendations:</div>
-            <div class="col-sm-8">{{massage.recommendations}}</div>
-        </div> <!-- recommendations -->
-        <div class="row">
-            <div class="col-sm-4">Personal notes:</div>
-            <div class="col-sm-8">{{massage.personal_notes}}</div>
-        </div> <!-- TODO: Personal notes  TO BE VIEWED ONLY BY SPECIFIC THERAPIST-->
-    </div>
-    <br>
-    <br>
-    <div>
-        <div class="row">
-            <div class="col-sm-4">Duration of massage:</div>
-            <div class="col-sm-8">{{massage.duration}}</div>
-        </div> <!-- duration-->
-        <div class="row">
-            <div class="col-sm-4">Amount paid:</div>
-            <div class="col-sm-8">{{massage.amount}}</div>
-        </div> <!-- amount paid-->
-        <div class="row">
-            <div class="col-sm-4">Discount:</div>
-            <div class="col-sm-8">{{massage.discount}} %</div>
-        </div> <!-- discount-->
-        <div class="row">
-            <div class="col-sm-4">Repeat visit:</div>
-            <div class="col-sm-8">
-                {% if massage.repeat_visit %}
-                Yes
-                {% else %}
-                No
-                {% endif %}
-            </div>
-        </div> <!-- repeat visit-->
-    </div>
-</div>
-
+    <a class="btn btn-primary btn-body" href="#">Edit massage</a>
 {% endblock %}

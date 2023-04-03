@@ -9,13 +9,34 @@
                 <div class="col-sm-8">{{ customer.name }} {{ customer.surname }}</div>
             </div> <!-- name and surname of customer -->
             <div class="row">
+                <div class="col-sm-4">Email:</div>
+                <div class="col-sm-8">{{ customer.email }}</div>
+            </div> <!-- email -->
+            <div class="row">
+                <div class="col-sm-4">Contact number:</div>
+                <div class="col-sm-8">{{ customer.phone }}</div>
+            </div> <!-- contact number -->
+            <div class="row">
                 <div class="col-sm-4">Occupation:</div>
                 <div class="col-sm-8">{{ customer.occupation }}</div>
             </div> <!-- occupation -->
             <div class="row">
-                <div class="col-sm-4">Email:</div>
-                <div class="col-sm-8">{{ customer.email }}</div>
-            </div> <!-- email -->
+                <div class="col-sm-4">Previous massage:</div>
+                <div class="col-sm-8">{{ customer.prevoius_massage }}</div>
+            </div> <!-- previous massage -->
+            <div class="row">
+                <div class="col-sm-4">Salon choice:</div>
+                <div class="col-sm-8">{{ customer.salon_choice }}</div>
+            </div> <!-- salon choice -->
+            <div class="row">
+                <div class="col-sm-4">Frequency:</div>
+                <div class="col-sm-8">{{ customer.frequency }}</div>
+            </div> <!-- frequency -->
+            <div class="row">
+                <div class="col-sm-4">Referral:</div>
+                <div class="col-sm-8">{{ customer.refferal }}</div>
+            </div> <!-- refferal -->
         </div>
     </div>
+    <a class="btn btn-primary btn-body" href="#">Edit customer</a>
 {% endblock %}
