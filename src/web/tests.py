@@ -97,6 +97,28 @@ class CustomerTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Customer already exists in database")
 
+    def test_new_customer_displays(self):
+        therapist = UserFactory()
+        self.client.force_login(therapist)
+        data = {
+            "name": ["Bozo"],
+            "surname": ["Novak"],
+            "email": ["bozo@example.com"],
+            "phone": ["041 123 456"],
+            "occupation": ["na"],
+            "salon_choice": ["na"],
+            "frequency": ["na"],
+            "referral": ["na"],
+        }
+
+        response = self.client.post(reverse("customer_add"), data=data, follow=True)
+
+        customer = Customer.objects.latest("pk")
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response, reverse("customer", kwargs={"customer_pk": customer.pk})
+        )
+
 
 class MassageTest(TestCase):
     def test_submit_add_massage(self):  # therapist already logged in

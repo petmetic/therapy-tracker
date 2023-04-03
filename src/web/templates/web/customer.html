@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}New Customer Detail View{% endblock %}
+
+{% block content %}
+    <div class="container text-left">
+        <div>
+            <div class="row">
+                <div class="col-sm-4">Name and Surname of Customer:</div>
+                <div class="col-sm-8">{{ customer.name }} {{ customer.surname }}</div>
+            </div> <!-- name and surname of customer -->
+            <div class="row">
+                <div class="col-sm-4">Occupation:</div>
+                <div class="col-sm-8">{{ customer.occupation }}</div>
+            </div> <!-- occupation -->
+            <div class="row">
+                <div class="col-sm-4">Email:</div>
+                <div class="col-sm-8">{{ customer.email }}</div>
+            </div> <!-- email -->
+        </div>
+    </div>
+{% endblock %}
