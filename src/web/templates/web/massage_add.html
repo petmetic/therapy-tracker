@@ -2,8 +2,10 @@
 {% block title %}Massage Add New{% endblock %}
 
 {% block content %}
+
     <form action="." method="post"> <!-- A DOT POSTS TO CURRENT URL -->
         {% csrf_token %}
+        <h1> Today's massage for</h1>
         {{ form.as_p }}
         {#        <div class="foo-bar">#}
         {#            {{ form.kind.errors }}#}
