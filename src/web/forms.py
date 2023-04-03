@@ -36,9 +36,10 @@ class MassageForm(ModelForm):
         widget=forms.Textarea(attrs={"class": "form-control", "type": "text"}),
     )
     repeat_visit = forms.BooleanField(
+        required=False,
         widget=forms.CheckboxInput(
             attrs={"class": "form-check-input", "type": "checkbox"}
-        )
+        ),
     )
 
     class Meta:
