@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Alenka masaže{% endblock %}
+
+{% block content %}
+    <div>
+        <form class="row g-3">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Surname</label>
+                    <input type="text" class="form-control" id="surname">
+                </div>
+            </div> <!--- name surname  PREFILLED FROM SUBSCRIBE FORM--->
+            <div class="col">
+                <div class="col-4">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="alenka@example.com">
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="phone" placeholder="041 123 456">
+                </div>
+            </div> <!---email phone PREFILLED FROM SUBSCRIBE FORM--->
+            <div class="row g-3">
+                <div class="col-4">
+                    <label class="form-label">Occupation</label>
+                    <input type="text" class="form-control" id="occupation" placeholder="programmer">
+                </div>
+                <div>
+                    <label class="form-label">Where did the client find us?</label>
+                    <input type="text" class="form-control" id="referral" placeholder="friend recommendation">
+                </div>
+                <div class="row-4">
+                    <label class="form-label">Why did they choose our salon?</label>
+                    <input type="text" class="form-control" id="salon_choice" placeholder="fancy website">
+                </div>
+                <div class="row-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="previous_massage">
+                        <label class="form-check-label">First massage</label>
+                    </div>
+                </div>
+                <div class="row-4">
+                    <label class="form-label">How frequently do they visit a massage salon?</label>
+                    <input type="text" class="form-control" id="frequency" placeholder="3x a week">
+                </div>
+            </div> <!---  occupation + questions --->
+
+            <div class="row g-3">
+                <div>
+                    <b>Today's massage:</b>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Date of visit:</label>
+                    <input type="datetime-local" class="form-control" id="massage-date">
+                </div> <!--- displayed current date of therapy for reference --->
+                <div class="col-md-4">
+                    <label class="form-label">Massage preformed by:</label>
+                    <input type="text" class="form-control" id="user">
+                </div> <!--- displayed user from login --->
+            </div> <!--- DISPLAYED DATE AND THERAPIST AUTOMATICALLY FROM USER LOGIN AND CURRENT DATE --->
+
+            <div class="row-4">
+                <label class="form-label">Reason for visit:</label>
+                <input type="text" class="form-control" id="reason" placeholder="back pain">
+            </div> <!--- current therapy input REASON FOR VISIT--->
+            <div class="row-4">
+                <label class="form-label">Type of massage preformed:</label>
+                <input type="text" class="form-control" id="kind" placeholder="pain relief">
+            </div> <!--- current therapy input KIND OF MASSAGE --->
+            <div class="row-4">
+                <label class="form-label">Therapy preformed:</label>
+                <textarea type="text" class="form-control" id="massage_notes"
+                          placeholder="please write what you did for customer"></textarea>
+            </div> <!--- current therapy input CURRENT MASSAGE--->
+            <div class="row-4">
+                <label class="form-label">Next visit:</label>
+                <textarea type="text" class="form-control" id="next_visit"
+                          placeholder="please write what you are going to do on next visit"></textarea>
+            </div> <!--- current therapy input NEXT VISIT--->
+            <div class="row-4">
+                <label class="form-label">Recommendations:</label>
+                <textarea type="text" class="form-control" id="recommendations"
+                          placeholder="please write what you recommend customer does at home"></textarea>
+            </div> <!--- current therapy input RECOMMENDATIONS--->
+            <div class="row-4">
+                <label class="form-label">Personal notes:</label>
+                <textarea type="text" class="form-control" id="personal_notes"></textarea>
+            </div> <!--- TODO: current therapy input PERSONAL NOTES - NOT TO BE SHARED BETWEEN THERAPISTS--->
+            <div class="row-4">
+                <label class="form-label">Duration:</label>
+                <input type="text" class="form-control" id="duration"
+                       placeholder="please write how long did the massage take in minutes">
+            </div> <!--- current therapy input DURATION OF MASSAGE--->
+            <div class="row-4">
+                <label class="form-label">Amount paid:</label>
+                <input type="text" class="form-control" id="amount"
+                       placeholder="please write the actual value of massage in euro">
+            </div> <!--- current therapy input AMOUNT PAID--->
+            <div class="row-4">
+                <label class="form-label">Discount:</label>
+                <input type="text" class="form-control" id="discount"
+                       placeholder="please write the discount in %">
+            </div> <!--- current therapy input DISCOUNT--->
+            <div class="row-4">
+                <label class="form-label">Discount reason:</label>
+                <input type="text" class="form-control" id="discount_reason"
+                       placeholder="please write the reason for the discount">
+            </div> <!--- current therapy input DISCOUNT REASON--->
+            <div class="row-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="repeat_visit">
+                    <label class="form-check-label">Repeat visit</label>
+                </div>
+            </div> <!--- current therapy input REPEAT VISIT--->
+
+            <div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div> <!--- submit form button --->
+        </form>
+    </div>
+{% endblock %}
