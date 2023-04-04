@@ -15,7 +15,6 @@ class MassageForm(ModelForm):
         ),
     )
     reason_for_visit = forms.CharField(
-        required=False,
         widget=forms.TextInput(
             attrs={"class": "form-control", "type": "text", "placeholder": "back pain"}
         ),
@@ -104,7 +103,7 @@ class MassageForm(ModelForm):
 
     discount_reason = forms.CharField(
         label="Reason for discount:",
-        # if discount=True, then this field required
+        required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
 
@@ -118,6 +117,38 @@ class MassageForm(ModelForm):
     class Meta:
         model = Massage
         exclude = ["added", "changed"]
+
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     massage_date = cleaned_data["massage_date"]
+    #     reason_for_visit = cleaned_data["reason_for_visit"]
+    #     kind = cleaned_data["kind"]
+    #     massage_notes = cleaned_data["next_visit"]
+    #     recommendations = cleaned_data["recommendations"]
+    #     personal_notes = cleaned_data["personal_notes"]
+    #     duration = cleaned_data["duration"]
+    #     amount = cleaned_data["amount"]
+    #     discount = cleaned_data["discount"]
+    #     discount_reason = cleaned_data["discount_reason"]
+    #     repeat_visit = cleaned_data["repeat_visit"]
+    #
+    #     # massage = Massage.objects.filter(
+    #     #     customer=customer, therapist=therapist, massage_date=massage_date, reason_for_visit=reason_for_visit,
+    #     #     kind=kind, massage_notes=massage_notes, recommendations=recommendations, personal_notes=personal_notes,
+    #     #     duration=duration, discount=discount, amount=amount, discount_reason=discount_reason,
+    #     #     repeat_visit=repeat_visit
+    #     # ).first()
+    #     # if massage.discount:
+    #     #     massage.discount_reason(required=True)
+    #     print(discount)
+    #     print(discount_reason)
+    #     if discount and not discount_reason:
+    #         print('foo')
+    #         raise ValidationError(
+    #             "Please fill in the discount reason."
+    #         )
+    #
+    #     return cleaned_data
 
 
 class CustomerForm(ModelForm):
