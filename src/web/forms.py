@@ -124,8 +124,7 @@ class MassageForm(ModelForm):
         discount_reason = cleaned_data["discount_reason"]
 
         if discount and not discount_reason:
-            print("foo")
-            raise ValidationError("Please fill in the discount reason.")
+            raise ValidationError("Please fill in Reason for discount.")
 
         return cleaned_data
 

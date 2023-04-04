@@ -118,6 +118,7 @@ class CustomerTest(TestCase):
         self.assertRedirects(
             response, reverse("customer", kwargs={"customer_pk": customer.pk})
         )
+        self.assertContains(response, text="Bozo")
 
 
 class MassageTest(TestCase):
@@ -141,6 +142,46 @@ class MassageTest(TestCase):
             "discount_reason": ["kar tako"],
             "repeat_visit": ["on"],
         }
+
+        response = self.client.post(
+            reverse("massage_add", kwargs={"customer_pk": customer.pk}), data=data
+        )
+        massage = Massage.objects.latest("id")
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, reverse("massage_detail", kwargs={"pk": massage.pk})
+        )
+
+    def test_discount_reason_not_filled(self):
+        therapist = UserFactory()
+        self.client.force_login(therapist)
+        customer = CustomerFactory()
+        data = {
+            "customer": [customer.id],
+            "therapist": [therapist.id],
+            "massage_date": ["2023-04-12"],
+            "reason_for_visit": ["ali deluje"],
+            "kind": ["terapevtska"],
+            "massage_notes": ["gremo naprej"],
+            "next_visit": ["hahaha"],
+            "recommendations": [""],
+            "personal_notes": [""],
+            "duration": ["30 min"],
+            "amount": ["45"],
+            "discount": ["30 %"],
+            "discount_reason": [""],
+            "repeat_visit": [""],
+        }
+
+        response = self.client.post(
+            reverse("massage_add", kwargs={"customer_pk": customer.pk}), data=data
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, text="Please fill in")
+
+        data["discount_reason"] = ["friend"]
 
         response = self.client.post(
             reverse("massage_add", kwargs={"customer_pk": customer.pk}), data=data
