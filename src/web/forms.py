@@ -15,7 +15,6 @@ class MassageForm(ModelForm):
         ),
     )
     reason_for_visit = forms.CharField(
-        required=False,
         widget=forms.TextInput(
             attrs={"class": "form-control", "type": "text", "placeholder": "back pain"}
         ),
@@ -104,7 +103,7 @@ class MassageForm(ModelForm):
 
     discount_reason = forms.CharField(
         label="Reason for discount:",
-        # if discount=True, then this field required
+        required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
 
@@ -118,6 +117,16 @@ class MassageForm(ModelForm):
     class Meta:
         model = Massage
         exclude = ["added", "changed"]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        discount = cleaned_data["discount"]
+        discount_reason = cleaned_data["discount_reason"]
+
+        if discount and not discount_reason:
+            raise ValidationError("Please fill in Reason for discount.")
+
+        return cleaned_data
 
 
 class CustomerForm(ModelForm):

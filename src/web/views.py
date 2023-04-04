@@ -60,10 +60,14 @@ def massage_detail(request, pk: int):
 def massage_add(request, customer_pk: int):
     customer = get_object_or_404(Customer, pk=customer_pk)
     if request.method == "POST":
-        form = MassageForm(request.POST)
+        form = MassageForm(
+            request.POST, initial={"customer": customer, "therapist": request.user}
+        )
         if form.is_valid():
             massage = form.save()
             return redirect(reverse("massage_detail", kwargs={"pk": massage.pk}))
+        else:
+            print(form.errors)
     else:
         form = MassageForm(initial={"customer": customer, "therapist": request.user})
     return render(
