@@ -13,7 +13,7 @@ class Massage(models.Model):
     )
     massage_date = models.DateTimeField(blank=True, null=True)
     # needs to be date of current massage; can be changed n request by user
-    # (not neccessarily entered the same date as therapy done)
+    # (not necessarily entered the same date as therapy done)
     reason_for_visit = models.TextField(default="")
     kind = models.CharField(max_length=300)
     massage_notes = models.TextField(default="")
@@ -45,4 +45,4 @@ class Customer(models.Model):
     referral = models.CharField(max_length=200, default="")
 
     def __str__(self):
-        return f"{self.surname}, {self.name}"
+        return f"{self.surname} {self.name}"

@@ -2,9 +2,12 @@
 {% block title %}Add Customer{% endblock %}
 
 {% block content %}
-<form action="." method="post"> <!-- A DOT POSTS TO CURRENT URL -->
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
+    <form action="." method="post"> <!-- A DOT POSTS TO CURRENT URL -->
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </div>
+    </form>
 {% endblock %}
