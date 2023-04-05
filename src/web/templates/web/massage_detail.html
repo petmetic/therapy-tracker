@@ -44,10 +44,12 @@
                 <div class="col-sm-4">Recommendations:</div>
                 <div class="col-sm-8">{{ massage.recommendations }}</div>
             </div> <!-- recommendations -->
+            {% if therapist == massage.therapist %}
             <div class="row">
                 <div class="col-sm-4">Personal notes:</div>
                 <div class="col-sm-8">{{ massage.personal_notes }}</div>
-            </div> <!-- TODO: Personal notes  TO BE VIEWED ONLY BY SPECIFIC THERAPIST-->
+            </div>
+            {% endif %}
         </div>
         <br>
         <br>

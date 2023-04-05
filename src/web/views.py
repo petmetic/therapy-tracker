@@ -54,7 +54,11 @@ def customer(request, customer_pk: int):
 @login_required
 def massage_detail(request, pk: int):
     massage = get_object_or_404(Massage, pk=pk)
-    return render(request, "web/massage_detail.html", {"massage": massage})
+    return render(
+        request,
+        "web/massage_detail.html",
+        {"massage": massage, "therapist": request.user},
+    )
 
 
 @login_required
