@@ -1,4 +1,4 @@
-import factory.fuzzy
+import factory
 
 from . import models
 
@@ -7,6 +7,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.User
 
+    first_name = factory.Sequence(lambda n: "Agent %03d" % n)
     username = factory.Sequence(lambda n: "Agent %03d" % n)
 
 
