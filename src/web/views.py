@@ -10,7 +10,8 @@ from .forms import MassageForm, CustomerForm
 
 @login_required
 def index(request):
-    return render(request, "web/index.html", {})
+    therapist = request.user
+    return render(request, "web/index.html", {"therapist": therapist})
 
 
 @login_required
