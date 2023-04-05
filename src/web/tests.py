@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from .factories import UserFactory, CustomerFactory
+from .factories import UserFactory, CustomerFactory, MassageFactory
 from .models import Massage, Customer
 
 
@@ -192,3 +192,42 @@ class MassageTest(TestCase):
         self.assertRedirects(
             response, reverse("massage_detail", kwargs={"pk": massage.pk})
         )
+
+    def test_massage_display(self):
+        therapist = UserFactory()
+        self.client.force_login(therapist)
+        customer = CustomerFactory()
+        massage = MassageFactory(
+            customer=customer, therapist=therapist, personal_notes="IS IT WORKING?"
+        )
+
+        response = self.client.get(reverse("massage_detail", kwargs={"pk": massage.pk}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, text="IS IT WORKING?")
+
+    def test_personal_notes_display(self):
+        therapist = UserFactory()
+        self.client.force_login(therapist)
+        customer = CustomerFactory()
+        massage = MassageFactory(
+            customer=customer, therapist=therapist, personal_notes="IS IT WORKING?"
+        )
+
+        response = self.client.get(reverse("massage_detail", kwargs={"pk": massage.pk}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, text="IS IT WORKING?")
+
+        self.client.logout()
+        therapist2 = UserFactory()
+        self.client.force_login(therapist2)
+        customer = CustomerFactory()
+        massage = MassageFactory(
+            customer=customer, therapist=therapist, personal_notes="IS IT WORKING?"
+        )
+
+        response = self.client.get(reverse("massage_detail", kwargs={"pk": massage.pk}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, text="IS IT WORKING?")
