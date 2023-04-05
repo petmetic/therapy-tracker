@@ -9,7 +9,13 @@
     {% for massage in massage_list %}
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{ massage.massage_date }}
+                <div class="justify-content-left align-items-center">
+                    <div class="fw-lighter">date of massage:</div>
+                    <div>{{ massage.massage_date }}</div>
+                    <div class="fw-lighter"> reason for visit:</div>
+                    <div>{{ massage.reason_for_visit }}</div>
+                </div>
+
                 <a class="btn btn-primary" href="{% url 'massage_detail' pk=massage.pk %}">View</a>
             </li>
         </ul>
