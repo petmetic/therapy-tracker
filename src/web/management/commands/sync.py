@@ -2,6 +2,9 @@ from django.core.management.base import BaseCommand, CommandError
 from ...models import Customer
 from django.conf import settings
 import requests
+import requests_cache
+
+session = requests_cache.CachedSession("requests_cache")
 
 
 class Command(BaseCommand):
@@ -11,7 +14,7 @@ class Command(BaseCommand):
     #     parser.add_argument('poll_ids', nargs='+', type=int)
 
     def handle(self, *args, **options):
-        r = requests.get(
+        r = session.get(
             settings.WP_URL_ENTITIES, auth=(settings.WP_USER, settings.WP_PASSWORD)
         )
         print(r.json())
