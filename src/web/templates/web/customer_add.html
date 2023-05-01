@@ -4,10 +4,64 @@
 {% block content %}
     <form action="." method="post"> <!-- A DOT POSTS TO CURRENT URL -->
         {% csrf_token %}
-        {{ form.as_p }}
-        <div class="col-12">
+        <div class="row g-3">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    {{ form.name.errors }}
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                </div>
+                <div class="col-md-4">
+                    {{ form.surname.errors }}
+                    {{ form.surname.label_tag }}
+                    {{ form.surname }}
+                </div>
+            </div>
+            <div class="col g-3">
+                <div class="col-4">
+                    {{ form.email.errors }}
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </div>
+                <div class="col-4">
+                    {{ form.phone.errors }}
+                    {{ form.phone.label_tag }}
+                    {{ form.phone }}
+                </div>
+                <div class="col-4">
+                    {{ form.occupation.errors }}
+                    {{ form.occupation.label_tag }}
+                    {{ form.occupation }}
+                </div>
+            </div>
+            <div class="row-4">
+                {{ form.referral.errors }}
+                {{ form.referral.label_tag }}
+                {{ form.referral }}
+            </div>
+            <div class="row-4">
+                {{ form.salon_choice.errors }}
+                {{ form.salon_choice.label_tag }}
+                {{ form.salon_choice }}
+            </div>
+            <div class="row-4">
+                <div class="form-check">
+                    {{ form.previous_massage.errors }}
+                    {{ form.previous_massage.label_tag }}
+                    {{ form.previous_massage }}
+                </div>
+            </div>
+            <div class="row-4">
+                {{ form.frequency.errors }}
+                {{ form.frequency.label_tag }}
+                {{ form.frequency }}
+            </div>
+        </div> <!---  occupation + questions --->
+
+        <div class="col-12 mt-5">
+            {{ form.non_field_errors }}
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
-        </div>
+
     </form>
 {% endblock %}

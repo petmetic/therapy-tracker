@@ -9,18 +9,21 @@ from django.core.exceptions import ValidationError
 
 class MassageForm(ModelForm):
     massage_date = forms.DateTimeField(
-        label="Date of visit:",
+        label="Date of visit",
+        label_suffix="",
         widget=forms.DateInput(
             attrs={"class": "form-control", "type": "datetime-local"}
         ),
     )
     reason_for_visit = forms.CharField(
+        label_suffix="",
         widget=forms.TextInput(
             attrs={"class": "form-control", "type": "text", "placeholder": "back pain"}
         ),
     )
     kind = forms.CharField(
-        label="Type of massage preformed:",
+        label="Type of massage preformed",
+        label_suffix="",
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
@@ -30,7 +33,8 @@ class MassageForm(ModelForm):
         ),
     )
     massage_notes = forms.CharField(
-        label="Massage preformed:",
+        label="Massage preformed",
+        label_suffix="",
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
@@ -40,7 +44,8 @@ class MassageForm(ModelForm):
         ),
     )
     next_visit = forms.CharField(
-        label="Massage at next visit:",
+        label="Massage at next visit",
+        label_suffix="",
         required=False,
         widget=forms.Textarea(
             attrs={
@@ -51,7 +56,8 @@ class MassageForm(ModelForm):
         ),
     )
     recommendations = forms.CharField(
-        label="Recommendations:",
+        label="Recommendations",
+        label_suffix="",
         required=False,
         widget=forms.Textarea(
             attrs={
@@ -62,13 +68,15 @@ class MassageForm(ModelForm):
         ),
     )
     personal_notes = forms.CharField(
-        label="Personal notes:",
+        label="Personal notes",
+        label_suffix="",
         required=False,
         widget=forms.Textarea(attrs={"class": "form-control", "type": "text"}),
     )
 
     duration = forms.CharField(
-        label="Duration of massage:",
+        label="Duration of massage",
+        label_suffix="",
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
@@ -79,7 +87,8 @@ class MassageForm(ModelForm):
     )
 
     amount = forms.CharField(
-        label="Amount paid:",
+        label="Amount paid",
+        label_suffix="",
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
@@ -90,7 +99,8 @@ class MassageForm(ModelForm):
     )
 
     discount = forms.CharField(
-        label="Discount:",
+        label="Discount",
+        label_suffix="",
         required=False,
         widget=forms.TextInput(
             attrs={
@@ -102,12 +112,14 @@ class MassageForm(ModelForm):
     )
 
     discount_reason = forms.CharField(
-        label="Reason for discount:",
+        label="Reason for discount",
+        label_suffix="",
         required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
 
     repeat_visit = forms.BooleanField(
+        label_suffix="",
         required=False,
         widget=forms.CheckboxInput(
             attrs={"class": "form-check-input", "type": "checkbox"}
@@ -132,25 +144,32 @@ class MassageForm(ModelForm):
 class CustomerForm(ModelForm):
     name = forms.CharField(
         label="Name",
+        label_suffix="",
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     surname = forms.CharField(
         label="Surname",
+        label_suffix="",
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     email = forms.EmailField(
         label="Email",
+        label_suffix="",
         widget=forms.EmailInput(attrs={"class": "form-control", "type": "email"}),
     )
     phone = forms.CharField(
         label="Phone",
+        label_suffix="",
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     occupation = forms.CharField(
         label="Occupation",
+        label_suffix="",
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     previous_massage = forms.BooleanField(
+        label="Previous massage",
+        label_suffix="",
         required=False,
         widget=forms.CheckboxInput(
             attrs={"class": "form-check-input", "type": "checkbox"}
