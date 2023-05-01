@@ -122,4 +122,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-from .localsettings import *  # noqa
+from .localsettings import *  # noqa: F403,F401,E402
