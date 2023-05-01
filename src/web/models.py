@@ -27,6 +27,7 @@ class Massage(models.Model):
     repeat_visit = models.BooleanField(default=False)
     status = models.CharField(max_length=200, default="", blank=True)
     service = models.CharField(max_length=200, default="", blank=True)
+    external_id = models.CharField(max_length=200, default="", blank=True)
 
     added = models.DateTimeField(auto_now_add=True)
     changed = models.DateTimeField(auto_now=True)
@@ -49,3 +50,18 @@ class Customer(models.Model):
 
     def __str__(self):
         return f"{self.surname} {self.name}"
+
+
+class Service(models.Model):
+    external_id = models.CharField(blank=True, null=True, default="", max_length=50)
+    service_group = models.CharField(max_length=200, null=True, default="")
+    price = models.CharField(max_length=200, default="", null=True)
+    massage_name = models.CharField(max_length=200, null=True, default="")
+
+    def __str__(self):
+        return f"id: {self.external_id}, name: {self.massage_name}"
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    external_id = models.CharField(max_length=200, default="", null=True)
