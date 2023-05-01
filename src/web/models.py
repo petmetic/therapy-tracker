@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Massage(models.Model):
@@ -12,8 +13,6 @@ class Massage(models.Model):
         on_delete=models.CASCADE,
     )
     massage_date = models.DateTimeField(blank=True, null=True)
-    # needs to be date of current massage; can be changed on request by user
-    # (not necessarily entered the same date as therapy done)
     reason_for_visit = models.TextField(default="")
     kind = models.CharField(max_length=300)
     massage_notes = models.TextField(default="")
@@ -26,7 +25,7 @@ class Massage(models.Model):
     discount_reason = models.CharField(max_length=200, default="", blank=True)
     repeat_visit = models.BooleanField(default=False)
     status = models.CharField(max_length=200, default="", blank=True)
-    service = models.CharField(max_length=200, default="", blank=True)
+    massage_name = models.ForeignKey("Service", on_delete=models.CASCADE, null=True)
     external_id = models.CharField(max_length=200, default="", blank=True)
 
     added = models.DateTimeField(auto_now_add=True)
@@ -62,6 +61,6 @@ class Service(models.Model):
         return f"id: {self.external_id}, name: {self.massage_name}"
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class UserProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     external_id = models.CharField(max_length=200, default="", null=True)
