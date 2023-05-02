@@ -231,3 +231,17 @@ class MassageTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, text="IS IT WORKING?")
+
+
+class ImportDataTest(TestCase):
+    def test_therapist_import(self):
+        pass
+
+    def test_services_import(self):
+        pass
+
+    def test_customer_import(self):
+        pass
+
+    def test_massage_import(self):
+        pass

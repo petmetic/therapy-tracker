@@ -25,7 +25,9 @@ class Massage(models.Model):
     discount_reason = models.CharField(max_length=200, default="", blank=True)
     repeat_visit = models.BooleanField(default=False)
     status = models.CharField(max_length=200, default="", blank=True)
-    massage_name = models.ForeignKey("Service", on_delete=models.CASCADE, null=True)
+    service = models.ForeignKey(
+        "Service", on_delete=models.CASCADE, default="", null=True
+    )
     external_id = models.CharField(max_length=200, default="", blank=True)
 
     added = models.DateTimeField(auto_now_add=True)
@@ -40,11 +42,11 @@ class Customer(models.Model):
     surname = models.CharField(max_length=200, null=True, default="")
     email = models.EmailField(max_length=254, null=True, default="")
     phone = models.CharField(max_length=100, null=True, default="")
-    occupation = models.CharField(max_length=200, null=True, default="")
+    occupation = models.CharField(max_length=200, null=True, default="", blank=True)
     previous_massage = models.BooleanField(default=False)
-    salon_choice = models.CharField(max_length=200, default="")
-    frequency = models.CharField(max_length=200, default="")
-    referral = models.CharField(max_length=200, default="")
+    salon_choice = models.CharField(max_length=200, default="", blank=True)
+    frequency = models.CharField(max_length=200, default="", blank=True)
+    referral = models.CharField(max_length=200, default="", blank=True)
     external_id = models.CharField(blank=True, null=True, default="", max_length=50)
 
     def __str__(self):
@@ -55,7 +57,7 @@ class Service(models.Model):
     external_id = models.CharField(blank=True, null=True, default="", max_length=50)
     service_group = models.CharField(max_length=200, null=True, default="")
     price = models.CharField(max_length=200, default="", null=True)
-    massage_name = models.CharField(max_length=200, null=True, default="")
+    name = models.CharField(max_length=200, null=True, default="")
 
     def __str__(self):
         return f"id: {self.external_id}, name: {self.massage_name}"

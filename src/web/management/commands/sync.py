@@ -34,14 +34,9 @@ class Command(BaseCommand):
             "/Users/meta/code/hacking/therapy-tracker/therapists_PP_alenka.json"
         ) as f:
             data = json.loads(f.read())
-            therapists = data["data"]["employees"]
-            services = data["data"]["categories"]
 
-            for raw_therapist in therapists:
-                therapist_import(raw_therapist)
-
-            for raw_service in services:
-                services_import(raw_service)
+            therapist_import(data)
+            services_import(data)
 
         self.stdout.write(str(Service.objects.all().count()))
         self.stdout.write(self.style.SUCCESS("Successfully synced services"))
@@ -53,11 +48,9 @@ class Command(BaseCommand):
             "/Users/meta/code/hacking/therapy-tracker/appointments_PP_alenka.json"
         ) as f:
             data = json.loads(f.read())
-            massages = data["data"]["appointments"]
 
-            for raw_appointment in massages.values():
-                customer_import(raw_appointment)
-                massage_import(raw_appointment)
+            customer_import(data)
+            massage_import(data)
 
         self.stdout.write(str(Customer.objects.all().count()))
         self.stdout.write(self.style.SUCCESS("Successfully synced customers"))
