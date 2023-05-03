@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from ...models import Customer, User, Massage, Service
 import requests_cache
 import json
-from web.utility import (
+from ...utility import (
     therapist_import,
     services_import,
     customer_import,
@@ -35,26 +35,26 @@ class Command(BaseCommand):
         ) as f:
             data = json.loads(f.read())
 
-            therapist_import(data)
+            # therapist_import(data)
             services_import(data)
 
         self.stdout.write(str(Service.objects.all().count()))
         self.stdout.write(self.style.SUCCESS("Successfully synced services"))
 
-        self.stdout.write(str(User.objects.all().count()))
-        self.stdout.write(self.style.SUCCESS("Successfully synced therapists"))
+        # self.stdout.write(str(User.objects.all().count()))
+        # self.stdout.write(self.style.SUCCESS("Successfully synced therapists"))
 
-        with open(
-            "/Users/meta/code/hacking/therapy-tracker/appointments_PP_alenka.json"
-        ) as f:
-            data = json.loads(f.read())
-
-            customer_import(data)
-            massage_import(data)
-
-        self.stdout.write(str(Customer.objects.all().count()))
-        self.stdout.write(self.style.SUCCESS("Successfully synced customers"))
-        self.stdout.write(str(Massage.objects.all().count()))
-        self.stdout.write(
-            self.style.SUCCESS("Successfully synced massage appointments")
-        )
+        # with open(
+        #     "/Users/meta/code/hacking/therapy-tracker/appointments_PP_alenka.json"
+        # ) as f:
+        #     data = json.loads(f.read())
+        #
+        #     customer_import(data)
+        #     massage_import(data)
+        #
+        # self.stdout.write(str(Customer.objects.all().count()))
+        # self.stdout.write(self.style.SUCCESS("Successfully synced customers"))
+        # self.stdout.write(str(Massage.objects.all().count()))
+        # self.stdout.write(
+        #     self.style.SUCCESS("Successfully synced massage appointments")
+        # )

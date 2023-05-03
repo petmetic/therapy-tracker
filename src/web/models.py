@@ -56,11 +56,14 @@ class Customer(models.Model):
 class Service(models.Model):
     external_id = models.CharField(blank=True, null=True, default="", max_length=50)
     service_group = models.CharField(max_length=200, null=True, default="")
-    price = models.CharField(max_length=200, default="", null=True)
     name = models.CharField(max_length=200, null=True, default="")
+    price = models.CharField(max_length=200, default="", null=True)
+    duration = models.IntegerField(default=0)
+    time_before = models.IntegerField(default=0)
+    time_after = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"id: {self.external_id}, name: {self.massage_name}"
+        return f"external_id: {self.external_id}, service group: {self.service_group}, name: {self.name}"
 
 
 class UserProfile(models.Model):

@@ -9,6 +9,14 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     first_name = factory.Sequence(lambda n: "Agent %03d" % n)
     username = factory.Sequence(lambda n: "Agent %03d" % n)
+    email = factory.Sequence(lambda n: "Agent %03d" % n)
+
+
+class UserProfileFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.UserProfile
+
+    external_id = factory.Faker("external_id")
 
 
 class CustomerFactory(factory.django.DjangoModelFactory):

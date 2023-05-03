@@ -1,7 +1,9 @@
 from .models import User, UserProfile, Service, Massage, Customer
 
+from icecream import ic
 
-def therapist_import(data):
+
+def therapist_import(data: dict):
     therapists = data["data"]["employees"]
 
     for raw_therapist in therapists:
@@ -19,7 +21,7 @@ def therapist_import(data):
     return user
 
 
-def services_import(data):
+def services_import(data: dict):
     services = data["data"]["categories"]
     for raw_service in services:
         service_group = raw_service["name"]
@@ -27,18 +29,31 @@ def services_import(data):
             service_list_id = individual_service["id"]
             service_list_name = individual_service["name"]
             price = individual_service["price"]
+            duration = individual_service["duration"]
+            time_before = individual_service["timeBefore"]
+            if time_before is None:
+                time_before = 0
 
-            service = Service.objects.get_or_create(
-                service_group=service_group,
+            time_after = individual_service["timeAfter"]
+            if time_after is None:
+                time_after = 0
+
+            service, created = Service.objects.get_or_create(
                 external_id=service_list_id,
-                name=service_list_name,
-                price=price,
+                defaults={
+                    "service_group": service_group,
+                    "name": service_list_name,
+                    "price": price,
+                    "duration": duration,
+                    "time_before": time_before,
+                    "time_after": time_after,
+                },
             )
 
     return service
 
 
-def customer_import(data):
+def customer_import(data: dict):
     massages = data["data"]["appointments"]
 
     for raw_appointment in massages.values():
@@ -63,7 +78,7 @@ def customer_import(data):
     return customer
 
 
-def massage_import(data):
+def massage_import(data: dict):
     massages = data["data"]["appointments"]
     for raw_appointment in massages.values():
         massage_date = raw_appointment["date"]
