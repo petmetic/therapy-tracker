@@ -5,8 +5,6 @@ from .factories import UserFactory, CustomerFactory, MassageFactory
 from .models import Massage, Customer, User, Service, UserProfile
 from .utility import therapist_import, services_import, customer_import, massage_import
 
-from icecream import ic
-
 
 class GeneralTest(TestCase):
     def test_check_auth_user_login(self):

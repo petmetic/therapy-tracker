@@ -1,7 +1,5 @@
 from .models import User, UserProfile, Service, Massage, Customer
 
-from icecream import ic
-
 
 def therapist_import(data: dict):
     therapists = data["data"]["employees"]
