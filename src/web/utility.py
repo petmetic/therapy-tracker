@@ -1,4 +1,6 @@
 from .models import User, UserProfile, Service, Massage, Customer
+from datetime import datetime
+import pytz
 
 
 def therapist_import(data: dict):
@@ -85,6 +87,13 @@ def massage_import(data: dict):
 
         for appointment in individual_appointments:
             service = appointment["serviceId"]
+            tz = pytz.timezone("Europe/Ljubljana")
+            massage_start = datetime.strptime(
+                appointment["bookingStart"], "%Y-%m-%d %H:%M:%S"
+            ).astimezone(tz=tz)
+            massage_end = datetime.strptime(
+                appointment["bookingEnd"], "%Y-%m-%d %H:%M:%S"
+            ).astimezone(tz=tz)
             therapist = User.objects.filter(
                 userprofile__external_id=appointment["providerId"]
             ).first()
@@ -97,7 +106,7 @@ def massage_import(data: dict):
                 )
 
                 service_massage, created = Service.objects.get_or_create(
-                    name=service,
+                    external_id=service,
                 )
 
                 massage = Massage.objects.get_or_create(
@@ -107,6 +116,8 @@ def massage_import(data: dict):
                     service=service_massage,
                     external_id=external_id_massage,
                     therapist=therapist,
+                    massage_start=massage_start,
+                    massage_end=massage_end,
                 )
 
     return massage

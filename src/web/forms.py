@@ -116,7 +116,15 @@ class MassageForm(ModelForm):
 
     class Meta:
         model = Massage
-        exclude = ["added", "changed", "service", "external_id", "status"]
+        exclude = [
+            "added",
+            "changed",
+            "service",
+            "external_id",
+            "status",
+            "massage_start",
+            "massage_end",
+        ]
 
     def clean(self):
         cleaned_data = super().clean()

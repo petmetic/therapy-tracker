@@ -3,3 +3,4 @@ pre-commit
 factory_boy
 requests-cache
 requests
+pytz

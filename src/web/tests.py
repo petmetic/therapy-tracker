@@ -528,5 +528,3 @@ class ImportDataTest(TestCase):
         massage = Massage.objects.latest("id")
 
         self.assertEqual(str(massage.massage_date), "2023-05-05")
-
-        # with factory write services and therapists to import massage
