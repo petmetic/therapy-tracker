@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from .factories import UserFactory, CustomerFactory, MassageFactory
-from .models import Massage, Customer, User, Service, UserProfile
+from .factories import UserFactory, CustomerFactory, MassageFactory, UserProfileFactory
+from .models import Massage, Customer, User, Service
 from .utility import therapist_import, services_import, customer_import, massage_import
 
 
@@ -38,7 +38,7 @@ class GeneralTest(TestCase):
 
 class CustomerTest(TestCase):
     def test_customer_add(self):
-        therapist = UserFactory()
+        therapist = UserProfileFactory().user
         self.client.force_login(therapist)
         data = {
             "name": ["Bozo"],
@@ -99,7 +99,7 @@ class CustomerTest(TestCase):
         self.assertContains(response, text="Customer already exists in database")
 
     def test_new_customer_displays(self):
-        therapist = UserFactory()
+        therapist = UserProfileFactory(external_id="42").user
         self.client.force_login(therapist)
         data = {
             "name": ["Bozo"],
@@ -474,7 +474,7 @@ class ImportDataTest(TestCase):
                                 ],
                                 "status": "approved",
                                 "serviceId": 7,
-                                "providerId": 1,
+                                "providerId": 42,
                                 "bookingStart": "2023-04-06 16:00:00",
                                 "bookingEnd": "2023-04-06 17:00:00",
                             },
@@ -507,7 +507,7 @@ class ImportDataTest(TestCase):
                                 ],
                                 "status": "approved",
                                 "serviceId": 3,
-                                "providerId": 1,
+                                "providerId": 42,
                                 "bookingStart": "2023-04-07 09:00:00",
                                 "bookingEnd": "2023-04-07 10:30:00",
                             },
@@ -516,14 +516,17 @@ class ImportDataTest(TestCase):
                 },
             },
         }
-        data2 = {}
+
+        UserProfileFactory(external_id="42")
 
         massage_count = Massage.objects.all().count()
-        customer_import(data)
-        therapist_import(data2)
-        services_import(data2)
+
         massage_import(data)
 
         self.assertEqual(Massage.objects.all().count(), massage_count + 2)
+
+        massage = Massage.objects.latest("id")
+
+        self.assertEqual(str(massage.massage_date), "2023-05-05")
 
         # with factory write services and therapists to import massage

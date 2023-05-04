@@ -16,7 +16,8 @@ class UserProfileFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.UserProfile
 
-    external_id = factory.Faker("external_id")
+    user = factory.SubFactory(UserFactory)
+    external_id = ""
 
 
 class CustomerFactory(factory.django.DjangoModelFactory):
