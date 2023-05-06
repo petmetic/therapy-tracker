@@ -6,3 +6,6 @@ db.sqlite3
 localsettings.py
 requests_cache.sqlite
 *.json
+__pycache__
+*.pyc
+*.pyo
