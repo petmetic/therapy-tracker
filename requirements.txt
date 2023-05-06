@@ -1,3 +1,6 @@
 Django~=4.1.7
 pre-commit
 factory_boy
+requests-cache
+requests
+pytz
