@@ -56,15 +56,15 @@ def services_import(data: dict):
 def customer_import(data: dict):
     massages = data["data"]["appointments"]
 
-    for raw_appointment in massages.values():
-        individual_appointments = raw_appointment["appointments"]
-        for appointment in individual_appointments:
-            for app in appointment["bookings"]:
-                external_id_customer = app["customer"]["id"]
-                name_customer = app["customer"]["firstName"]
-                surname_customer = app["customer"]["lastName"]
-                email_customer = app["customer"]["email"]
-                phone_customer = app["customer"]["phone"]
+    for raw_massage in massages.values():
+        individual_massage = raw_massage["appointments"]
+        for massage in individual_massage:
+            for field in massage["bookings"]:
+                external_id_customer = field["customer"]["id"]
+                name_customer = field["customer"]["firstName"]
+                surname_customer = field["customer"]["lastName"]
+                email_customer = field["customer"]["email"]
+                phone_customer = field["customer"]["phone"]
 
                 customer, created = Customer.objects.get_or_create(
                     external_id=external_id_customer,
@@ -80,14 +80,13 @@ def customer_import(data: dict):
 
 def massage_import(data: dict):
     massages = data["data"]["appointments"]
+    tz = pytz.timezone("Europe/Ljubljana")
     for raw_appointment in massages.values():
         massage_date = raw_appointment["date"]
-        #  TODO: import bookingStart and pars the string to datetime object
         individual_appointments = raw_appointment["appointments"]
 
         for appointment in individual_appointments:
             service = appointment["serviceId"]
-            tz = pytz.timezone("Europe/Ljubljana")
             massage_start = datetime.strptime(
                 appointment["bookingStart"], "%Y-%m-%d %H:%M:%S"
             ).astimezone(tz=tz)

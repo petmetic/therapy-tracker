@@ -15,9 +15,6 @@ session = requests_cache.CachedSession("requests_cache")
 class Command(BaseCommand):
     help = "Help to do sync"
 
-    # def add_arguments(self, parser):
-    #     parser.add_argument('poll_ids', nargs='+', type=int)
-
     def handle(self, *args, **options):
         # r = session.get(
         #     settings.WP_URL_ENTITIES, auth=(settings.WP_USER, settings.WP_PASSWORD)
