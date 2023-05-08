@@ -22,7 +22,7 @@
             </div> <!-- date of therapy -->
             <div class="row">
                 <div class="col-sm-4">Name of Therapist:</div>
-                <div class="col-sm-8">{{ massage.therapist.first_name }}</div>
+                <div class="col-sm-8">{{ massage.therapist.username }}</div>
             </div> <!-- name of therapist -->
             <div class="row">
                 <div class="col-sm-4">Reason for visit:</div>
@@ -78,5 +78,5 @@
             </div> <!-- repeat visit-->
         </div>
     </div>
-    <a class="btn btn-primary btn-body" href="#">Edit massage</a>
+    <a class="btn btn-primary btn-body" href="{% url 'massage_edit' pk=massage.pk %}">Edit massage</a>
 {% endblock %}

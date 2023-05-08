@@ -11,6 +11,7 @@ urlpatterns = [
     path("customer_list/add/", views.customer_add, name="customer_add"),
     path("error/", views.error, name="error"),
     path("massage_list/<int:pk>/detail/", views.massage_detail, name="massage_detail"),
+    path("massage_list/<int:pk>/edit/", views.massage_edit, name="massage_edit"),
     path("massage_list/<int:customer_pk>/add/", views.massage_add, name="massage_add"),
     path("logout", views.custom_logout, name="logout"),
     path("", views.index, name="index"),

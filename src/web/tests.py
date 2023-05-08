@@ -153,6 +153,64 @@ class MassageTest(TestCase):
         self.assertRedirects(
             response, reverse("massage_detail", kwargs={"pk": massage.pk})
         )
+        response = self.client.get(response.url)
+        self.assertContains(response, text="ali deluje")
+
+    def test_edit_submitted_massage(self):
+        therapist = UserFactory()
+        self.client.force_login(therapist)  # logs in the user
+        customer = CustomerFactory(email="test@example.com")
+
+        data = {
+            "customer": [customer.id],
+            "therapist": [therapist.id],
+            "date": ["2023-04-12"],
+            "reason_for_visit": ["ali deluje"],
+            "kind": ["terapevtska"],
+            "notes": ["gremo naprej"],
+            "next_visit": ["hahaha"],
+            "recommendations": [""],
+            "personal_notes": [""],
+            "duration": ["30 min"],
+            "amount": ["45"],
+            "discount": ["30 %"],
+            "discount_reason": ["kar tako"],
+            "repeat_visit": ["on"],
+        }
+
+        # add new massage
+        response = self.client.post(
+            reverse("massage_add", kwargs={"customer_pk": customer.pk}), data=data
+        )
+
+        massage = Massage.objects.latest("id")
+
+        self.assertRedirects(
+            response, reverse("massage_detail", kwargs={"pk": massage.pk})
+        )
+
+        # click on edit button
+        response = self.client.get(reverse("massage_edit", kwargs={"pk": massage.pk}))
+
+        # does edit button do the right thing
+        self.assertContains(response, text="ali deluje")
+
+        # changed data
+        data["reason_for_visit"] = ["EDIT WORKS"]
+
+        response = self.client.post(
+            reverse("massage_edit", kwargs={"pk": massage.pk}), data=data
+        )
+
+        # assert after submit new data
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, reverse("massage_detail", kwargs={"pk": massage.pk})
+        )
+
+        # check if new data in database
+        response = self.client.get(response.url)
+        self.assertContains(response, text="EDIT WORKS")
 
     def test_discount_reason_not_filled(self):
         therapist = UserFactory()

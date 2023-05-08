@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Massage Edit{% endblock %}
+
+{% block content %}
+
+    <form action="." method="post" class="row g-3"> <!-- A DOT POSTS TO CURRENT URL -->
+        {% csrf_token %}
+
+        <h1> Today's massage for {{ massage.customer }}</h1>
+        <div class='row g-3'>
+            <div class="col-md-4">
+                {{ form.date.errors }}
+                {{ form.date.label_tag }}
+                {{ form.date }}
+            </div>
+            <div class="col-md-4">
+                {{ form.therapist.errors }}
+                {{ form.therapist.label_tag }}
+                {{ form.therapist }}
+            </div>
+            <div class="row-4">
+                {{ form.reason_for_visit.errors }}
+                {{ form.reason_for_visit.label_tag }}
+                {{ form.reason_for_visit }}
+            </div>
+            <div class="row-4">
+                {{ form.kind.errors }}
+                {{ form.kind.label_tag }}
+                {{ form.kind }}
+            </div>
+            <div class="row-4">
+                {{ form.notes.errors }}
+                {{ form.notes.label_tag }}
+                {{ form.notes }}
+            </div>
+            <div class="row-4">
+                {{ form.next_visit.errors }}
+                {{ form.next_visit.label_tag }}
+                {{ form.next_visit }}
+            </div>
+            <div class="row-4">
+                {{ form.recommendations.errors }}
+                {{ form.recommendations.label_tag }}
+                {{ form.recommendations }}
+            </div>
+            <div class="row-4">
+                {{ form.personal_notes.errors }}
+                {{ form.personal_notes.label_tag }}
+                {{ form.personal_notes }}
+            </div>
+            <div class="row-4">
+                {{ form.duration.errors }}
+                {{ form.duration.label_tag }}
+                {{ form.duration }}
+            </div>
+            <div class="row-4">
+                {{ form.amount.errors }}
+                {{ form.amount.label_tag }}
+                {{ form.amount }}
+            </div>
+            <div class="row-4">
+                {{ form.discount.errors }}
+                {{ form.discount.label_tag }}
+                {{ form.discount }}
+            </div>
+            <div class="row-4">
+                {{ form.discount_reason.errors }}
+                {{ form.discount_reason.label_tag }}
+                {{ form.discount_reason }}
+            </div>
+            <div class="row-4">
+                {{ form.repeat_visit.errors }}
+                {{ form.repeat_visit.label_tag }}
+                {{ form.repeat_visit }}
+            </div>
+        </div>
+        <div>
+            <div class="col-12">
+                {{ form.non_field_errors }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

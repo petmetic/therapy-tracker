@@ -36,7 +36,7 @@ class Massage(models.Model):
     changed = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.massage_date}, {self.customer}"
+        return f"{self.date}, {self.customer}"
 
 
 class Customer(models.Model):
