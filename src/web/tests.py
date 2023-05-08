@@ -130,10 +130,10 @@ class MassageTest(TestCase):
         data = {
             "customer": [customer.id],
             "therapist": [therapist.id],
-            "massage_date": ["2023-04-12"],
+            "date": ["2023-04-12"],
             "reason_for_visit": ["ali deluje"],
             "kind": ["terapevtska"],
-            "massage_notes": ["gremo naprej"],
+            "notes": ["gremo naprej"],
             "next_visit": ["hahaha"],
             "recommendations": [""],
             "personal_notes": [""],
@@ -161,10 +161,10 @@ class MassageTest(TestCase):
         data = {
             "customer": [customer.id],
             "therapist": [therapist.id],
-            "massage_date": ["2023-04-12"],
+            "date": ["2023-04-12"],
             "reason_for_visit": ["ali deluje"],
             "kind": ["terapevtska"],
-            "massage_notes": ["gremo naprej"],
+            "notes": ["gremo naprej"],
             "next_visit": ["hahaha"],
             "recommendations": [""],
             "personal_notes": [""],
@@ -527,4 +527,4 @@ class ImportDataTest(TestCase):
 
         massage = Massage.objects.latest("id")
 
-        self.assertEqual(str(massage.massage_date), "2023-05-05")
+        self.assertEqual(str(massage.date), "2023-05-05")

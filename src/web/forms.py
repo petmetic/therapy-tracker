@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 
 
 class MassageForm(ModelForm):
-    massage_date = forms.DateTimeField(
+    date = forms.DateTimeField(
         label="Date of visit",
         label_suffix="",
         widget=forms.DateInput(
@@ -32,7 +32,7 @@ class MassageForm(ModelForm):
             }
         ),
     )
-    massage_notes = forms.CharField(
+    notes = forms.CharField(
         label="Massage preformed",
         label_suffix="",
         widget=forms.Textarea(
@@ -134,8 +134,8 @@ class MassageForm(ModelForm):
             "service",
             "external_id",
             "status",
-            "massage_start",
-            "massage_end",
+            "start",
+            "end",
         ]
 
     def clean(self):

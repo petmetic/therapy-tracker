@@ -11,17 +11,17 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name="massage",
-            name="massage_end",
+            name="end",
             field=models.DateTimeField(blank=True, null=True),
         ),
         migrations.AddField(
             model_name="massage",
-            name="massage_start",
+            name="start",
             field=models.DateTimeField(blank=True, null=True),
         ),
         migrations.AlterField(
             model_name="massage",
-            name="massage_date",
+            name="date",
             field=models.DateField(blank=True, null=True),
         ),
     ]
