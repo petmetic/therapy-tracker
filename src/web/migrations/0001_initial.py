@@ -104,7 +104,7 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("massage_date", models.DateTimeField(blank=True, null=True)),
+                ("date", models.DateTimeField(blank=True, null=True)),
                 ("reason_for_visit", models.TextField(default="")),
                 ("kind", models.CharField(max_length=300)),
                 ("massage_notes", models.TextField(default="")),

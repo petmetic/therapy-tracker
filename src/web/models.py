@@ -12,12 +12,12 @@ class Massage(models.Model):
         User,
         on_delete=models.CASCADE,
     )
-    massage_date = models.DateField(blank=True, null=True)
-    massage_start = models.DateTimeField(blank=True, null=True)
-    massage_end = models.DateTimeField(blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
+    start = models.DateTimeField(blank=True, null=True)
+    end = models.DateTimeField(blank=True, null=True)
     reason_for_visit = models.TextField(default="")
     kind = models.CharField(max_length=300)
-    massage_notes = models.TextField(default="")
+    notes = models.TextField(default="")
     next_visit = models.TextField(default="", blank=True)
     recommendations = models.TextField(default="", blank=True)
     personal_notes = models.TextField(default="", blank=True)

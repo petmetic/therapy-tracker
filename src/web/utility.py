@@ -109,14 +109,14 @@ def massage_import(data: dict):
                 )
 
                 massage = Massage.objects.get_or_create(
-                    massage_date=massage_date,
+                    date=massage_date,
                     customer=customer,
                     status=status,
                     service=service_massage,
                     external_id=external_id_massage,
                     therapist=therapist,
-                    massage_start=massage_start,
-                    massage_end=massage_end,
+                    start=massage_start,
+                    end=massage_end,
                 )
 
     return massage

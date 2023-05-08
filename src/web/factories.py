@@ -32,9 +32,9 @@ class MassageFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Massage
 
-    massage_date = factory.Faker("date")
+    date = factory.Faker("date")
     reason_for_visit = factory.Faker("sentence")
-    massage_notes = factory.Faker("sentences")
+    notes = factory.Faker("sentences")
     next_visit = factory.Faker("sentences")
     recommendations = factory.Faker("sentences")
     personal_notes = factory.Faker("sentences")
