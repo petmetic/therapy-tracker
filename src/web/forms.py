@@ -12,9 +12,19 @@ class MassageForm(ModelForm):
         label="Date of visit",
         label_suffix="",
         widget=forms.DateInput(
-            attrs={"class": "form-control", "type": "datetime-local"}
+            format="%Y-%m-%d", attrs={"class": "form-control", "type": "date-local"}
         ),
     )
+
+    start = forms.DateTimeField(
+        label="Time of visit",
+        label_suffix="",
+        widget=forms.DateInput(
+            format="%Y-%m-%d %H:%M:%S",
+            attrs={"class": "form-control", "type": "datetime-local"},
+        ),
+    )
+
     reason_for_visit = forms.CharField(
         label_suffix="",
         widget=forms.TextInput(
@@ -134,7 +144,6 @@ class MassageForm(ModelForm):
             "service",
             "external_id",
             "status",
-            "start",
             "end",
         ]
 
@@ -154,7 +163,16 @@ class MassageEditForm(ModelForm):
         label="Date of visit",
         label_suffix="",
         widget=forms.DateInput(
-            attrs={"class": "form-control", "type": "datetime-local"}
+            format="%Y-%m-%d", attrs={"class": "form-control", "type": "date-local"}
+        ),
+    )
+
+    start = forms.DateTimeField(
+        label="Time of visit",
+        label_suffix="",
+        widget=forms.DateTimeInput(
+            format="%Y-%m-%d %H:%M:%S",
+            attrs={"class": "form-control", "type": "datetime-local"},
         ),
     )
     reason_for_visit = forms.CharField(
@@ -276,7 +294,6 @@ class MassageEditForm(ModelForm):
             "service",
             "external_id",
             "status",
-            "start",
             "end",
             "customer",
         ]

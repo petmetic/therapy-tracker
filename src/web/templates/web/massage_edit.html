@@ -6,12 +6,12 @@
     <form action="." method="post" class="row g-3"> <!-- A DOT POSTS TO CURRENT URL -->
         {% csrf_token %}
 
-        <h1> Today's massage for {{ massage.customer }}</h1>
+        <h1> Edit massage for {{ massage.customer }}</h1>
         <div class='row g-3'>
             <div class="col-md-4">
-                {{ form.date.errors }}
-                {{ form.date.label_tag }}
-                {{ form.date }}
+                {{ form.start.errors }}
+                {{ form.start.label_tag }}
+                {{ form.start }}
             </div>
             <div class="col-md-4">
                 {{ form.therapist.errors }}

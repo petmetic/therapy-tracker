@@ -17,9 +17,9 @@
         <br>
         <div>
             <div class="row">
-                <div class="col-sm-4">Date of therapy:</div>
-                <div class="col-sm-8">{{ massage.date }}</div>
-            </div> <!-- date of therapy -->
+                <div class="col-sm-4">Time of therapy:</div>
+                <div class="col-sm-8">{{ massage.start }}</div>
+            </div> <!-- time of therapy -->
             <div class="row">
                 <div class="col-sm-4">Name of Therapist:</div>
                 <div class="col-sm-8">{{ massage.therapist.username }}</div>
@@ -45,10 +45,10 @@
                 <div class="col-sm-8">{{ massage.recommendations }}</div>
             </div> <!-- recommendations -->
             {% if therapist == massage.therapist %}
-            <div class="row">
-                <div class="col-sm-4">Personal notes:</div>
-                <div class="col-sm-8">{{ massage.personal_notes }}</div>
-            </div>
+                <div class="row">
+                    <div class="col-sm-4">Personal notes:</div>
+                    <div class="col-sm-8">{{ massage.personal_notes }}</div>
+                </div>
             {% endif %}
         </div>
         <br>
@@ -66,6 +66,10 @@
                 <div class="col-sm-4">Discount:</div>
                 <div class="col-sm-8">{{ massage.discount }} %</div>
             </div> <!-- discount-->
+        <div class="row">
+                <div class="col-sm-4">Reason for discount:</div>
+                <div class="col-sm-8">{{ massage.discount_reason }} %</div>
+            </div> <!-- discount reason-->
             <div class="row">
                 <div class="col-sm-4">Repeat visit:</div>
                 <div class="col-sm-8">
