@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from .models import Customer, Massage
 
-from .forms import MassageForm, CustomerForm
+from .forms import MassageForm, CustomerForm, MassageEditForm
 
 
 @login_required
@@ -79,6 +79,36 @@ def massage_add(request, customer_pk: int):
         request,
         "web/massage_add.html",
         {"form": form, "customer": customer, "therapist": request.user},
+    )
+
+
+@login_required
+def massage_edit(request, pk: int):
+    massage = get_object_or_404(Massage, pk=pk)
+    customer = massage.customer
+    if request.method == "POST":
+        form = MassageEditForm(
+            request.POST,
+            instance=massage,
+            initial={
+                "massage": massage,
+                "therapist": request.user,
+                "customer": customer,
+            },
+        )
+        if form.is_valid():
+            massage = form.save()
+            return redirect(reverse("massage_detail", kwargs={"pk": massage.pk}))
+        else:
+            print(form.errors)
+    else:
+        form = MassageEditForm(
+            instance=massage, initial={"customer": customer, "therapist": request.user}
+        )
+    return render(
+        request,
+        "web/massage_edit.html",
+        {"form": form, "massage": massage, "therapist": request.user},
     )
 
 

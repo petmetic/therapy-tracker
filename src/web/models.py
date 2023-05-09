@@ -22,8 +22,8 @@ class Massage(models.Model):
     recommendations = models.TextField(default="", blank=True)
     personal_notes = models.TextField(default="", blank=True)
     duration = models.CharField(max_length=200, default="")
-    amount = models.CharField(max_length=200, default="")
-    discount = models.CharField(max_length=200, default="", blank=True)
+    amount = models.IntegerField(default=0)
+    discount = models.IntegerField(default=0, blank=True)
     discount_reason = models.CharField(max_length=200, default="", blank=True)
     repeat_visit = models.BooleanField(default=False)
     status = models.CharField(max_length=200, default="", blank=True)
@@ -36,7 +36,7 @@ class Massage(models.Model):
     changed = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.massage_date}, {self.customer}"
+        return f"{self.date}, {self.customer}"
 
 
 class Customer(models.Model):
@@ -59,7 +59,7 @@ class Service(models.Model):
     external_id = models.CharField(blank=True, null=True, default="", max_length=50)
     service_group = models.CharField(max_length=200, null=True, default="")
     name = models.CharField(max_length=200, null=True, default="")
-    price = models.CharField(max_length=200, default="", null=True)
+    price = models.IntegerField(default=0, null=True)
     duration = models.IntegerField(default=0)
     time_before = models.IntegerField(default=0)
     time_after = models.IntegerField(default=0)
