@@ -138,9 +138,9 @@ class MassageTest(TestCase):
             "next_visit": ["in 14 days"],
             "recommendations": [""],
             "personal_notes": [""],
-            "duration": ["30 min"],
-            "amount": ["6"],
-            "discount": ["30"],
+            "duration": [30],
+            "amount": [6],
+            "discount": [30],
             "discount_reason": ["friend"],
             "repeat_visit": ["on"],
         }
@@ -173,9 +173,9 @@ class MassageTest(TestCase):
             "next_visit": ["in 14 days"],
             "recommendations": [""],
             "personal_notes": [""],
-            "duration": ["30 min"],
-            "amount": ["7"],
-            "discount": ["30"],
+            "duration": [30],
+            "amount": [7],
+            "discount": [30],
             "discount_reason": ["friend"],
             "repeat_visit": ["on"],
         }
@@ -223,9 +223,9 @@ class MassageTest(TestCase):
             "next_visit": ["in 14 days"],
             "recommendations": [""],
             "personal_notes": [""],
-            "duration": ["30 min"],
-            "amount": ["6"],
-            "discount": ["30"],
+            "duration": [30],
+            "amount": [6],
+            "discount": [20],
             "discount_reason": [""],
             "repeat_visit": ["on"],
         }
@@ -292,6 +292,28 @@ class MassageTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, text="TEST?")
+
+    def test_user1_sees_massage_from_user2(self):
+        therapist1 = UserFactory()
+        therapist2 = UserFactory()
+        customer = CustomerFactory()
+
+        self.client.force_login(therapist1)
+        massage = MassageFactory(
+            customer=customer,
+            therapist=therapist1,
+            notes="anti inflammatory massage of knee",
+        )
+        response = self.client.get(reverse("massage_detail", kwargs={"pk": massage.pk}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, text="anti inflammatory massage of knee")
+
+        self.client.logout()
+        self.client.force_login(therapist2)
+        response = self.client.get(reverse("massage_detail", kwargs={"pk": massage.pk}))
+        self.assertNotContains(response, text="Edit massage")
+
+        # TODO: error message: no rights to edit massage
 
 
 class ImportDataTest(TestCase):

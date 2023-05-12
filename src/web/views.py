@@ -96,6 +96,7 @@ def massage_edit(request, pk: int):
                 "customer": customer,
             },
         )
+
         if form.is_valid():
             massage = form.save()
             return redirect(reverse("massage_detail", kwargs={"pk": massage.pk}))
