@@ -82,7 +82,7 @@
             </div> <!-- repeat visit-->
         </div>
     </div>
-    {% if therapist == massage.therapist %}
+    {% if request.user == massage.therapist %}
     <a class="btn btn-primary btn-body" href="{% url 'massage_edit' pk=massage.pk %}">Edit massage</a>
     {% endif %}
 {% endblock %}

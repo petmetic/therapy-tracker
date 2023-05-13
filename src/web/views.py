@@ -86,10 +86,9 @@ def massage_add(request, customer_pk: int):
 @login_required
 def massage_edit(request, pk: int):
     massage = get_object_or_404(Massage, pk=pk)
-    customer = massage.customer
-
     if not request.user == massage.therapist:
         raise PermissionDenied
+    customer = massage.customer
 
     if request.method == "POST":
         form = MassageEditForm(
