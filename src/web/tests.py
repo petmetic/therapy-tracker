@@ -1,3 +1,6 @@
+import datetime
+import pytz
+
 from django.test import TestCase
 from django.urls import reverse
 
@@ -130,7 +133,6 @@ class MassageTest(TestCase):
         data = {
             "customer": [customer.id],
             "therapist": [therapist.id],
-            "date": ["2023-04-12"],
             "start": ["2023-04-12 15:00:00"],
             "reason_for_visit": ["pain"],
             "kind": ["therapeutic"],
@@ -165,7 +167,6 @@ class MassageTest(TestCase):
         data = {
             "customer": [customer.id],
             "therapist": [therapist.id],
-            "date": ["2023-04-12"],
             "start": ["2023-04-12 15:00:00"],
             "reason_for_visit": ["pain"],
             "kind": ["therapeutic"],
@@ -437,7 +438,7 @@ class ImportDataTest(TestCase):
 
         self.assertEqual(service.service_group, "Limfna drena\u017ea")
         self.assertEqual(service.name, "Limfna drena\u017ea 50 min")
-        self.assertEqual(service.external_id, "27")
+        self.assertEqual(service.external_id, 27)
         self.assertEqual(service.price, 13)
         self.assertEqual(service.duration, 3600)
         self.assertEqual(service.time_before, 0)
@@ -611,5 +612,12 @@ class ImportDataTest(TestCase):
         self.assertEqual(Massage.objects.all().count(), massage_count + 2)
 
         massage = Massage.objects.latest("id")
+        self.assertEqual(massage.external_id, 270)
 
-        self.assertEqual(str(massage.date), "2023-05-05")
+        tz = pytz.timezone("Europe/Berlin")
+        expected_date = datetime.datetime(2023, 4, 7, 9, 0)
+        expected_date = tz.localize(expected_date)
+
+        self.assertEqual(
+            massage.start.astimezone(tz).isoformat(), expected_date.isoformat()
+        )

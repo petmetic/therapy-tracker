@@ -8,14 +8,6 @@ from django.core.exceptions import ValidationError
 
 
 class MassageForm(ModelForm):
-    date = forms.DateTimeField(
-        label="Date of visit",
-        label_suffix="",
-        widget=forms.DateInput(
-            format="%Y-%m-%d", attrs={"class": "form-control", "type": "date-local"}
-        ),
-    )
-
     start = forms.DateTimeField(
         label="Time of visit",
         label_suffix="",
@@ -159,14 +151,6 @@ class MassageForm(ModelForm):
 
 
 class MassageEditForm(ModelForm):
-    date = forms.DateTimeField(
-        label="Date of visit",
-        label_suffix="",
-        widget=forms.DateInput(
-            format="%Y-%m-%d", attrs={"class": "form-control", "type": "date-local"}
-        ),
-    )
-
     start = forms.DateTimeField(
         label="Time of visit",
         label_suffix="",
@@ -292,10 +276,10 @@ class MassageEditForm(ModelForm):
             "added",
             "changed",
             "service",
-            "external_id",
             "status",
             "end",
             "customer",
+            "external_id",
         ]
 
 

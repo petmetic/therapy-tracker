@@ -37,7 +37,6 @@ class MassageFactory(factory.django.DjangoModelFactory):
 
     customer = factory.SubFactory(CustomerFactory)
     therapist = factory.SubFactory(UserFactory)
-    date = factory.Faker("date")
     start = factory.Faker("date_time", tzinfo=tz)
     reason_for_visit = factory.Faker("sentence")
     kind = factory.Faker("sentences")

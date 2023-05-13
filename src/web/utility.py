@@ -82,7 +82,6 @@ def massage_import(data: dict):
     massages = data["data"]["appointments"]
     tz = pytz.timezone("Europe/Ljubljana")
     for raw_appointment in massages.values():
-        massage_date = raw_appointment["date"]
         individual_appointments = raw_appointment["appointments"]
 
         for appointment in individual_appointments:
@@ -108,8 +107,7 @@ def massage_import(data: dict):
                     external_id=service,
                 )
 
-                massage = Massage.objects.get_or_create(
-                    date=massage_date,
+                massage, created = Massage.objects.get_or_create(
                     customer=customer,
                     status=status,
                     service=service_massage,

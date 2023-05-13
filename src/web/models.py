@@ -12,7 +12,6 @@ class Massage(models.Model):
         User,
         on_delete=models.CASCADE,
     )
-    date = models.DateField(blank=True, null=True)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     reason_for_visit = models.TextField(default="")
@@ -22,15 +21,15 @@ class Massage(models.Model):
     recommendations = models.TextField(default="", blank=True)
     personal_notes = models.TextField(default="", blank=True)
     duration = models.IntegerField(default=0, null=True)
-    amount = models.IntegerField(default=0)
-    discount = models.IntegerField(default=0, blank=True)
+    amount = models.IntegerField(default=0, null=True)
+    discount = models.IntegerField(default=0, blank=True, null=True)
     discount_reason = models.CharField(max_length=200, default="", blank=True)
     repeat_visit = models.BooleanField(default=False)
     status = models.CharField(max_length=200, default="", blank=True)
     service = models.ForeignKey(
         "Service", on_delete=models.CASCADE, default="", null=True
     )
-    external_id = models.IntegerField(default=0, blank=True)
+    external_id = models.IntegerField(default=0, blank=True, null=True)
 
     added = models.DateTimeField(auto_now_add=True)
     changed = models.DateTimeField(auto_now=True)
@@ -56,7 +55,7 @@ class Customer(models.Model):
 
 
 class Service(models.Model):
-    external_id = models.CharField(blank=True, null=True, default="", max_length=50)
+    external_id = models.IntegerField(blank=True, null=True, default=0)
     service_group = models.CharField(max_length=200, null=True, default="")
     name = models.CharField(max_length=200, null=True, default="")
     price = models.IntegerField(default=0, null=True)
