@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.core.exceptions import PermissionDenied
 
 from .models import Customer, Massage
 
@@ -85,7 +86,10 @@ def massage_add(request, customer_pk: int):
 @login_required
 def massage_edit(request, pk: int):
     massage = get_object_or_404(Massage, pk=pk)
+    if not request.user == massage.therapist:
+        raise PermissionDenied
     customer = massage.customer
+
     if request.method == "POST":
         form = MassageEditForm(
             request.POST,
@@ -96,6 +100,7 @@ def massage_edit(request, pk: int):
                 "customer": customer,
             },
         )
+
         if form.is_valid():
             massage = form.save()
             return redirect(reverse("massage_detail", kwargs={"pk": massage.pk}))

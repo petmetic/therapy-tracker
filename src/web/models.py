@@ -21,7 +21,7 @@ class Massage(models.Model):
     next_visit = models.TextField(default="", blank=True)
     recommendations = models.TextField(default="", blank=True)
     personal_notes = models.TextField(default="", blank=True)
-    duration = models.CharField(max_length=200, default="")
+    duration = models.IntegerField(default=0, null=True)
     amount = models.IntegerField(default=0)
     discount = models.IntegerField(default=0, blank=True)
     discount_reason = models.CharField(max_length=200, default="", blank=True)
@@ -30,7 +30,7 @@ class Massage(models.Model):
     service = models.ForeignKey(
         "Service", on_delete=models.CASCADE, default="", null=True
     )
-    external_id = models.CharField(max_length=200, default="", blank=True)
+    external_id = models.IntegerField(default=0, blank=True)
 
     added = models.DateTimeField(auto_now_add=True)
     changed = models.DateTimeField(auto_now=True)

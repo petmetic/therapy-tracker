@@ -1,6 +1,9 @@
 import factory
 
 from . import models
+import pytz
+
+tz = pytz.timezone("Europe/Ljubljana")
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -17,7 +20,7 @@ class UserProfileFactory(factory.django.DjangoModelFactory):
         model = models.UserProfile
 
     user = factory.SubFactory(UserFactory)
-    external_id = ""
+    external_id = factory.Faker("pyint")
 
 
 class CustomerFactory(factory.django.DjangoModelFactory):
@@ -32,9 +35,19 @@ class MassageFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Massage
 
+    customer = factory.SubFactory(CustomerFactory)
+    therapist = factory.SubFactory(UserFactory)
     date = factory.Faker("date")
+    start = factory.Faker("date_time", tzinfo=tz)
     reason_for_visit = factory.Faker("sentence")
+    kind = factory.Faker("sentences")
     notes = factory.Faker("sentences")
     next_visit = factory.Faker("sentences")
     recommendations = factory.Faker("sentences")
     personal_notes = factory.Faker("sentences")
+    duration = factory.Faker("pyint")
+    amount = factory.Faker("pyint")
+    discount = factory.Faker("pyint")
+    discount_reason = factory.Faker("sentences")
+    repeat_visit = factory.Faker("pybool")
+    external_id = factory.Faker("pyint")

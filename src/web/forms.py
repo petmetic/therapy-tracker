@@ -84,38 +84,38 @@ class MassageForm(ModelForm):
         widget=forms.Textarea(attrs={"class": "form-control", "type": "text"}),
     )
 
-    duration = forms.CharField(
+    duration = forms.IntegerField(
         label="Duration of massage",
         label_suffix="",
-        widget=forms.TextInput(
+        widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
-                "type": "text",
+                "type": "number",
                 "placeholder": "please write how long did the massage take in minutes",
             }
         ),
     )
 
-    amount = forms.CharField(
+    amount = forms.IntegerField(
         label="Amount paid",
         label_suffix="",
-        widget=forms.TextInput(
+        widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
-                "type": "text",
+                "type": "number",
                 "placeholder": "please write the actual value of massage in euro",
             }
         ),
     )
 
-    discount = forms.CharField(
+    discount = forms.IntegerField(
         label="Discount",
         label_suffix="",
         required=False,
-        widget=forms.TextInput(
+        widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
-                "type": "text",
+                "type": "number",
                 "placeholder": "please write the discount in %",
             }
         ),
@@ -234,38 +234,38 @@ class MassageEditForm(ModelForm):
         widget=forms.Textarea(attrs={"class": "form-control", "type": "text"}),
     )
 
-    duration = forms.CharField(
+    duration = forms.IntegerField(
         label="Duration of massage",
         label_suffix="",
-        widget=forms.TextInput(
+        widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
-                "type": "text",
+                "type": "number",
                 "placeholder": "please write how long did the massage take in minutes",
             }
         ),
     )
 
-    amount = forms.CharField(
+    amount = forms.IntegerField(
         label="Amount paid",
         label_suffix="",
-        widget=forms.TextInput(
+        widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
-                "type": "text",
+                "type": "number",
                 "placeholder": "please write the actual value of massage in euro",
             }
         ),
     )
 
-    discount = forms.CharField(
+    discount = forms.IntegerField(
         label="Discount",
         label_suffix="",
         required=False,
-        widget=forms.TextInput(
+        widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
-                "type": "text",
+                "type": "number",
                 "placeholder": "please write the discount in %",
             }
         ),
