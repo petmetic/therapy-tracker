@@ -34,6 +34,11 @@
     margin-bottom: 25px;
 }
 
+.uppercase {
+    text-transform: uppercase;
+
+}
+
 
 .footer-space {
     margin-top: 25px;

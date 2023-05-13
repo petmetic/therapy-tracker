@@ -18,21 +18,22 @@
          class="logo"/>
     {% if request.user.is_authenticated %}
         <ul class="nav">
-            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
-               href="{% url 'customer_add' %}">New Customer</a>
+{#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"#}
+{#               href="{% url 'customer_add' %}">New Customer</a>#}
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
                href="{% url 'customer_list' %}">Customer List</a>
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Today's
                 Appointments</a>
-            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Search</a>
+{#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Search</a>#}
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
-               href="{% url 'logout' %}">Logout</a>
+               href="{% url 'logout' %}">Logout: {{ request.user.first_name }}</a>
         </ul>
     {% endif %}
 </header>
 
 <div class="container">{% block content %}
-{% endblock %}</div>
+{% endblock %}
+</div>
 
 <footer class="nav-background d-flex footer-space">
     <p class="footer-text">Podatki za footer</p>
