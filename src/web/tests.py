@@ -308,12 +308,15 @@ class MassageTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="anti inflammatory massage of knee")
 
+        # therapist2 tries to edit massage_detail.html and cannot
         self.client.logout()
         self.client.force_login(therapist2)
         response = self.client.get(reverse("massage_detail", kwargs={"pk": massage.pk}))
         self.assertNotContains(response, text="Edit massage")
 
-        # TODO: error message: no rights to edit massage
+        # therapist2 tries to edit massage_edit.html and fails
+        response = self.client.get(reverse("massage_edit", kwargs={"pk": massage.pk}))
+        self.assertEqual(response.status_code, 403)
 
 
 class ImportDataTest(TestCase):
