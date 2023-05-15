@@ -30,7 +30,7 @@ class GeneralTest(TestCase):
         response = self.client.get("/")
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, text="Today's appointments")
+        self.assertContains(response, text="Appointments for")
 
     def test_check_listing_views(self):
         pass
