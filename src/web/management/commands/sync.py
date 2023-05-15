@@ -32,9 +32,8 @@ class Command(BaseCommand):
 
             match = re.search(regex, resp.text)
             if not match:
-                print(f"No nonce found")
+                print("No nonce found")
                 return
-
             nonce = match.group(1)
             entities_json = s.get(settings.WP_URL_ENTITIES.format(nonce)).text
             data_entities = json.loads(entities_json)
