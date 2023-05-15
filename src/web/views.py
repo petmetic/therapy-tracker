@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import render, get_object_or_404, redirect
@@ -12,7 +14,19 @@ from .forms import MassageForm, CustomerForm, MassageEditForm
 @login_required
 def index(request):
     therapist = request.user
-    return render(request, "web/index.html", {"therapist": therapist})
+    today = datetime.datetime.now()
+    massages = Massage.objects.filter(
+        therapist=therapist,
+        start__year=today.year,
+        start__month=today.month,
+        start__day=today.day,
+    )
+
+    return render(
+        request,
+        "web/index.html",
+        {"therapist": therapist, "massages": massages, "today": today},
+    )
 
 
 @login_required
@@ -72,8 +86,8 @@ def massage_add(request, customer_pk: int):
         if form.is_valid():
             massage = form.save()
             return redirect(reverse("massage_detail", kwargs={"pk": massage.pk}))
-        else:
-            print(form.errors)
+        # else:
+        #     print(form.errors)
     else:
         form = MassageForm(initial={"customer": customer, "therapist": request.user})
     return render(
@@ -104,8 +118,8 @@ def massage_edit(request, pk: int):
         if form.is_valid():
             massage = form.save()
             return redirect(reverse("massage_detail", kwargs={"pk": massage.pk}))
-        else:
-            print(form.errors)
+        # else:
+        #     print(form.errors)
     else:
         form = MassageEditForm(
             instance=massage, initial={"customer": customer, "therapist": request.user}
