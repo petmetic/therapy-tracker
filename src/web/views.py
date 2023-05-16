@@ -8,7 +8,7 @@ from django.core.exceptions import PermissionDenied
 
 from .models import Customer, Massage
 
-from .forms import MassageForm, CustomerForm, MassageEditForm
+from .forms import MassageForm, CustomerForm, MassageEditForm, CustomerEditForm
 
 
 @login_required
@@ -64,6 +64,34 @@ def customer_add(request):
 def customer(request, customer_pk: int):
     customer = get_object_or_404(Customer, pk=customer_pk)
     return render(request, "web/customer.html", {"customer": customer})
+
+
+@login_required
+def customer_edit(request, customer_pk: int):
+    customer = get_object_or_404(Customer, pk=customer_pk)
+
+    if request.method == "POST":
+        form = CustomerEditForm(
+            request.POST,
+            instance=customer,
+            initial={
+                "customer": customer,
+            },
+        )
+        if form.is_valid():
+            customer = form.save()
+            return redirect(
+                reverse("customer_detail", kwargs={"customer_pk": customer.pk})
+            )
+        else:
+            print(form.errors)
+    else:
+        form = CustomerEditForm(instance=customer, initial={"customer": customer})
+    return render(
+        request,
+        "web/customer_edit.html",
+        {"form": form, "customer": customer},
+    )
 
 
 @login_required

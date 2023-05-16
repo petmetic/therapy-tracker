@@ -378,3 +378,100 @@ class CustomerForm(ModelForm):
                 "Customer already exists in database. Please check for correct input in fields."
             )
         return cleaned_data
+
+
+class CustomerEditForm(ModelForm):
+    name = forms.CharField(
+        label="Name",
+        label_suffix="",
+        widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
+    )
+    surname = forms.CharField(
+        label="Surname",
+        label_suffix="",
+        widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
+    )
+    email = forms.EmailField(
+        label="Email",
+        label_suffix="",
+        widget=forms.EmailInput(attrs={"class": "form-control", "type": "email"}),
+    )
+    phone = forms.CharField(
+        label="Phone",
+        label_suffix="",
+        widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
+    )
+    occupation = forms.CharField(
+        label="Occupation",
+        label_suffix="",
+        widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
+    )
+    previous_massage = forms.BooleanField(
+        label="Previous massage",
+        label_suffix="",
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={"class": "form-check-input", "type": "checkbox"}
+        ),
+    )
+    salon_choice = forms.CharField(
+        label="Why did they choose our salon?",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "placeholder": "reason for choosing our salon",
+            }
+        ),
+    )
+
+    frequency = forms.CharField(
+        label="How frequently do they visit a massage salon?",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "placeholder": "3x times a week",
+            }
+        ),
+    )
+
+    referral = forms.CharField(
+        label="Where did the customer find us?",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "placeholder": "friend recommendations",
+            }
+        ),
+    )
+
+    class Meta:
+        model = Customer
+        fields = [
+            "name",
+            "surname",
+            "email",
+            "phone",
+            "occupation",
+            "previous_massage",
+            "salon_choice",
+            "frequency",
+            "referral",
+        ]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data["name"]
+        surname = cleaned_data["surname"]
+        email = cleaned_data["email"]
+        phone = cleaned_data["phone"]
+        customer = Customer.objects.filter(
+            name=name, surname=surname, email=email, phone=phone
+        ).first()
+        if customer:
+            raise ValidationError(
+                "Customer already exists in database. Please check for correct input in fields."
+            )
+        return cleaned_data
