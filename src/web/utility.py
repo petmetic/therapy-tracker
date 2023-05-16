@@ -121,7 +121,7 @@ def massage_import(data: dict):
 
                 if not created:
                     if massage.status != status:
-                        # python logging goes here
+                        # TODO: python logging goes here
                         massage.status = status
                         massage.save()
                         ...
