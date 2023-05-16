@@ -108,13 +108,22 @@ def massage_import(data: dict):
                 )
 
                 massage, created = Massage.objects.get_or_create(
-                    customer=customer,
-                    status=status,
-                    service=service_massage,
                     external_id=external_id_massage,
-                    therapist=therapist,
-                    start=massage_start,
-                    end=massage_end,
+                    default={
+                        "customer": customer,
+                        "status": status,
+                        "service": service_massage,
+                        "therapist": therapist,
+                        "start": massage_start,
+                        "end": massage_end,
+                    },
                 )
+
+                if not created:
+                    if massage.status != status:
+                        # python logging goes here
+                        massage.status = status
+                        massage.save()
+                        ...
 
     return massage
