@@ -51,7 +51,7 @@ class Command(BaseCommand):
         self.stdout.write(str(User.objects.all().count()))
         self.stdout.write(self.style.SUCCESS("Successfully synced therapists"))
 
-        # import appointments
+        # import customers, appointments
         customer_import(data_appointments)
         massage_import(data_appointments)
 
