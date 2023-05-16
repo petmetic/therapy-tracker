@@ -384,26 +384,31 @@ class CustomerEditForm(ModelForm):
     name = forms.CharField(
         label="Name",
         label_suffix="",
+        required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     surname = forms.CharField(
         label="Surname",
         label_suffix="",
+        required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     email = forms.EmailField(
         label="Email",
         label_suffix="",
+        required=False,
         widget=forms.EmailInput(attrs={"class": "form-control", "type": "email"}),
     )
     phone = forms.CharField(
         label="Phone",
         label_suffix="",
+        required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     occupation = forms.CharField(
         label="Occupation",
         label_suffix="",
+        required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     previous_massage = forms.BooleanField(
@@ -416,6 +421,7 @@ class CustomerEditForm(ModelForm):
     )
     salon_choice = forms.CharField(
         label="Why did they choose our salon?",
+        required=False,
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
@@ -427,6 +433,7 @@ class CustomerEditForm(ModelForm):
 
     frequency = forms.CharField(
         label="How frequently do they visit a massage salon?",
+        required=False,
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
@@ -438,6 +445,7 @@ class CustomerEditForm(ModelForm):
 
     referral = forms.CharField(
         label="Where did the customer find us?",
+        required=False,
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
