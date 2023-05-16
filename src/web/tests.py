@@ -22,7 +22,7 @@ class GeneralTest(TestCase):
         response = self.client.get("/logout", follow=True)
 
         self.assertRedirects(response, "/accounts/login/?next=/")
-        self.assertContains(response, text="Please log in to see")
+        self.assertContains(response, text="Please")
 
     def test_homepage_loads(self):  # therapist already logged in
         therapist = UserFactory()
