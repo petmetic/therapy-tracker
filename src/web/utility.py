@@ -109,7 +109,7 @@ def massage_import(data: dict):
 
                 massage, created = Massage.objects.get_or_create(
                     external_id=external_id_massage,
-                    default={
+                    defaults={
                         "customer": customer,
                         "status": status,
                         "service": service_massage,
