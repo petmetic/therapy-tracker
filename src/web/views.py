@@ -80,9 +80,7 @@ def customer_edit(request, customer_pk: int):
         )
         if form.is_valid():
             customer = form.save()
-            return redirect(
-                reverse("customer_detail", kwargs={"customer_pk": customer.pk})
-            )
+            return redirect(reverse("customer", kwargs={"customer_pk": customer.pk}))
         else:
             print(form.errors)
     else:

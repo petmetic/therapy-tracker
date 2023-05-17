@@ -468,18 +468,3 @@ class CustomerEditForm(ModelForm):
             "frequency",
             "referral",
         ]
-
-    def clean(self):
-        cleaned_data = super().clean()
-        name = cleaned_data["name"]
-        surname = cleaned_data["surname"]
-        email = cleaned_data["email"]
-        phone = cleaned_data["phone"]
-        customer = Customer.objects.filter(
-            name=name, surname=surname, email=email, phone=phone
-        ).first()
-        if customer:
-            raise ValidationError(
-                "Customer already exists in database. Please check for correct input in fields."
-            )
-        return cleaned_data
