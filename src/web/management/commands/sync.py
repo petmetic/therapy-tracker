@@ -10,6 +10,10 @@ from ...utility import (
     customer_import,
     massage_import,
 )
+import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -45,8 +49,12 @@ class Command(BaseCommand):
         therapist_import(data_entities)
         services_import(data_entities)
 
+        sync_time = datetime.datetime.now()
         self.stdout.write(str(Service.objects.all().count()))
         self.stdout.write(self.style.SUCCESS("Successfully synced services"))
+        logger.info(
+            f"Successfully synced services {Service.objects.all().count()} at {sync_time}"
+        )
 
         self.stdout.write(str(User.objects.all().count()))
         self.stdout.write(self.style.SUCCESS("Successfully synced therapists"))
