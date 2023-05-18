@@ -145,7 +145,6 @@ class CustomerTest(TestCase):
         response = self.client.get(
             reverse("customer_edit", kwargs={"customer_pk": customer.pk})
         )
-        # breakpoint()
         self.assertContains(response, text="from friend")
         self.assertContains(response, text="florist")
 
