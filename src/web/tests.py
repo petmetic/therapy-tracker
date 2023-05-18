@@ -124,6 +124,47 @@ class CustomerTest(TestCase):
         )
         self.assertContains(response, text="Bozo")
 
+    def test_customer_edit(self):
+        therapist = UserFactory()
+        self.client.force_login(therapist)
+        customer = CustomerFactory(occupation="florist", referral="from friend")
+
+        data = {
+            "name": [customer.name],
+            "surname": [customer.surname],
+            "email": [customer.email],
+            "phone": [customer.phone],
+            "occupation": [customer.occupation],
+            "salon_choice": [customer.salon_choice],
+            "frequency": [customer.frequency],
+            "referral": [customer.referral],
+        }
+
+        # create customer
+
+        response = self.client.get(
+            reverse("customer_edit", kwargs={"customer_pk": customer.pk})
+        )
+        self.assertContains(response, text="from friend")
+        self.assertContains(response, text="florist")
+
+        # edit customer
+        data["occupation"] = ["programmer"]
+        response = self.client.post(
+            reverse("customer_edit", kwargs={"customer_pk": customer.pk}), data=data
+        )
+
+        # assert that the occupation changed to programmer
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, reverse("customer", kwargs={"customer_pk": customer.pk})
+        )
+        response = self.client.get(response.url)
+        self.assertContains(response, text="programmer")
+        # assert from db that the occupation is programmer
+        customer.refresh_from_db()
+        self.assertEqual(customer.occupation, "programmer")
+
 
 class MassageTest(TestCase):
     def test_submit_add_massage(self):  # therapist already logged in

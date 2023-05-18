@@ -27,8 +27,16 @@ class CustomerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Customer
 
-    name = factory.Faker("name")
+    name = factory.Faker("first_name")
+    surname = factory.Faker("last_name")
     email = factory.Faker("email")
+    phone = factory.Faker("phone_number")
+    occupation = factory.Faker("job")
+    previous_massage = factory.Faker("pybool")
+    salon_choice = factory.Faker("sentence")
+    frequency = factory.Faker("sentence")
+    referral = factory.Faker("sentence")
+    external_id = factory.Faker("pyint")
 
 
 class MassageFactory(factory.django.DjangoModelFactory):
