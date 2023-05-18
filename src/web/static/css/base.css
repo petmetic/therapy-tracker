@@ -1,5 +1,4 @@
 .logo {
-    color: transparent;
     padding: 10px;
     height: 80px;
 }
@@ -36,6 +35,11 @@
 
 .uppercase {
     text-transform: uppercase;
+
+}
+
+._text {
+    margin-top: 25px;
 
 }
 
