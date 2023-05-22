@@ -39,17 +39,17 @@ class Command(BaseCommand):
                 print("No nonce found")
                 return
             nonce = match.group(1)
-            entities_json = s.get(settings.WP_URL_ENTITIES % (nonce)).text
+            entities_json = s.get(settings.WP_URL_ENTITIES.format(nonce=nonce)).text
             data_entities = json.loads(entities_json)
 
             date_sync_before = (datetime.today() - timedelta(days=1)).strftime(
                 "%Y-%m-%d"
             )
             date_sync_week = (datetime.today() + timedelta(days=7)).strftime("%Y-%m-%d")
-            url = settings.WP_URL_APPOINTMENTS % (
-                nonce,
-                date_sync_before,
-                date_sync_week,
+            url = settings.WP_URL_APPOINTMENTS.format(
+                nonce=nonce,
+                date_sync_before=date_sync_before,
+                date_sync_week=date_sync_week,
             )
             appointments_json = s.get(url).text
             data_appointments = json.loads(appointments_json)
