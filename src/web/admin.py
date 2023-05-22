@@ -22,6 +22,7 @@ class MassageAdmin(admin.ModelAdmin):
         "discount",
         "status",
         "service",
+        "start",
     ]
 
 
