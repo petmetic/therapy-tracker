@@ -46,8 +46,6 @@ class Command(BaseCommand):
                 "%Y-%m-%d"
             )
             date_sync_week = (datetime.today() + timedelta(days=7)).strftime("%Y-%m-%d")
-            print(date_sync_before)
-            print(date_sync_week)
             url = settings.WP_URL_APPOINTMENTS % (
                 nonce,
                 date_sync_before,
@@ -56,7 +54,7 @@ class Command(BaseCommand):
             appointments_json = s.get(url).text
             data_appointments = json.loads(appointments_json)
 
-        # import services, therapists
+        # import services, therapist
         therapist_import(data_entities)
         services_import(data_entities)
 
