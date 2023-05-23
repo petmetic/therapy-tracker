@@ -20,9 +20,9 @@
                                 <p><span class="fw-bold">{{ massage.customer }}</span> at {{ massage.start|time:"H:i" }}
                                 </p>
                                 <div>
-                                    <a class="btn btn-primary" href="{% url 'massage_detail' pk=massage.pk %}">View
+                                    <a class="btn btn-primary" href="{% url 'customer_detail' pk=massage.customer.pk %}">View details
                                     </a>
-                                    <a class="btn btn-primary" href="{% url 'massage_edit' pk=massage.pk %}">Edit
+                                    <a class="btn btn-primary" href="{% url 'massage_edit' pk=massage.pk %}">Edit massage
                                     </a>
                                 </div>
                             </li>
