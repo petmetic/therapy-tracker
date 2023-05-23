@@ -97,7 +97,7 @@ def massage_import(data: dict):
             ).first()
             status = appointment["status"]
             for app in appointment["bookings"]:
-                external_id_massage = app["id"]
+                external_id_massage = app["appointmentId"]
                 external_id_customer = app["customer"]["id"]
                 customer = Customer.objects.get(
                     external_id=external_id_customer,

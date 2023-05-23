@@ -46,6 +46,7 @@ class MassageFactory(factory.django.DjangoModelFactory):
     customer = factory.SubFactory(CustomerFactory)
     therapist = factory.SubFactory(UserFactory)
     start = factory.Faker("date_time", tzinfo=tz)
+    end = factory.Faker("date_time", tzinfo=tz)
     reason_for_visit = factory.Faker("sentence")
     kind = factory.Faker("sentences")
     notes = factory.Faker("sentences")
@@ -58,3 +59,17 @@ class MassageFactory(factory.django.DjangoModelFactory):
     discount_reason = factory.Faker("sentences")
     repeat_visit = factory.Faker("pybool")
     external_id = factory.Faker("pyint")
+    status = factory.Faker("word")
+
+
+class ServiceFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.Service
+
+    external_id = factory.Faker("pyint")
+    service_group = factory.Faker("sentence")
+    name = factory.Faker("sentence")
+    price = factory.Faker("pyint")
+    duration = factory.Faker("pyint")
+    time_before = factory.Faker("pyint")
+    time_after = factory.Faker("pyint")
