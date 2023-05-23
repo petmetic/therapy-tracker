@@ -56,19 +56,13 @@ class Command(BaseCommand):
 
         # import services, therapist
         therapist_import(data_entities)
-        # services_import(data_entities)
+        services_import(data_entities)
 
         sync_time = datetime.now()
         self.stdout.write(str(Service.objects.all().count()))
 
-        old_service_num = Service.objects.all().count()
-        services_import(data_entities)
-        new_service_num = Service.objects.all().count()
-
         self.stdout.write(self.style.SUCCESS("Successfully synced services"))
-        logger.info(
-            f"Successfully synced services {new_service_num - old_service_num} at {sync_time}"
-        )
+        logger.info(f"Successfully synced services at {sync_time}")
 
         self.stdout.write(str(User.objects.all().count()))
         self.stdout.write(self.style.SUCCESS("Successfully synced therapists"))
