@@ -38,7 +38,7 @@ def services_import(data: dict):
             if time_after is None:
                 time_after = 0
 
-            service, created = Service.objects.get_or_create(
+            service, created = Service.objects.update_or_create(
                 external_id=service_list_id,
                 defaults={
                     "service_group": service_group,
@@ -66,7 +66,7 @@ def customer_import(data: dict):
                 email_customer = field["customer"]["email"]
                 phone_customer = field["customer"]["phone"]
 
-                customer, created = Customer.objects.get_or_create(
+                customer, created = Customer.objects.update_or_create(
                     external_id=external_id_customer,
                     defaults={
                         "name": name_customer,
@@ -97,24 +97,27 @@ def massage_import(data: dict):
             ).first()
             status = appointment["status"]
             for app in appointment["bookings"]:
-                external_id_massage = app["id"]
+                external_id_massage = app["appointmentId"]
                 external_id_customer = app["customer"]["id"]
-                customer, created = Customer.objects.get_or_create(
+                customer = Customer.objects.get(
                     external_id=external_id_customer,
                 )
-
-                service_massage, created = Service.objects.get_or_create(
+                service_massage = Service.objects.get(
                     external_id=service,
                 )
 
-                massage, created = Massage.objects.get_or_create(
-                    customer=customer,
-                    status=status,
-                    service=service_massage,
+                massage, created = Massage.objects.update_or_create(
                     external_id=external_id_massage,
-                    therapist=therapist,
-                    start=massage_start,
-                    end=massage_end,
+                    defaults={
+                        "customer": customer,
+                        "status": status,
+                        "service": service_massage,
+                        "therapist": therapist,
+                        "start": massage_start,
+                        "end": massage_end,
+                    },
                 )
+
+                # TODO: python logging
 
     return massage
