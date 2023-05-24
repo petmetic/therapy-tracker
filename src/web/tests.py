@@ -1,5 +1,6 @@
 import datetime
 import pytz
+from freezegun import freeze_time
 
 from django.test import TestCase
 from django.urls import reverse
@@ -38,9 +39,10 @@ class GeneralTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Appointments for")
 
+    @freeze_time("2023-04-6 13:21:34")
     def test_check_listing_massage_views(self):
-        therapist1 = UserFactory(first_name="Jane")
-        therapist2 = UserFactory()
+        therapist1 = UserProfileFactory(user__first_name="Jane").user
+        therapist2 = UserProfileFactory().user
         self.client.force_login(therapist1)
 
         customer1 = CustomerFactory(name="Brian")
@@ -49,23 +51,36 @@ class GeneralTest(TestCase):
         customer4 = CustomerFactory(name="Jeanette")
         customer5 = CustomerFactory(name="Bob")
         customer6 = CustomerFactory(name="Cooper")
+
         massage1 = MassageFactory(
-            therapist=therapist1, customer=customer1, start="2023-04-06 16:00:00"
+            therapist=therapist1,
+            customer=customer1,
+            start=datetime.datetime(2023, 4, 6, 16, 0, 0),
         )
         massage2 = MassageFactory(
-            therapist=therapist1, customer=customer2, start="2023-04-06 18:00:00"
+            therapist=therapist1,
+            customer=customer2,
+            start=datetime.datetime(2023, 4, 6, 18, 0, 0),
         )
         massage3 = MassageFactory(
-            therapist=therapist1, customer=customer3, start="2023-04-07 17:00:00"
+            therapist=therapist1,
+            customer=customer3,
+            start=datetime.datetime(2023, 4, 7, 17, 0, 0),
         )
         massage4 = MassageFactory(
-            therapist=therapist1, customer=customer4, start="2023-04-05 17:00:00"
+            therapist=therapist1,
+            customer=customer4,
+            start=datetime.datetime(2023, 4, 5, 17, 0, 0),
         )
         massage5 = MassageFactory(
-            therapist=therapist2, customer=customer5, start="2023-04-06 19:00:00"
+            therapist=therapist2,
+            customer=customer5,
+            start=datetime.datetime(2023, 4, 6, 19, 0, 0),
         )
         massage6 = MassageFactory(
-            therapist=therapist2, customer=customer6, start="2023-04-04 19:00:00"
+            therapist=therapist2,
+            customer=customer6,
+            start=datetime.datetime(2023, 4, 4, 19, 0, 0),
         )
 
         data = {
@@ -97,10 +112,14 @@ class GeneralTest(TestCase):
                                     }
                                 ],
                                 "status": [massage1.status],
-                                "serviceId": massage1.service,
-                                "providerId": massage1.therapist.external_id,
-                                "bookingStart": massage1.start,
-                                "bookingEnd": massage1.end,
+                                "serviceId": massage1.service.external_id,
+                                "providerId": massage1.therapist.userprofile.external_id,
+                                "bookingStart": massage1.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage1.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
                             },
                             {
                                 "id": 577,
@@ -125,9 +144,13 @@ class GeneralTest(TestCase):
                                 ],
                                 "status": [massage2.status],
                                 "serviceId": massage2.service.external_id,
-                                "providerId": massage2.therapist.external_id,
-                                "bookingStart": massage2.start,
-                                "bookingEnd": massage2.end,
+                                "providerId": massage2.therapist.userprofile.external_id,
+                                "bookingStart": massage2.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage2.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
                             },
                             {
                                 "id": 578,
@@ -152,9 +175,13 @@ class GeneralTest(TestCase):
                                 ],
                                 "status": [massage5.status],
                                 "serviceId": massage5.service.external_id,
-                                "providerId": massage5.therapist.external_id,
-                                "bookingStart": massage5.start,
-                                "bookingEnd": massage5.end,
+                                "providerId": massage5.therapist.userprofile.external_id,
+                                "bookingStart": massage5.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage5.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
                             },
                         ],
                     },
@@ -184,9 +211,13 @@ class GeneralTest(TestCase):
                                 ],
                                 "status": [massage3.status],
                                 "serviceId": massage3.service.external_id,
-                                "providerId": massage3.therapist.external_id,
-                                "bookingStart": massage3.start,
-                                "bookingEnd": massage3.end,
+                                "providerId": massage3.therapist.userprofile.external_id,
+                                "bookingStart": massage3.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage3.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
                             },
                         ],
                     },
@@ -216,9 +247,13 @@ class GeneralTest(TestCase):
                                 ],
                                 "status": [massage4.status],
                                 "serviceId": massage4.service.external_id,
-                                "providerId": massage4.therapist.external_id,
-                                "bookingStart": massage4.start,
-                                "bookingEnd": massage4.end,
+                                "providerId": massage4.therapist.userprofile.external_id,
+                                "bookingStart": massage4.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage4.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
                             },
                         ],
                     },
@@ -248,9 +283,13 @@ class GeneralTest(TestCase):
                                 ],
                                 "status": [massage6.status],
                                 "serviceId": massage6.service.external_id,
-                                "providerId": massage6.therapist.external_id,
-                                "bookingStart": massage6.start,
-                                "bookingEnd": massage6.end,
+                                "providerId": massage6.therapist.userprofile.external_id,
+                                "bookingStart": massage6.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage6.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
                             },
                         ],
                     },
@@ -258,12 +297,16 @@ class GeneralTest(TestCase):
             },
         }
 
+        customer_import(data)
         massage_import(data)
         response = self.client.get("/")
 
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, text="Jane")
+        # Brian and Alice should display
         self.assertContains(response, text="Brian")
         self.assertContains(response, text="Alice")
+        # David, Jeanette, Bob and Cooper should not display - wrong date/therpaist
         self.assertNotContains(response, text="David")
         self.assertNotContains(response, text="Jeanette")
         self.assertNotContains(response, text="Bob")
