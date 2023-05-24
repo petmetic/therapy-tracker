@@ -23,6 +23,19 @@ class UserProfileFactory(factory.django.DjangoModelFactory):
     external_id = factory.Faker("pyint")
 
 
+class ServiceFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.Service
+
+    external_id = factory.Faker("pyint")
+    service_group = factory.Faker("sentence")
+    name = factory.Faker("sentence")
+    price = factory.Faker("pyint")
+    duration = factory.Faker("pyint")
+    time_before = factory.Faker("pyint")
+    time_after = factory.Faker("pyint")
+
+
 class CustomerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Customer
@@ -58,3 +71,5 @@ class MassageFactory(factory.django.DjangoModelFactory):
     discount_reason = factory.Faker("sentences")
     repeat_visit = factory.Faker("pybool")
     external_id = factory.Faker("pyint")
+    status = factory.Faker("word")
+    service = factory.SubFactory(ServiceFactory)

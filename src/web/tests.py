@@ -32,8 +32,236 @@ class GeneralTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Appointments for")
 
-    def test_check_listing_views(self):
-        pass
+    def test_check_listing_massage_views(self):
+        therapist1 = UserFactory(first_name="Jane")
+        therapist2 = UserFactory()
+        self.client.force_login(therapist1)
+
+        customer1 = CustomerFactory(name="Brian")
+        customer2 = CustomerFactory(name="Alice")
+        customer3 = CustomerFactory(name="David")
+        customer4 = CustomerFactory(name="Jeanette")
+        customer5 = CustomerFactory(name="Bob")
+        customer6 = CustomerFactory(name="Cooper")
+        massage1 = MassageFactory(
+            therapist=therapist1, customer=customer1, start="2023-04-06 16:00:00"
+        )
+        massage2 = MassageFactory(
+            therapist=therapist1, customer=customer2, start="2023-04-06 18:00:00"
+        )
+        massage3 = MassageFactory(
+            therapist=therapist1, customer=customer3, start="2023-04-07 17:00:00"
+        )
+        massage4 = MassageFactory(
+            therapist=therapist1, customer=customer4, start="2023-04-05 17:00:00"
+        )
+        massage5 = MassageFactory(
+            therapist=therapist2, customer=customer5, start="2023-04-06 19:00:00"
+        )
+        massage6 = MassageFactory(
+            therapist=therapist2, customer=customer6, start="2023-04-04 19:00:00"
+        )
+
+        data = {
+            "message": "Successfully retrieved appointments",
+            "data": {
+                "appointments": {
+                    "2023-04-06": {
+                        "date": "2023-04-06",
+                        "appointments": [
+                            {
+                                "id": 576,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer1.external_id,
+                                            "firstName": [customer1.name],
+                                            "lastName": [customer1.surname],
+                                            "email": [customer1.email],
+                                            "phone": [customer1.phone],
+                                        },
+                                        "status": [massage1.status],
+                                        "price": massage1.service.price,
+                                        "appointmentId": massage1.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": [massage1.status],
+                                "serviceId": massage1.service,
+                                "providerId": massage1.therapist.external_id,
+                                "bookingStart": massage1.start,
+                                "bookingEnd": massage1.end,
+                            },
+                            {
+                                "id": 577,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer2.external_id,
+                                            "firstName": [customer2.name],
+                                            "lastName": [customer2.surname],
+                                            "email": [customer2.email],
+                                            "phone": [customer2.phone],
+                                        },
+                                        "status": [massage2.status],
+                                        "price": massage2.service.price,
+                                        "appointmentId": massage2.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": [massage2.status],
+                                "serviceId": massage2.service.external_id,
+                                "providerId": massage2.therapist.external_id,
+                                "bookingStart": massage2.start,
+                                "bookingEnd": massage2.end,
+                            },
+                            {
+                                "id": 578,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer5.external_id,
+                                            "firstName": [customer5.name],
+                                            "lastName": [customer5.surname],
+                                            "email": [customer5.email],
+                                            "phone": [customer5.phone],
+                                        },
+                                        "status": [massage5.status],
+                                        "price": massage5.service.price,
+                                        "appointmentId": massage5.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": [massage5.status],
+                                "serviceId": massage5.service.external_id,
+                                "providerId": massage5.therapist.external_id,
+                                "bookingStart": massage5.start,
+                                "bookingEnd": massage5.end,
+                            },
+                        ],
+                    },
+                    "2023-04-07": {
+                        "date": "2023-04-07",
+                        "appointments": [
+                            {
+                                "id": 579,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer3.external_id,
+                                            "firstName": [customer3.name],
+                                            "lastName": [customer3.surname],
+                                            "email": [customer3.email],
+                                            "phone": [customer3.phone],
+                                        },
+                                        "status": [massage3.status],
+                                        "price": massage3.service.price,
+                                        "appointmentId": massage3.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": [massage3.status],
+                                "serviceId": massage3.service.external_id,
+                                "providerId": massage3.therapist.external_id,
+                                "bookingStart": massage3.start,
+                                "bookingEnd": massage3.end,
+                            },
+                        ],
+                    },
+                    "2023-04-05": {
+                        "date": "2023-04-05",
+                        "appointments": [
+                            {
+                                "id": 580,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer4.external_id,
+                                            "firstName": [customer4.name],
+                                            "lastName": [customer4.surname],
+                                            "email": [customer4.email],
+                                            "phone": [customer4.phone],
+                                        },
+                                        "status": [massage4.status],
+                                        "price": massage4.service.price,
+                                        "appointmentId": massage4.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": [massage4.status],
+                                "serviceId": massage4.service.external_id,
+                                "providerId": massage4.therapist.external_id,
+                                "bookingStart": massage4.start,
+                                "bookingEnd": massage4.end,
+                            },
+                        ],
+                    },
+                    "2023-04-04": {
+                        "date": "2023-04-05",
+                        "appointments": [
+                            {
+                                "id": 581,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer6.external_id,
+                                            "firstName": [customer6.name],
+                                            "lastName": [customer6.surname],
+                                            "email": [customer6.email],
+                                            "phone": [customer6.phone],
+                                        },
+                                        "status": [massage6.status],
+                                        "price": massage6.service.price,
+                                        "appointmentId": massage6.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": [massage6.status],
+                                "serviceId": massage6.service.external_id,
+                                "providerId": massage6.therapist.external_id,
+                                "bookingStart": massage6.start,
+                                "bookingEnd": massage6.end,
+                            },
+                        ],
+                    },
+                },
+            },
+        }
+
+        massage_import(data)
+        response = self.client.get("/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, text="Brian")
+        self.assertContains(response, text="Alice")
+        self.assertNotContains(response, text="David")
+        self.assertNotContains(response, text="Jeanette")
+        self.assertNotContains(response, text="Bob")
+        self.assertNotContains(response, text="Cooper")
 
     def test_check_access_permission(self):
         pass
