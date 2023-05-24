@@ -578,10 +578,10 @@ class ImportDataTest(TestCase):
 
     def test_massage_import(self):
         therapist = UserProfileFactory()
-        massage1 = MassageFactory()
-        massage2 = MassageFactory()
-        customer1 = CustomerFactory()
-        customer2 = CustomerFactory()
+        massage1 = MassageFactory.build()  # do not save into db
+        massage2 = MassageFactory.build(external_id=270, start="2023-04-07 09:0:0")
+        customer1 = CustomerFactory.build()
+        customer2 = CustomerFactory.build()
         service1 = ServiceFactory()
         service2 = ServiceFactory()
         data = {
@@ -592,31 +592,35 @@ class ImportDataTest(TestCase):
                         "date": "2023-06-07",
                         "appointments": [
                             {
-                                "id": [massage1.external_id],
+                                "id": 576,
                                 "bookings": [
                                     {
                                         "id": 345,
                                         "customerId": 333,
                                         "customer": {
-                                            "id": [customer1.external_id],
+                                            "id": customer1.external_id,
                                             "firstName": [customer1.name],
                                             "lastName": [customer1.surname],
                                             "email": [customer1.email],
                                             "phone": [customer1.phone],
                                         },
                                         "status": [massage1.status],
-                                        "price": [service1.price],
-                                        "appointmentId": 576,
+                                        "price": service1.price,
+                                        "appointmentId": massage1.external_id,
                                         "persons": 1,
                                         "duration": 3600,
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
                                 "status": [massage1.status],
-                                "serviceId": [service1.external_id],
-                                "providerId": [therapist.external_id],
-                                "bookingStart": str(massage1.start),
-                                "bookingEnd": str(massage1.end),
+                                "serviceId": service1.external_id,
+                                "providerId": therapist.external_id,
+                                "bookingStart": massage1.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage1.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
                             },
                         ],
                     },
@@ -630,7 +634,7 @@ class ImportDataTest(TestCase):
                                         "id": 270,
                                         "customerId": 41,
                                         "customer": {
-                                            "id": [customer2.external_id],
+                                            "id": customer2.external_id,
                                             "firstName": [customer2.name],
                                             "lastName": [customer2.surname],
                                             "birthday": None,
@@ -638,18 +642,20 @@ class ImportDataTest(TestCase):
                                             "phone": [customer2.phone],
                                         },
                                         "status": [massage2.status],
-                                        "price": [service2.price],
-                                        "appointmentId": [massage1.external_id],
+                                        "price": service2.price,
+                                        "appointmentId": massage2.external_id,
                                         "persons": 1,
                                         "duration": 5400,
                                         "created": "2023-04-4 09:20:20",
                                     }
                                 ],
                                 "status": [massage2.status],
-                                "serviceId": [service2.external_id],
-                                "providerId": [therapist.external_id],
-                                "bookingStart": str(massage2.start),
-                                "bookingEnd": str(massage2.end),
+                                "serviceId": service2.external_id,
+                                "providerId": therapist.external_id,
+                                "bookingStart": massage2.start,
+                                "bookingEnd": massage2.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
                             },
                         ],
                     },
@@ -661,6 +667,7 @@ class ImportDataTest(TestCase):
 
         massage_count = Massage.objects.all().count()
 
+        customer_import(data)
         massage_import(data)
 
         self.assertEqual(Massage.objects.all().count(), massage_count + 2)

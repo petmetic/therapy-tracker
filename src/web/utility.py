@@ -102,7 +102,6 @@ def massage_import(data: dict):
                 customer = Customer.objects.get(
                     external_id=external_id_customer,
                 )
-
                 service_massage = Service.objects.get(
                     external_id=service,
                 )
