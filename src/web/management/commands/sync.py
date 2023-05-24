@@ -10,6 +10,10 @@ from ...utility import (
     customer_import,
     massage_import,
 )
+from datetime import datetime, timedelta
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -35,23 +39,35 @@ class Command(BaseCommand):
                 print("No nonce found")
                 return
             nonce = match.group(1)
-            entities_json = s.get(settings.WP_URL_ENTITIES.format(nonce)).text
+            entities_json = s.get(settings.WP_URL_ENTITIES.format(nonce=nonce)).text
             data_entities = json.loads(entities_json)
 
-            appointments_json = s.get(settings.WP_URL_APPOINTMENTS.format(nonce)).text
+            date_sync_before = (datetime.today() - timedelta(days=1)).strftime(
+                "%Y-%m-%d"
+            )
+            date_sync_week = (datetime.today() + timedelta(days=7)).strftime("%Y-%m-%d")
+            url = settings.WP_URL_APPOINTMENTS.format(
+                nonce=nonce,
+                date_sync_before=date_sync_before,
+                date_sync_week=date_sync_week,
+            )
+            appointments_json = s.get(url).text
             data_appointments = json.loads(appointments_json)
 
-        # import services, therapists
+        # import services, therapist
         therapist_import(data_entities)
         services_import(data_entities)
 
+        sync_time = datetime.now()
         self.stdout.write(str(Service.objects.all().count()))
+
         self.stdout.write(self.style.SUCCESS("Successfully synced services"))
+        logger.info(f"Successfully synced services at {sync_time}")
 
         self.stdout.write(str(User.objects.all().count()))
         self.stdout.write(self.style.SUCCESS("Successfully synced therapists"))
 
-        # import appointments
+        # import customers, appointments
         customer_import(data_appointments)
         massage_import(data_appointments)
 

@@ -4,7 +4,13 @@ import pytz
 from django.test import TestCase
 from django.urls import reverse
 
-from .factories import UserFactory, CustomerFactory, MassageFactory, UserProfileFactory
+from .factories import (
+    UserFactory,
+    CustomerFactory,
+    MassageFactory,
+    UserProfileFactory,
+    ServiceFactory,
+)
 from .models import Massage, Customer, User, Service
 from .utility import therapist_import, services_import, customer_import, massage_import
 
@@ -571,6 +577,15 @@ class ImportDataTest(TestCase):
         self.assertEqual(customer.external_id, "41")
 
     def test_massage_import(self):
+        therapist = UserProfileFactory()
+        massage1 = MassageFactory.build()  # do not save into db
+        massage2 = MassageFactory.build(
+            external_id=270, start=datetime.datetime(2023, 4, 7, 9, 0, 0)
+        )
+        customer1 = CustomerFactory.build()
+        customer2 = CustomerFactory.build()
+        service1 = ServiceFactory()
+        service2 = ServiceFactory()
         data = {
             "message": "Successfully retrieved appointments",
             "data": {
@@ -585,25 +600,29 @@ class ImportDataTest(TestCase):
                                         "id": 345,
                                         "customerId": 333,
                                         "customer": {
-                                            "id": 333,
-                                            "firstName": "Example",
-                                            "lastName": "Example",
-                                            "email": "example@gmail.com",
-                                            "phone": "+3841123123",
+                                            "id": customer1.external_id,
+                                            "firstName": [customer1.name],
+                                            "lastName": [customer1.surname],
+                                            "email": [customer1.email],
+                                            "phone": [customer1.phone],
                                         },
-                                        "status": "approved",
-                                        "price": 50,
-                                        "appointmentId": 576,
+                                        "status": [massage1.status],
+                                        "price": service1.price,
+                                        "appointmentId": massage1.external_id,
                                         "persons": 1,
                                         "duration": 3600,
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": "approved",
-                                "serviceId": 7,
-                                "providerId": 42,
-                                "bookingStart": "2023-04-06 16:00:00",
-                                "bookingEnd": "2023-04-06 17:00:00",
+                                "status": [massage1.status],
+                                "serviceId": service1.external_id,
+                                "providerId": therapist.external_id,
+                                "bookingStart": massage1.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage1.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
                             },
                         ],
                     },
@@ -617,26 +636,30 @@ class ImportDataTest(TestCase):
                                         "id": 270,
                                         "customerId": 41,
                                         "customer": {
-                                            "id": 41,
-                                            "firstName": "Maja",
-                                            "lastName": "Novak",
+                                            "id": customer2.external_id,
+                                            "firstName": [customer2.name],
+                                            "lastName": [customer2.surname],
                                             "birthday": None,
-                                            "email": None,
-                                            "phone": "+38641123123",
+                                            "email": [customer2.email],
+                                            "phone": [customer2.phone],
                                         },
-                                        "status": "approved",
-                                        "price": 70,
-                                        "appointmentId": 555,
+                                        "status": [massage2.status],
+                                        "price": service2.price,
+                                        "appointmentId": massage2.external_id,
                                         "persons": 1,
                                         "duration": 5400,
                                         "created": "2023-04-4 09:20:20",
                                     }
                                 ],
-                                "status": "approved",
-                                "serviceId": 3,
-                                "providerId": 42,
-                                "bookingStart": "2023-04-07 09:00:00",
-                                "bookingEnd": "2023-04-07 10:30:00",
+                                "status": [massage2.status],
+                                "serviceId": service2.external_id,
+                                "providerId": therapist.external_id,
+                                "bookingStart": massage2.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage2.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
                             },
                         ],
                     },
@@ -648,6 +671,7 @@ class ImportDataTest(TestCase):
 
         massage_count = Massage.objects.all().count()
 
+        customer_import(data)
         massage_import(data)
 
         self.assertEqual(Massage.objects.all().count(), massage_count + 2)
