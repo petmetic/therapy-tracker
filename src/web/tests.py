@@ -579,7 +579,9 @@ class ImportDataTest(TestCase):
     def test_massage_import(self):
         therapist = UserProfileFactory()
         massage1 = MassageFactory.build()  # do not save into db
-        massage2 = MassageFactory.build(external_id=270, start="2023-04-07 09:0:0")
+        massage2 = MassageFactory.build(
+            external_id=270, start=datetime.datetime(2023, 4, 7, 9, 0, 0)
+        )
         customer1 = CustomerFactory.build()
         customer2 = CustomerFactory.build()
         service1 = ServiceFactory()
@@ -652,7 +654,9 @@ class ImportDataTest(TestCase):
                                 "status": [massage2.status],
                                 "serviceId": service2.external_id,
                                 "providerId": therapist.external_id,
-                                "bookingStart": massage2.start,
+                                "bookingStart": massage2.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
                                 "bookingEnd": massage2.end.strftime(
                                     "%Y-%m-%d %H:%M:%S"
                                 ),
