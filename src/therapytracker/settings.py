@@ -139,11 +139,13 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": "general.log",
+        },
     },
     "root": {
-        "handlers": [
-            "console",
-        ],
+        "handlers": ["console", "file"],
         "level": "INFO",
     },
 }

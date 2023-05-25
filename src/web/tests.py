@@ -13,7 +13,13 @@ from .factories import (
     ServiceFactory,
 )
 from .models import Massage, Customer, User, Service
-from .utility import therapist_import, services_import, customer_import, massage_import
+from .utility import (
+    therapist_import,
+    services_import,
+    customer_import,
+    massage_import,
+    update_or_create_w_logging,
+)
 
 
 class GeneralTest(TestCase):
@@ -661,6 +667,7 @@ class ImportDataTest(TestCase):
             },
         }
         user_count = User.objects.all().count()
+
         therapist_import(data)
 
         self.assertEqual(User.objects.all().count(), user_count + 2)
@@ -957,3 +964,41 @@ class ImportDataTest(TestCase):
         self.assertEqual(
             massage.start.astimezone(tz).isoformat(), expected_date.isoformat()
         )
+
+
+class LogDatatest(TestCase):
+    def test_custom_logger(self):
+        # with assert.Logger ..
+        customer = CustomerFactory()
+        user = UserProfileFactory().user
+        service = ServiceFactory()
+
+        with self.assertLogs("web.utility", level="INFO") as cm:
+            massage, created = update_or_create_w_logging(
+                Massage,
+                external_id=55,
+                defaults={
+                    "customer": customer,
+                    "status": "approved",
+                    "service": service,
+                    "therapist": user,
+                },
+            )
+
+            self.assertIn("('status', 'approved')", cm.output[0])
+
+        with self.assertLogs("web.utility", level="INFO") as cm:
+            massage, created = update_or_create_w_logging(
+                Massage,
+                external_id=55,
+                defaults={
+                    "customer": customer,
+                    "status": "canceled",
+                    "service": service,
+                    "therapist": user,
+                },
+            )
+
+            self.assertIn(
+                "[('change', 'status', ('approved', 'canceled'))]", cm.output[0]
+            )
