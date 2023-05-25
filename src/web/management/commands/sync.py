@@ -42,6 +42,7 @@ class Command(BaseCommand):
             entities_json = s.get(settings.WP_URL_ENTITIES.format(nonce=nonce)).text
             data_entities = json.loads(entities_json)
 
+            # The sync with WP is meant to sync for a day before and up to 7 days in the future from sync date
             date_sync_before = (datetime.today() - timedelta(days=1)).strftime(
                 "%Y-%m-%d"
             )
@@ -66,6 +67,7 @@ class Command(BaseCommand):
 
         self.stdout.write(str(User.objects.all().count()))
         self.stdout.write(self.style.SUCCESS("Successfully synced therapists"))
+        logger.info(f"Successfully synced therapists at {sync_time}")
 
         # import customers, appointments
         customer_import(data_appointments)
@@ -73,7 +75,9 @@ class Command(BaseCommand):
 
         self.stdout.write(str(Customer.objects.all().count()))
         self.stdout.write(self.style.SUCCESS("Successfully synced customers"))
+        logger.info(f"Successfully customers services at {sync_time}")
         self.stdout.write(str(Massage.objects.all().count()))
         self.stdout.write(
             self.style.SUCCESS("Successfully synced massage appointments")
         )
+        logger.info(f"Successfully synced appointments at {sync_time}")

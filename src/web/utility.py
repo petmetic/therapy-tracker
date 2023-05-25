@@ -1,6 +1,37 @@
 from .models import User, UserProfile, Service, Massage, Customer
 from datetime import datetime
 import pytz
+import dictdiffer
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+def update_or_create_w_logging(model, external_id, defaults):
+    sync_time = datetime.now()
+    old_dict = {}
+    new_dict = {}
+    try:
+        old_model = model.objects.get(external_id=external_id)
+    except model.DoesNotExist:
+        old_model = None
+
+    if old_model:
+        for key in defaults.keys():
+            old_dict[key] = getattr(old_model, key)
+
+    new_model, created = model.objects.update_or_create(
+        external_id=external_id, defaults=defaults
+    )
+
+    for key in defaults.keys():
+        new_dict[key] = getattr(new_model, key)
+
+    log = list(dictdiffer.diff(old_dict, new_dict))
+
+    logger.info(f"Successfully synced {model} at {sync_time}, {log}")
+
+    return model, created
 
 
 def therapist_import(data: dict):
@@ -38,7 +69,8 @@ def services_import(data: dict):
             if time_after is None:
                 time_after = 0
 
-            service, created = Service.objects.update_or_create(
+            service, created = update_or_create_w_logging(
+                Service,
                 external_id=service_list_id,
                 defaults={
                     "service_group": service_group,
@@ -66,7 +98,8 @@ def customer_import(data: dict):
                 email_customer = field["customer"]["email"]
                 phone_customer = field["customer"]["phone"]
 
-                customer, created = Customer.objects.update_or_create(
+                customer, created = update_or_create_w_logging(
+                    Customer,
                     external_id=external_id_customer,
                     defaults={
                         "name": name_customer,
@@ -81,6 +114,7 @@ def customer_import(data: dict):
 def massage_import(data: dict):
     massages = data["data"]["appointments"]
     tz = pytz.timezone("Europe/Ljubljana")
+
     for raw_appointment in massages.values():
         individual_appointments = raw_appointment["appointments"]
 
@@ -106,7 +140,8 @@ def massage_import(data: dict):
                     external_id=service,
                 )
 
-                massage, created = Massage.objects.update_or_create(
+                massage, created = update_or_create_w_logging(
+                    Massage,
                     external_id=external_id_massage,
                     defaults={
                         "customer": customer,
@@ -117,7 +152,5 @@ def massage_import(data: dict):
                         "end": massage_end,
                     },
                 )
-
-                # TODO: python logging
 
     return massage
