@@ -21,6 +21,8 @@ from .utility import (
     update_or_create_w_logging,
 )
 
+tz = pytz.timezone("Europe/Ljubljana")
+
 
 class GeneralTest(TestCase):
     def test_check_auth_user_login(self):
@@ -45,7 +47,7 @@ class GeneralTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Appointments for")
 
-    @freeze_time("2023-04-6 13:21:34")
+    @freeze_time("2023-04-06 13:21:34", tz_offset=2)
     def test_check_listing_massage_views(self):
         therapist1 = UserProfileFactory(user__first_name="Jane").user
         therapist2 = UserProfileFactory().user
@@ -61,32 +63,32 @@ class GeneralTest(TestCase):
         massage1 = MassageFactory(
             therapist=therapist1,
             customer=customer1,
-            start=datetime.datetime(2023, 4, 6, 16, 0, 0),
+            start=datetime.datetime(2023, 4, 6, 16, 0, 0).astimezone(tz=tz),
         )
         massage2 = MassageFactory(
             therapist=therapist1,
             customer=customer2,
-            start=datetime.datetime(2023, 4, 6, 18, 0, 0),
+            start=datetime.datetime(2023, 4, 6, 18, 0, 0).astimezone(tz=tz),
         )
         massage3 = MassageFactory(
             therapist=therapist1,
             customer=customer3,
-            start=datetime.datetime(2023, 4, 7, 17, 0, 0),
+            start=datetime.datetime(2023, 4, 7, 17, 0, 0).astimezone(tz=tz),
         )
         massage4 = MassageFactory(
             therapist=therapist1,
             customer=customer4,
-            start=datetime.datetime(2023, 4, 5, 17, 0, 0),
+            start=datetime.datetime(2023, 4, 5, 17, 0, 0).astimezone(tz=tz),
         )
         massage5 = MassageFactory(
             therapist=therapist2,
             customer=customer5,
-            start=datetime.datetime(2023, 4, 6, 19, 0, 0),
+            start=datetime.datetime(2023, 4, 6, 19, 0, 0).astimezone(tz=tz),
         )
         massage6 = MassageFactory(
             therapist=therapist2,
             customer=customer6,
-            start=datetime.datetime(2023, 4, 4, 19, 0, 0),
+            start=datetime.datetime(2023, 4, 4, 19, 0, 0).astimezone(tz=tz),
         )
 
         data = {
@@ -312,7 +314,7 @@ class GeneralTest(TestCase):
         # Brian and Alice should display
         self.assertContains(response, text="Brian")
         self.assertContains(response, text="Alice")
-        # David, Jeanette, Bob and Cooper should not display - wrong date/therpaist
+        # David, Jeanette, Bob and Cooper should not display - wrong date/therapist
         self.assertNotContains(response, text="David")
         self.assertNotContains(response, text="Jeanette")
         self.assertNotContains(response, text="Bob")
