@@ -47,7 +47,7 @@ class GeneralTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Appointments for")
 
-    @freeze_time("2023-04-6 13:21:34")
+    @freeze_time("2023-04-06 13:21:34", tz_offset=2)
     def test_check_listing_massage_views(self):
         therapist1 = UserProfileFactory(user__first_name="Jane").user
         therapist2 = UserProfileFactory().user
