@@ -22,7 +22,6 @@ def index(request):
         start__day=today.day,
         status="approved",
     )
-    print(massages)
 
     return render(
         request,

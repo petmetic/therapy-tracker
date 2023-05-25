@@ -75,22 +75,22 @@ class GeneralTest(TestCase):
         massage3 = MassageFactory(
             therapist=therapist1,
             customer=customer3,
-            start=datetime.datetime(2023, 4, 7, 17, 0, 0),
+            start=datetime.datetime(2023, 4, 7, 17, 0, 0).astimezone(tz=tz),
         )
         massage4 = MassageFactory(
             therapist=therapist1,
             customer=customer4,
-            start=datetime.datetime(2023, 4, 5, 17, 0, 0),
+            start=datetime.datetime(2023, 4, 5, 17, 0, 0).astimezone(tz=tz),
         )
         massage5 = MassageFactory(
             therapist=therapist2,
             customer=customer5,
-            start=datetime.datetime(2023, 4, 6, 19, 0, 0),
+            start=datetime.datetime(2023, 4, 6, 19, 0, 0).astimezone(tz=tz),
         )
         massage6 = MassageFactory(
             therapist=therapist2,
             customer=customer6,
-            start=datetime.datetime(2023, 4, 4, 19, 0, 0),
+            start=datetime.datetime(2023, 4, 4, 19, 0, 0).astimezone(tz=tz),
         )
 
         data = {
@@ -113,7 +113,7 @@ class GeneralTest(TestCase):
                                             "email": [customer1.email],
                                             "phone": [customer1.phone],
                                         },
-                                        "status": [massage1.status],
+                                        "status": massage1.status,
                                         "price": massage1.service.price,
                                         "appointmentId": massage1.external_id,
                                         "persons": 1,
@@ -121,7 +121,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage1.status],
+                                "status": massage1.status,
                                 "serviceId": massage1.service.external_id,
                                 "providerId": massage1.therapist.userprofile.external_id,
                                 "bookingStart": massage1.start.strftime(
@@ -144,7 +144,7 @@ class GeneralTest(TestCase):
                                             "email": [customer2.email],
                                             "phone": [customer2.phone],
                                         },
-                                        "status": [massage2.status],
+                                        "status": massage2.status,
                                         "price": massage2.service.price,
                                         "appointmentId": massage2.external_id,
                                         "persons": 1,
@@ -152,7 +152,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage2.status],
+                                "status": massage2.status,
                                 "serviceId": massage2.service.external_id,
                                 "providerId": massage2.therapist.userprofile.external_id,
                                 "bookingStart": massage2.start.strftime(
@@ -175,7 +175,7 @@ class GeneralTest(TestCase):
                                             "email": [customer5.email],
                                             "phone": [customer5.phone],
                                         },
-                                        "status": [massage5.status],
+                                        "status": massage5.status,
                                         "price": massage5.service.price,
                                         "appointmentId": massage5.external_id,
                                         "persons": 1,
@@ -183,7 +183,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage5.status],
+                                "status": massage5.status,
                                 "serviceId": massage5.service.external_id,
                                 "providerId": massage5.therapist.userprofile.external_id,
                                 "bookingStart": massage5.start.strftime(
@@ -211,7 +211,7 @@ class GeneralTest(TestCase):
                                             "email": [customer3.email],
                                             "phone": [customer3.phone],
                                         },
-                                        "status": [massage3.status],
+                                        "status": massage3.status,
                                         "price": massage3.service.price,
                                         "appointmentId": massage3.external_id,
                                         "persons": 1,
@@ -219,7 +219,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage3.status],
+                                "status": massage3.status,
                                 "serviceId": massage3.service.external_id,
                                 "providerId": massage3.therapist.userprofile.external_id,
                                 "bookingStart": massage3.start.strftime(
@@ -247,7 +247,7 @@ class GeneralTest(TestCase):
                                             "email": [customer4.email],
                                             "phone": [customer4.phone],
                                         },
-                                        "status": [massage4.status],
+                                        "status": massage4.status,
                                         "price": massage4.service.price,
                                         "appointmentId": massage4.external_id,
                                         "persons": 1,
@@ -255,7 +255,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage4.status],
+                                "status": massage4.status,
                                 "serviceId": massage4.service.external_id,
                                 "providerId": massage4.therapist.userprofile.external_id,
                                 "bookingStart": massage4.start.strftime(
@@ -283,7 +283,7 @@ class GeneralTest(TestCase):
                                             "email": [customer6.email],
                                             "phone": [customer6.phone],
                                         },
-                                        "status": [massage6.status],
+                                        "status": massage6.status,
                                         "price": massage6.service.price,
                                         "appointmentId": massage6.external_id,
                                         "persons": 1,
@@ -291,7 +291,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage6.status],
+                                "status": massage6.status,
                                 "serviceId": massage6.service.external_id,
                                 "providerId": massage6.therapist.userprofile.external_id,
                                 "bookingStart": massage6.start.strftime(
