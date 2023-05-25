@@ -64,11 +64,13 @@ class GeneralTest(TestCase):
             therapist=therapist1,
             customer=customer1,
             start=datetime.datetime(2023, 4, 6, 16, 0, 0).astimezone(tz=tz),
+            status="approved",
         )
         massage2 = MassageFactory(
             therapist=therapist1,
             customer=customer2,
             start=datetime.datetime(2023, 4, 6, 18, 0, 0).astimezone(tz=tz),
+            status="canceled",
         )
         massage3 = MassageFactory(
             therapist=therapist1,
@@ -111,7 +113,7 @@ class GeneralTest(TestCase):
                                             "email": [customer1.email],
                                             "phone": [customer1.phone],
                                         },
-                                        "status": [massage1.status],
+                                        "status": massage1.status,
                                         "price": massage1.service.price,
                                         "appointmentId": massage1.external_id,
                                         "persons": 1,
@@ -119,7 +121,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage1.status],
+                                "status": massage1.status,
                                 "serviceId": massage1.service.external_id,
                                 "providerId": massage1.therapist.userprofile.external_id,
                                 "bookingStart": massage1.start.strftime(
@@ -142,7 +144,7 @@ class GeneralTest(TestCase):
                                             "email": [customer2.email],
                                             "phone": [customer2.phone],
                                         },
-                                        "status": [massage2.status],
+                                        "status": massage2.status,
                                         "price": massage2.service.price,
                                         "appointmentId": massage2.external_id,
                                         "persons": 1,
@@ -150,7 +152,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage2.status],
+                                "status": massage2.status,
                                 "serviceId": massage2.service.external_id,
                                 "providerId": massage2.therapist.userprofile.external_id,
                                 "bookingStart": massage2.start.strftime(
@@ -173,7 +175,7 @@ class GeneralTest(TestCase):
                                             "email": [customer5.email],
                                             "phone": [customer5.phone],
                                         },
-                                        "status": [massage5.status],
+                                        "status": massage5.status,
                                         "price": massage5.service.price,
                                         "appointmentId": massage5.external_id,
                                         "persons": 1,
@@ -181,7 +183,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage5.status],
+                                "status": massage5.status,
                                 "serviceId": massage5.service.external_id,
                                 "providerId": massage5.therapist.userprofile.external_id,
                                 "bookingStart": massage5.start.strftime(
@@ -209,7 +211,7 @@ class GeneralTest(TestCase):
                                             "email": [customer3.email],
                                             "phone": [customer3.phone],
                                         },
-                                        "status": [massage3.status],
+                                        "status": massage3.status,
                                         "price": massage3.service.price,
                                         "appointmentId": massage3.external_id,
                                         "persons": 1,
@@ -217,7 +219,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage3.status],
+                                "status": massage3.status,
                                 "serviceId": massage3.service.external_id,
                                 "providerId": massage3.therapist.userprofile.external_id,
                                 "bookingStart": massage3.start.strftime(
@@ -245,7 +247,7 @@ class GeneralTest(TestCase):
                                             "email": [customer4.email],
                                             "phone": [customer4.phone],
                                         },
-                                        "status": [massage4.status],
+                                        "status": massage4.status,
                                         "price": massage4.service.price,
                                         "appointmentId": massage4.external_id,
                                         "persons": 1,
@@ -253,7 +255,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage4.status],
+                                "status": massage4.status,
                                 "serviceId": massage4.service.external_id,
                                 "providerId": massage4.therapist.userprofile.external_id,
                                 "bookingStart": massage4.start.strftime(
@@ -281,7 +283,7 @@ class GeneralTest(TestCase):
                                             "email": [customer6.email],
                                             "phone": [customer6.phone],
                                         },
-                                        "status": [massage6.status],
+                                        "status": massage6.status,
                                         "price": massage6.service.price,
                                         "appointmentId": massage6.external_id,
                                         "persons": 1,
@@ -289,7 +291,7 @@ class GeneralTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage6.status],
+                                "status": massage6.status,
                                 "serviceId": massage6.service.external_id,
                                 "providerId": massage6.therapist.userprofile.external_id,
                                 "bookingStart": massage6.start.strftime(
@@ -311,9 +313,10 @@ class GeneralTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Jane")
-        # Brian and Alice should display
+        # Brian should display
         self.assertContains(response, text="Brian")
-        self.assertContains(response, text="Alice")
+        # Alice should not display because of status not "approved"
+        self.assertNotContains(response, text="Alice")
         # David, Jeanette, Bob and Cooper should not display - wrong date/therapist
         self.assertNotContains(response, text="David")
         self.assertNotContains(response, text="Jeanette")
