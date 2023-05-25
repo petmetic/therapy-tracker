@@ -21,6 +21,8 @@ from .utility import (
     update_or_create_w_logging,
 )
 
+tz = pytz.timezone("Europe/Ljubljana")
+
 
 class GeneralTest(TestCase):
     def test_check_auth_user_login(self):
@@ -61,12 +63,14 @@ class GeneralTest(TestCase):
         massage1 = MassageFactory(
             therapist=therapist1,
             customer=customer1,
-            start=datetime.datetime(2023, 4, 6, 16, 0, 0),
+            start=datetime.datetime(2023, 4, 6, 16, 0, 0).astimezone(tz=tz),
+            status="approved",
         )
         massage2 = MassageFactory(
             therapist=therapist1,
             customer=customer2,
-            start=datetime.datetime(2023, 4, 6, 18, 0, 0),
+            start=datetime.datetime(2023, 4, 6, 18, 0, 0).astimezone(tz=tz),
+            status="canceled",
         )
         massage3 = MassageFactory(
             therapist=therapist1,
@@ -309,10 +313,11 @@ class GeneralTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Jane")
-        # Brian and Alice should display
+        # Brian should display
         self.assertContains(response, text="Brian")
-        self.assertContains(response, text="Alice")
-        # David, Jeanette, Bob and Cooper should not display - wrong date/therpaist
+        # Alice should not display because of status not "approved"
+        self.assertNotContains(response, text="Alice")
+        # David, Jeanette, Bob and Cooper should not display - wrong date/therapist
         self.assertNotContains(response, text="David")
         self.assertNotContains(response, text="Jeanette")
         self.assertNotContains(response, text="Bob")

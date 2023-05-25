@@ -20,7 +20,9 @@ def index(request):
         start__year=today.year,
         start__month=today.month,
         start__day=today.day,
+        status="approved",
     )
+    print(massages)
 
     return render(
         request,
@@ -39,7 +41,9 @@ def customer_list(request):
 @login_required
 def customer_detail(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
-    massage_list = customer.massage_set.filter(start__lte=datetime.datetime.now())
+    massage_list = customer.massage_set.filter(
+        start__lte=datetime.datetime.now(), status="approved"
+    )
     return render(
         request,
         "web/customer_detail.html",
