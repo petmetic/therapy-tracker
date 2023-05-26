@@ -29,7 +29,6 @@ def update_or_create_w_logging(model, external_id, defaults):
         new_dict[key] = getattr(new_model, key)
 
     difference = list(dictdiffer.diff(old_dict, new_dict))
-    diff = dictdiffer.diff(old_dict, new_dict)
 
     if created:
         logger.info(f"Imported new {model_name} with {new_model.external_id}")
