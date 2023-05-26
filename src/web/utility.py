@@ -3,7 +3,6 @@ from datetime import datetime
 import pytz
 import dictdiffer
 import logging
-from icecream import ic
 
 logger = logging.getLogger(__name__)
 
