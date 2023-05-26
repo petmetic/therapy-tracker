@@ -41,7 +41,8 @@ def customer_list(request):
 def customer_detail(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     massage_list = customer.massage_set.filter(
-        start__lte=datetime.datetime.now(), status="approved"
+        status="approved",
+        start__lte=datetime.datetime.now(),
     )
     return render(
         request,
