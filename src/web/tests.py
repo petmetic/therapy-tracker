@@ -975,6 +975,7 @@ class LogDatatest(TestCase):
     def test_custom_logger(self):
         customer = CustomerFactory()
         user = UserProfileFactory().user
+        user2 = UserProfileFactory().user
         service = ServiceFactory()
 
         with self.assertLogs("web.utility", level="INFO") as cm:
@@ -999,10 +1000,8 @@ class LogDatatest(TestCase):
                     "customer": customer,
                     "status": "canceled",
                     "service": service,
-                    "therapist": user,
+                    "therapist": user2,
                 },
             )
             print(cm.output)
-            self.assertIn(
-                "[('change', 'status', ('approved', 'canceled'))]", cm.output[1]
-            )
+            self.assertIn("approved => canceled", cm.output[1])

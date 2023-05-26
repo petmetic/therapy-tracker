@@ -75,7 +75,7 @@ class Command(BaseCommand):
 
         self.stdout.write(str(Customer.objects.all().count()))
         self.stdout.write(self.style.SUCCESS("Successfully synced customers"))
-        logger.info(f"Successfully customers services at {sync_time}")
+        logger.info(f"Successfully customers at {sync_time}")
         self.stdout.write(str(Massage.objects.all().count()))
         self.stdout.write(
             self.style.SUCCESS("Successfully synced massage appointments")
