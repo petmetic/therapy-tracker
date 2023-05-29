@@ -3,7 +3,7 @@
 
 {% block content %}
     <h1> {{ customer.name }} {{ customer.surname }}'s past massages</h1>
-    <a class="btn btn-primary btn-body" href="{% url 'customer' customer_pk=customer.pk %}">View customer</a>
+    <a class="btn btn-body btn-color" href="{% url 'customer' customer_pk=customer.pk %}">View customer</a>
 
 
         {% for massage in massage_list %}
@@ -15,7 +15,7 @@
                         <div class="fw-lighter"> reason for visit:</div>
                         <div>{{ massage.reason_for_visit }}</div>
                     </div>
-                    <a class="btn btn-primary" href="{% url 'massage_detail' pk=massage.pk %}">View</a>
+                    <a class="btn btn-body btn-color" href="{% url 'massage_detail' pk=massage.pk %}">View</a>
                 </li>
             </ul>
         {% endfor %}
