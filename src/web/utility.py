@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 def update_or_create_w_logging(model, external_id, defaults):
     sync_time = datetime.now()
+    model_name = model.__name__
     old_dict = {}
     new_dict = {}
     try:
@@ -27,9 +28,23 @@ def update_or_create_w_logging(model, external_id, defaults):
     for key in defaults.keys():
         new_dict[key] = getattr(new_model, key)
 
-    log = list(dictdiffer.diff(old_dict, new_dict))
+    difference = list(dictdiffer.diff(old_dict, new_dict))
 
-    logger.info(f"Successfully synced {model} at {sync_time}, {log}")
+    if created:
+        logger.info(f"Imported new {model_name} with {new_model.external_id}")
+    elif difference:
+        logger.info(f"Changes were found when syncing {model_name} at {sync_time}:")
+        for kind, field, change in difference:
+            logger.info(
+                f"external id: {old_model.external_id}\n{kind}:\n\t{field}: {change[0]} => {change[1]}\n"
+            )
+        # logger.info(
+        #     f"These changes were made to old model with external id: {old_model.external_id}\n: {difference}\n"
+        # )
+    # else:
+    #     logger.info(f"No changes were made when syncing {model_name}.\n")
+
+    # logger.info(f"Successfully synced {model_name} at {sync_time}.")
 
     return model, created
 

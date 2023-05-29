@@ -108,10 +108,10 @@ class GeneralTest(TestCase):
                                         "customerId": 333,
                                         "customer": {
                                             "id": customer1.external_id,
-                                            "firstName": [customer1.name],
-                                            "lastName": [customer1.surname],
-                                            "email": [customer1.email],
-                                            "phone": [customer1.phone],
+                                            "firstName": customer1.name,
+                                            "lastName": customer1.surname,
+                                            "email": customer1.email,
+                                            "phone": customer1.phone,
                                         },
                                         "status": massage1.status,
                                         "price": massage1.service.price,
@@ -139,10 +139,10 @@ class GeneralTest(TestCase):
                                         "customerId": 333,
                                         "customer": {
                                             "id": customer2.external_id,
-                                            "firstName": [customer2.name],
-                                            "lastName": [customer2.surname],
-                                            "email": [customer2.email],
-                                            "phone": [customer2.phone],
+                                            "firstName": customer2.name,
+                                            "lastName": customer2.surname,
+                                            "email": customer2.email,
+                                            "phone": customer2.phone,
                                         },
                                         "status": massage2.status,
                                         "price": massage2.service.price,
@@ -170,10 +170,10 @@ class GeneralTest(TestCase):
                                         "customerId": 333,
                                         "customer": {
                                             "id": customer5.external_id,
-                                            "firstName": [customer5.name],
-                                            "lastName": [customer5.surname],
-                                            "email": [customer5.email],
-                                            "phone": [customer5.phone],
+                                            "firstName": customer5.name,
+                                            "lastName": customer5.surname,
+                                            "email": customer5.email,
+                                            "phone": customer5.phone,
                                         },
                                         "status": massage5.status,
                                         "price": massage5.service.price,
@@ -206,10 +206,10 @@ class GeneralTest(TestCase):
                                         "customerId": 333,
                                         "customer": {
                                             "id": customer3.external_id,
-                                            "firstName": [customer3.name],
-                                            "lastName": [customer3.surname],
-                                            "email": [customer3.email],
-                                            "phone": [customer3.phone],
+                                            "firstName": customer3.name,
+                                            "lastName": customer3.surname,
+                                            "email": customer3.email,
+                                            "phone": customer3.phone,
                                         },
                                         "status": massage3.status,
                                         "price": massage3.service.price,
@@ -242,10 +242,10 @@ class GeneralTest(TestCase):
                                         "customerId": 333,
                                         "customer": {
                                             "id": customer4.external_id,
-                                            "firstName": [customer4.name],
-                                            "lastName": [customer4.surname],
-                                            "email": [customer4.email],
-                                            "phone": [customer4.phone],
+                                            "firstName": customer4.name,
+                                            "lastName": customer4.surname,
+                                            "email": customer4.email,
+                                            "phone": customer4.phone,
                                         },
                                         "status": massage4.status,
                                         "price": massage4.service.price,
@@ -278,10 +278,10 @@ class GeneralTest(TestCase):
                                         "customerId": 333,
                                         "customer": {
                                             "id": customer6.external_id,
-                                            "firstName": [customer6.name],
-                                            "lastName": [customer6.surname],
-                                            "email": [customer6.email],
-                                            "phone": [customer6.phone],
+                                            "firstName": customer6.name,
+                                            "lastName": customer6.surname,
+                                            "email": customer6.email,
+                                            "phone": customer6.phone,
                                         },
                                         "status": massage6.status,
                                         "price": massage6.service.price,
@@ -332,14 +332,14 @@ class CustomerTest(TestCase):
         therapist = UserProfileFactory().user
         self.client.force_login(therapist)
         data = {
-            "name": ["Bozo"],
-            "surname": ["Novak"],
-            "email": ["bozo@example.com"],
-            "phone": ["041 123 456"],
-            "occupation": ["na"],
-            "salon_choice": ["na"],
-            "frequency": ["na"],
-            "referral": ["na"],
+            "name": "Bozo",
+            "surname": "Novak",
+            "email": "bozo@example.com",
+            "phone": "041 123 456",
+            "occupation": "na",
+            "salon_choice": "na",
+            "frequency": "na",
+            "referral": "na",
         }
 
         response = self.client.post(
@@ -347,7 +347,7 @@ class CustomerTest(TestCase):
         )
 
         customer = Customer.objects.latest("pk")
-        self.assertEqual(customer.phone, data["phone"][0])
+        self.assertEqual(customer.phone, data["phone"])
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Bozo")
 
@@ -355,14 +355,14 @@ class CustomerTest(TestCase):
         therapist = UserFactory()
         self.client.force_login(therapist)
         data = {
-            "name": ["Bozo"],
-            "surname": ["Novak"],
-            "email": ["bozo@example.com"],
-            "phone": ["041 123 456"],
-            "occupation": ["na"],
-            "salon_choice": ["na"],
-            "frequency": ["na"],
-            "referral": ["na"],
+            "name": "Bozo",
+            "surname": "Novak",
+            "email": "bozo@example.com",
+            "phone": "041 123 456",
+            "occupation": "na",
+            "salon_choice": "na",
+            "frequency": "na",
+            "referral": "na",
         }
 
         response = self.client.post(
@@ -370,19 +370,19 @@ class CustomerTest(TestCase):
         )
 
         customer = Customer.objects.latest("pk")
-        self.assertEqual(customer.phone, data["phone"][0])
+        self.assertEqual(customer.phone, data["phone"])
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Bozo")
 
         data2 = {
-            "name": ["Bozo"],
-            "surname": ["Novak"],
-            "email": ["bozo@example.com"],
-            "phone": ["041 123 456"],
-            "occupation": ["na"],
-            "salon_choice": ["na"],
-            "frequency": ["na"],
-            "referral": ["na"],
+            "name": "Bozo",
+            "surname": "Novak",
+            "email": "bozo@example.com",
+            "phone": "041 123 456",
+            "occupation": "na",
+            "salon_choice": "na",
+            "frequency": "na",
+            "referral": "na",
         }
 
         response = self.client.post(path=reverse("customer_add"), data=data2)
@@ -393,14 +393,14 @@ class CustomerTest(TestCase):
         therapist = UserProfileFactory(external_id="42").user
         self.client.force_login(therapist)
         data = {
-            "name": ["Bozo"],
-            "surname": ["Novak"],
-            "email": ["bozo@example.com"],
-            "phone": ["041 123 456"],
-            "occupation": ["na"],
-            "salon_choice": ["na"],
-            "frequency": ["na"],
-            "referral": ["na"],
+            "name": "Bozo",
+            "surname": "Novak",
+            "email": "bozo@example.com",
+            "phone": "041 123 456",
+            "occupation": "na",
+            "salon_choice": "na",
+            "frequency": "na",
+            "referral": "na",
         }
 
         response = self.client.post(reverse("customer_add"), data=data, follow=True)
@@ -418,14 +418,14 @@ class CustomerTest(TestCase):
         customer = CustomerFactory(occupation="florist", referral="from friend")
 
         data = {
-            "name": [customer.name],
-            "surname": [customer.surname],
-            "email": [customer.email],
-            "phone": [customer.phone],
-            "occupation": [customer.occupation],
-            "salon_choice": [customer.salon_choice],
-            "frequency": [customer.frequency],
-            "referral": [customer.referral],
+            "name": customer.name,
+            "surname": customer.surname,
+            "email": customer.email,
+            "phone": customer.phone,
+            "occupation": customer.occupation,
+            "salon_choice": customer.salon_choice,
+            "frequency": customer.frequency,
+            "referral": customer.referral,
         }
 
         # create customer
@@ -437,7 +437,7 @@ class CustomerTest(TestCase):
         self.assertContains(response, text="florist")
 
         # edit customer
-        data["occupation"] = ["programmer"]
+        data["occupation"] = "programmer"
         response = self.client.post(
             reverse("customer_edit", kwargs={"customer_pk": customer.pk}), data=data
         )
@@ -460,20 +460,20 @@ class MassageTest(TestCase):
         self.client.force_login(therapist)  # logs in the user
         customer = CustomerFactory(email="test@example.com")
         data = {
-            "customer": [customer.id],
-            "therapist": [therapist.id],
-            "start": ["2023-04-12 15:00:00"],
-            "reason_for_visit": ["pain"],
-            "kind": ["therapeutic"],
-            "notes": ["continue massage at home"],
-            "next_visit": ["in 14 days"],
-            "recommendations": [""],
-            "personal_notes": [""],
-            "duration": [30],
-            "amount": [6],
-            "discount": [30],
-            "discount_reason": ["friend"],
-            "repeat_visit": ["on"],
+            "customer": customer.id,
+            "therapist": therapist.id,
+            "start": "2023-04-12 15:00:00",
+            "reason_for_visit": "pain",
+            "kind": "therapeutic",
+            "notes": "continue massage at home",
+            "next_visit": "in 14 days",
+            "recommendations": "",
+            "personal_notes": "",
+            "duration": 30,
+            "amount": 6,
+            "discount": 30,
+            "discount_reason": "friend",
+            "repeat_visit": "on",
         }
 
         response = self.client.post(
@@ -494,20 +494,20 @@ class MassageTest(TestCase):
         customer = CustomerFactory(email="test@example.com")
 
         data = {
-            "customer": [customer.id],
-            "therapist": [therapist.id],
-            "start": ["2023-04-12 15:00:00"],
-            "reason_for_visit": ["pain"],
-            "kind": ["therapeutic"],
-            "notes": ["continue massage at home"],
-            "next_visit": ["in 14 days"],
-            "recommendations": [""],
-            "personal_notes": [""],
-            "duration": [30],
-            "amount": [7],
-            "discount": [30],
-            "discount_reason": ["friend"],
-            "repeat_visit": ["on"],
+            "customer": customer.id,
+            "therapist": therapist.id,
+            "start": "2023-04-12 15:00:00",
+            "reason_for_visit": "pain",
+            "kind": "therapeutic",
+            "notes": "continue massage at home",
+            "next_visit": "in 14 days",
+            "recommendations": "",
+            "personal_notes": "",
+            "duration": 30,
+            "amount": 7,
+            "discount": 30,
+            "discount_reason": "friend",
+            "repeat_visit": "on",
         }
 
         # add new massage
@@ -543,21 +543,21 @@ class MassageTest(TestCase):
         self.client.force_login(therapist)
         customer = CustomerFactory()
         data = {
-            "customer": [customer.id],
-            "therapist": [therapist.id],
-            "date": ["2023-04-12"],
-            "start": ["2023-04-12 15:00:00"],
-            "reason_for_visit": ["pain"],
-            "kind": ["therapeutic"],
-            "notes": ["continue massage at home"],
-            "next_visit": ["in 14 days"],
-            "recommendations": [""],
-            "personal_notes": [""],
-            "duration": [30],
-            "amount": [6],
-            "discount": [20],
-            "discount_reason": [""],
-            "repeat_visit": ["on"],
+            "customer": customer.id,
+            "therapist": therapist.id,
+            "date": "2023-04-12",
+            "start": "2023-04-12 15:00:00",
+            "reason_for_visit": "pain",
+            "kind": "therapeutic",
+            "notes": "continue massage at home",
+            "next_visit": "in 14 days",
+            "recommendations": "",
+            "personal_notes": "",
+            "duration": 30,
+            "amount": 6,
+            "discount": 20,
+            "discount_reason": "",
+            "repeat_visit": "on",
         }
 
         response = self.client.post(
@@ -568,7 +568,7 @@ class MassageTest(TestCase):
         self.assertContains(response, text="Please fill in")
 
         # added discount reason
-        data["discount_reason"] = ["friend"]
+        data["discount_reason"] = "friend"
 
         response = self.client.post(
             reverse("massage_add", kwargs={"customer_pk": customer.pk}), data=data
@@ -884,12 +884,12 @@ class ImportDataTest(TestCase):
                                         "customerId": 333,
                                         "customer": {
                                             "id": customer1.external_id,
-                                            "firstName": [customer1.name],
-                                            "lastName": [customer1.surname],
-                                            "email": [customer1.email],
-                                            "phone": [customer1.phone],
+                                            "firstName": customer1.name,
+                                            "lastName": customer1.surname,
+                                            "email": customer1.email,
+                                            "phone": customer1.phone,
                                         },
-                                        "status": [massage1.status],
+                                        "status": massage1.status,
                                         "price": service1.price,
                                         "appointmentId": massage1.external_id,
                                         "persons": 1,
@@ -897,7 +897,7 @@ class ImportDataTest(TestCase):
                                         "created": "2023-03-31 15:15:50",
                                     }
                                 ],
-                                "status": [massage1.status],
+                                "status": massage1.status,
                                 "serviceId": service1.external_id,
                                 "providerId": therapist.external_id,
                                 "bookingStart": massage1.start.strftime(
@@ -920,13 +920,13 @@ class ImportDataTest(TestCase):
                                         "customerId": 41,
                                         "customer": {
                                             "id": customer2.external_id,
-                                            "firstName": [customer2.name],
-                                            "lastName": [customer2.surname],
+                                            "firstName": customer2.name,
+                                            "lastName": customer2.surname,
                                             "birthday": None,
-                                            "email": [customer2.email],
-                                            "phone": [customer2.phone],
+                                            "email": customer2.email,
+                                            "phone": customer2.phone,
                                         },
-                                        "status": [massage2.status],
+                                        "status": massage2.status,
                                         "price": service2.price,
                                         "appointmentId": massage2.external_id,
                                         "persons": 1,
@@ -934,7 +934,7 @@ class ImportDataTest(TestCase):
                                         "created": "2023-04-4 09:20:20",
                                     }
                                 ],
-                                "status": [massage2.status],
+                                "status": massage2.status,
                                 "serviceId": service2.external_id,
                                 "providerId": therapist.external_id,
                                 "bookingStart": massage2.start.strftime(
@@ -973,9 +973,9 @@ class ImportDataTest(TestCase):
 
 class LogDatatest(TestCase):
     def test_custom_logger(self):
-        # with assert.Logger ..
         customer = CustomerFactory()
         user = UserProfileFactory().user
+        user2 = UserProfileFactory().user
         service = ServiceFactory()
 
         with self.assertLogs("web.utility", level="INFO") as cm:
@@ -990,7 +990,7 @@ class LogDatatest(TestCase):
                 },
             )
 
-            self.assertIn("('status', 'approved')", cm.output[0])
+            self.assertIn("Imported new", cm.output[0])
 
         with self.assertLogs("web.utility", level="INFO") as cm:
             massage, created = update_or_create_w_logging(
@@ -1000,10 +1000,8 @@ class LogDatatest(TestCase):
                     "customer": customer,
                     "status": "canceled",
                     "service": service,
-                    "therapist": user,
+                    "therapist": user2,
                 },
             )
-
-            self.assertIn(
-                "[('change', 'status', ('approved', 'canceled'))]", cm.output[0]
-            )
+            print(cm.output)
+            self.assertIn("approved => canceled", cm.output[1])
