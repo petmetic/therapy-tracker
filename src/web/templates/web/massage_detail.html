@@ -1,17 +1,18 @@
 {% extends "base.html" %}
-{% block title %}Massage Detail View{% endblock %}
+{% load i18n %}
+{% block title %}{% translate "Massage Detail View" %}{% endblock %}
 
 {% block content %}
     <div class="container text-left">
         <div>
-            <h1> View massage for {{ massage.customer }}</h1>
+            <h1>{% translate "View massage for:"%} <span class="fw-bold">{{ massage.customer }}</span></h1>
             <br>
             <div class="row">
-                <div class="col-sm-4">Name and Surname of Customer:</div>
+                <div class="col-sm-4">{% translate "Name and Surname of Customer:" %}</div>
                 <div class="col-sm-8">{{ massage.customer }}</div>
             </div> <!-- name and surname of customer -->
             <div class="row">
-                <div class="col-sm-4">Occupation:</div>
+                <div class="col-sm-4">{% translate "Occupation:" %}</div>
                 <div class="col-sm-8">{{ massage.customer.occupation }}</div>
             </div> <!-- occupation -->
         </div>
@@ -19,36 +20,36 @@
         <br>
         <div>
             <div class="row">
-                <div class="col-sm-4">Time of therapy:</div>
+                <div class="col-sm-4">{% translate "Time of therapy:" %}</div>
                 <div class="col-sm-8">{{ massage.start }}</div>
             </div> <!-- time of therapy -->
             <div class="row">
-                <div class="col-sm-4">Name of Therapist:</div>
+                <div class="col-sm-4">{% translate "Name of Therapist:" %}</div>
                 <div class="col-sm-8">{{ massage.therapist.first_name }}</div>
             </div> <!-- name of therapist -->
             <div class="row">
-                <div class="col-sm-4">Reason for visit:</div>
+                <div class="col-sm-4">{% translate "Reason for visit:" %}</div>
                 <div class="col-sm-8">{{ massage.reason_for_visit }}</div>
             </div> <!-- reason for visit-->
             <div class="row">
-                <div class="col-sm-4">Type of massage preformed:</div>
+                <div class="col-sm-4">{% translate "Type of massage preformed:" %}</div>
                 <div class="col-sm-8">{{ massage.kind }}</div>
             </div> <!-- type of massage -->
             <div class="row">
-                <div class="col-sm-4">Therapy performed:</div>
+                <div class="col-sm-4">{% translate "Therapy performed:" %}</div>
                 <div class="col-sm-8">{{ massage.notes }}</div>
             </div> <!-- therapy preformed -->
             <div class="row">
-                <div class="col-sm-4">Therapy to be performed on next visit:</div>
+                <div class="col-sm-4">{% translate "Therapy to be performed on next visit:" %}</div>
                 <div class="col-sm-8">{{ massage.next_visit }}</div>
             </div> <!-- therapy preformed on next visit -->
             <div class="row">
-                <div class="col-sm-4">Recommendations:</div>
+                <div class="col-sm-4">{% translate "Recommendations:" %}</div>
                 <div class="col-sm-8">{{ massage.recommendations }}</div>
             </div> <!-- recommendations -->
             {% if therapist == massage.therapist %}
                 <div class="row">
-                    <div class="col-sm-4">Personal notes:</div>
+                    <div class="col-sm-4">{% translate "Personal notes:" %}</div>
                     <div class="col-sm-8">{{ massage.personal_notes }}</div>
                 </div>
             {% endif %}
@@ -57,34 +58,34 @@
         <br>
         <div>
             <div class="row">
-                <div class="col-sm-4">Duration of massage:</div>
+                <div class="col-sm-4">{% translate "Duration of massage:" %}</div>
                 <div class="col-sm-8">{{ massage.duration }}</div>
             </div> <!-- duration-->
             <div class="row">
-                <div class="col-sm-4">Amount paid:</div>
+                <div class="col-sm-4">{% translate "Amount paid:" %}</div>
                 <div class="col-sm-8">{{ massage.amount }}</div>
             </div> <!-- amount paid-->
             <div class="row">
-                <div class="col-sm-4">Discount:</div>
+                <div class="col-sm-4">{% translate "Discount:" %}</div>
                 <div class="col-sm-8">{{ massage.discount }} %</div>
             </div> <!-- discount-->
-        <div class="row">
-                <div class="col-sm-4">Reason for discount:</div>
+            <div class="row">
+                <div class="col-sm-4">{% translate "Reason for discount:" %}</div>
                 <div class="col-sm-8">{{ massage.discount_reason }} %</div>
             </div> <!-- discount reason-->
             <div class="row">
-                <div class="col-sm-4">Repeat visit:</div>
+                <div class="col-sm-4">{% translate "Repeat visit:" %}</div>
                 <div class="col-sm-8">
                     {% if massage.repeat_visit %}
-                        Yes
+                        {% translate "Yes" %}
                     {% else %}
-                        No
+                        {% translate "No" %}
                     {% endif %}
                 </div>
             </div> <!-- repeat visit-->
         </div>
     </div>
     {% if request.user == massage.therapist %}
-    <a class="btn btn-primary btn-body" href="{% url 'massage_edit' pk=massage.pk %}">Edit massage</a>
+        <a class="btn btn-primary btn-body" href="{% url 'massage_edit' pk=massage.pk %}">{% translate "Edit" %}</a>
     {% endif %}
 {% endblock %}
