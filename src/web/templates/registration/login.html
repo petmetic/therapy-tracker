@@ -1,44 +1,46 @@
+<<<<<<< HEAD
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<main class="row justify-content-md-center">
-    <form class="form-floating col-4" method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <img class=" logo mb-4" src="/static/images/logo.png" alt="Logo Alenka Masaže">
 
-        {% if form.errors %}
-            <h1 class="h3 mb-3 fw-normal">Your username and password didn't match. Please try again.</h1>
-        {% endif %}
+    <main class="row justify-content-md-center">
+        <form class="form-floating col-4" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <img class=" logo mb-4" src="/static/images/logo.png" alt="Logo Alenka Masaže">
 
-        {% if next %}
-            {% if user.is_authenticated %}
-                <h1 class="h3 mb-3 fw-normal">Your account doesn't have access to this page. To proceed,
-                    please login with an account that has access.</h1>
-            {% else %}
-                <h1 class="h3 mb-3 fw-normal">Please login</h1>
+            {% if form.errors %}
+                <h1 class="h3 mb-3 fw-normal">{% translate "Your username and password didn't match. Please try again." %}</h1>
             {% endif %}
-        {% endif %}
-        <div>
-            <div class="form-control col-4">{{ form.username.label_tag }} {{ form.username }}</div>
-            <div class="form-control col-4">{{ form.password.label_tag }} {{ form.password }}</div>
-        </div>
-        {#        <table>#}
-        {#            <tr>#}
-        {#                <td>{{ form.username.label_tag }}</td>#}
-        {#                <td>{{ form.username }}</td>#}
-        {#            </tr>#}
-        {#            <tr>#}
-        {#                <td>{{ form.password.label_tag }}</td>#}
-        {#                <td>{{ form.password }}</td>#}
-        {#            </tr>#}
-        {#        </table>#}
 
-        <input type="submit" value="login" class="btn btn-primary btn-body">
-        <input type="hidden" name="next" value="{{ next }}">
-    </form>
+            {% if next %}
+                {% if user.is_authenticated %}
+                    <h1 class="h3 mb-3 fw-normal">{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access." %}</h1>
+                {% else %}
+                    <h1 class="h3 mb-3 fw-normal">{% translate "Please login" %}</h1>
+                {% endif %}
+            {% endif %}
+            <div>
+                <div class="form-control col-4">{{ form.username.label_tag }} {{ form.username }}</div>
+                <div class="form-control col-4">{{ form.password.label_tag }} {{ form.password }}</div>
+            </div>
+            {#        <table>#}
+            {#            <tr>#}
+            {#                <td>{{ form.username.label_tag }}</td>#}
+            {#                <td>{{ form.username }}</td>#}
+            {#            </tr>#}
+            {#            <tr>#}
+            {#                <td>{{ form.password.label_tag }}</td>#}
+            {#                <td>{{ form.password }}</td>#}
+            {#            </tr>#}
+            {#        </table>#}
 
-    {# Assumes you set up the password_reset view in your URLconf #}
-    <p><a href="{% url 'password_reset' %}">Forgotten password?</a></p>
-</main>
+            <input type="submit" value="login" class="btn btn-primary btn-body">
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+
+        {# Assumes you set up the password_reset view in your URLconf #}
+        <p><a href="{% url 'password_reset' %}">{% translate "Forgotten password?" %}</a></p>
+    </main>
 {% endblock %}

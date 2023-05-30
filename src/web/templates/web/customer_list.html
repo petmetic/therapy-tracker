@@ -1,22 +1,24 @@
 {% extends "base.html" %}
-{% block title %}Customer Listing{% endblock %}
+{% load i18n %}
+{% block title %}{% translate "Customer Listing" %}{% endblock %}
 
 {% block content %}
 
-{#<a class="btn btn-primary btn-body" href="{% url 'customer_add' %}">Add new customer</a>#}
-<ul class="list-group">
-    {% for customer in customers_list %}
+    {#<a class="btn btn-primary btn-body" href="{% url 'customer_add' %}">Add new customer</a>#}
+    <ul class="list-group">
+        {% for customer in customers_list %}
 
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        {{ customer.surname }} , {{ customer.name }}
-        <a class="btn btn-primary btn-color" href="{% url 'customer_detail' pk=customer.pk %}">View <span
-                class="badge text-bg-secondary">{{customer.massage_set.count}}</span>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ customer.surname }} , {{ customer.name }}
+                <a class="btn btn-primary" href="{% url 'customer_detail' pk=customer.pk %}">{% translate "View" %}<span
+                        {#                TODO: "view" sign more to left of count number #}
+                        class="badge text-bg-secondary">{{ customer.massage_set.count }}</span>
 
-        </a>
-    </li>
+                </a>
+            </li>
 
-    {% endfor %}
+        {% endfor %}
 
-</ul>
+    </ul>
 
 {% endblock %}

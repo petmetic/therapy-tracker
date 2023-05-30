@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,14 +23,14 @@
     {% if request.user.is_authenticated %}
         <ul class="nav">
             {#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"#}
-            {#               href="{% url 'customer_add' %}">New Customer</a>#}
+            {#               href="{% url 'customer_add' %}">{% translate "New Customer" %}</a>#}
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
-               href="{% url 'customer_list' %}">Customer List</a>
-            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="{% url 'index' %}">Today's
-                Appointments</a>
+               href="{% url 'customer_list' %}">{% translate "Customer List" %}</a>
+            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="{% url 'index' %}">
+                {% translate "Today's Appointments" %}</a>
             {#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Search</a>#}
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
-               href="{% url 'logout' %}">Logout: {{ request.user.first_name }}</a>
+               href="{% url 'logout' %}">{% translate "Logout:" %} {{ request.user.first_name }}</a>
         </ul>
     {% endif %}
 </header>

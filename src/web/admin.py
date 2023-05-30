@@ -21,6 +21,7 @@ class MassageAdmin(admin.ModelAdmin):
         "status",
         "service",
         "start",
+        "external_id",
     ]
 
 

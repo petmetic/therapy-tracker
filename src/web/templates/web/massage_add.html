@@ -1,12 +1,13 @@
 {% extends "base.html" %}
-{% block title %}Massage Add New{% endblock %}
+{% load i18n %}
+{% block title %}{% translate "Massage Add New" %}{% endblock %}
 
 {% block content %}
 
     <form action="." method="post" class="row g-3"> <!-- A DOT POSTS TO CURRENT URL -->
         {% csrf_token %}
 
-        <h1> Today's massage for {{ customer }}</h1>
+        <h1> {% translate "Today's massage for" %} <span class="fw-bold">{{ customer }}</span></h1>
         <div class='row g-3'>
             <div style="display:none">
                 {{ form.customer.errors }}
@@ -81,7 +82,7 @@
         <div>
             <div class="col-12">
                 {{ form.non_field_errors }}
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">{%  translate "Submit" %}</button>
             </div>
         </div>
     </form>
