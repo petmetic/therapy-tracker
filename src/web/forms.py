@@ -5,11 +5,12 @@ from django import forms
 from .models import Massage, Customer
 
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 
 
 class MassageForm(ModelForm):
     start = forms.DateTimeField(
-        label="Time of visit",
+        label=_("Time of visit"),
         label_suffix="",
         widget=forms.DateInput(
             format="%Y-%m-%d %H:%M:%S",
@@ -18,109 +19,119 @@ class MassageForm(ModelForm):
     )
 
     reason_for_visit = forms.CharField(
-        label_suffix="",
-        widget=forms.TextInput(
-            attrs={"class": "form-control", "type": "text", "placeholder": "back pain"}
-        ),
-    )
-    kind = forms.CharField(
-        label="Type of massage preformed",
+        label=_("Reason for visit"),
         label_suffix="",
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "pain relief",
+                "placeholder": _("back pain"),
+            }
+        ),
+    )
+    kind = forms.CharField(
+        label=_("Type of massage preformed"),
+        label_suffix="",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "placeholder": _("pain relief"),
             }
         ),
     )
     notes = forms.CharField(
-        label="Massage preformed",
+        label=_("Massage notes"),
         label_suffix="",
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "please write what you did for customer",
+                "placeholder": _("please write what you did for customer"),
             }
         ),
     )
     next_visit = forms.CharField(
-        label="Massage at next visit",
+        label=_("Massage at next visit"),
         label_suffix="",
         required=False,
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "please write what you are going to do on next visit",
+                "placeholder": _("please write what you are going to do on next visit"),
             }
         ),
     )
     recommendations = forms.CharField(
-        label="Recommendations",
+        label=_("Recommendations"),
         label_suffix="",
         required=False,
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "please write what excersizes the customer does at home to speed up recovery",
+                "placeholder": _(
+                    "please write what exercises the customer does at home to speed up recovery"
+                ),
             }
         ),
     )
     personal_notes = forms.CharField(
-        label="Personal notes",
+        label=_("Personal notes"),
         label_suffix="",
         required=False,
         widget=forms.Textarea(attrs={"class": "form-control", "type": "text"}),
     )
 
     duration = forms.IntegerField(
-        label="Duration of massage",
+        label=_("Duration of massage"),
         label_suffix="",
         widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
                 "type": "number",
-                "placeholder": "please write how long did the massage take in minutes",
+                "placeholder": _(
+                    "please write how long did the massage take in minutes"
+                ),
             }
         ),
     )
 
     amount = forms.IntegerField(
-        label="Amount paid",
+        label=_("Amount paid"),
         label_suffix="",
         widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
                 "type": "number",
-                "placeholder": "please write the actual value of massage in euro",
+                "placeholder": _("please write the actual value of massage in euro"),
             }
         ),
     )
 
     discount = forms.IntegerField(
-        label="Discount",
+        label=_("Discount"),
         label_suffix="",
         required=False,
         widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
                 "type": "number",
-                "placeholder": "please write the discount in %",
+                "placeholder": _("please write the discount in %"),
             }
         ),
     )
 
     discount_reason = forms.CharField(
-        label="Reason for discount",
+        label=_("Reason for discount"),
         label_suffix="",
         required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
 
     repeat_visit = forms.BooleanField(
+        label=_("Repeat visit"),
         label_suffix="",
         required=False,
         widget=forms.CheckboxInput(
@@ -145,14 +156,14 @@ class MassageForm(ModelForm):
         discount_reason = cleaned_data["discount_reason"]
 
         if discount and not discount_reason:
-            raise ValidationError("Please fill in Reason for discount.")
+            raise ValidationError(_("Please fill in Reason for discount."))
 
         return cleaned_data
 
 
 class MassageEditForm(ModelForm):
     start = forms.DateTimeField(
-        label="Time of visit",
+        label=_("Time of visit"),
         label_suffix="",
         widget=forms.DateTimeInput(
             format="%Y-%m-%d %H:%M:%S",
@@ -160,109 +171,119 @@ class MassageEditForm(ModelForm):
         ),
     )
     reason_for_visit = forms.CharField(
-        label_suffix="",
-        widget=forms.TextInput(
-            attrs={"class": "form-control", "type": "text", "placeholder": "back pain"}
-        ),
-    )
-    kind = forms.CharField(
-        label="Type of massage preformed",
+        label=_("Reason for visit"),
         label_suffix="",
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "pain relief",
+                "placeholder": _("back pain"),
+            }
+        ),
+    )
+    kind = forms.CharField(
+        label=_("Type of massage preformed"),
+        label_suffix="",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "placeholder": _("pain relief"),
             }
         ),
     )
     notes = forms.CharField(
-        label="Massage preformed",
+        label=_("Massage preformed"),
         label_suffix="",
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "please write what you did for customer",
+                "placeholder": _("please write what you did for customer"),
             }
         ),
     )
     next_visit = forms.CharField(
-        label="Massage at next visit",
+        label=_("Massage at next visit"),
         label_suffix="",
         required=False,
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "please write what you are going to do on next visit",
+                "placeholder": _("please write what you are going to do on next visit"),
             }
         ),
     )
     recommendations = forms.CharField(
-        label="Recommendations",
+        label=_("Recommendations"),
         label_suffix="",
         required=False,
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "please write what excersizes the customer does at home to speed up recovery",
+                "placeholder": _(
+                    "please write what exercises the customer does at home to speed up recovery"
+                ),
             }
         ),
     )
     personal_notes = forms.CharField(
-        label="Personal notes",
+        label=_("Personal notes"),
         label_suffix="",
         required=False,
         widget=forms.Textarea(attrs={"class": "form-control", "type": "text"}),
     )
 
     duration = forms.IntegerField(
-        label="Duration of massage",
+        label=_("Duration of massage"),
         label_suffix="",
         widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
                 "type": "number",
-                "placeholder": "please write how long did the massage take in minutes",
+                "placeholder": _(
+                    "please write how long did the massage take in minutes"
+                ),
             }
         ),
     )
 
     amount = forms.IntegerField(
-        label="Amount paid",
+        label=_("Amount paid"),
         label_suffix="",
         widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
                 "type": "number",
-                "placeholder": "please write the actual value of massage in euro",
+                "placeholder": _("please write the actual value of massage in euro"),
             }
         ),
     )
 
     discount = forms.IntegerField(
-        label="Discount",
+        label=_("Discount"),
         label_suffix="",
         required=False,
         widget=forms.NumberInput(
             attrs={
                 "class": "form-control",
                 "type": "number",
-                "placeholder": "please write the discount in %",
+                "placeholder": _("please write the discount in %"),
             }
         ),
     )
 
     discount_reason = forms.CharField(
-        label="Reason for discount",
+        label=_("Reason for discount"),
         label_suffix="",
         required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
 
     repeat_visit = forms.BooleanField(
+        label=_("Repeat visit"),
         label_suffix="",
         required=False,
         widget=forms.CheckboxInput(
@@ -285,32 +306,32 @@ class MassageEditForm(ModelForm):
 
 class CustomerForm(ModelForm):
     name = forms.CharField(
-        label="Name",
+        label=_("Name"),
         label_suffix="",
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     surname = forms.CharField(
-        label="Surname",
+        label=_("Surname"),
         label_suffix="",
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     email = forms.EmailField(
-        label="Email",
+        label=_("Email"),
         label_suffix="",
         widget=forms.EmailInput(attrs={"class": "form-control", "type": "email"}),
     )
     phone = forms.CharField(
-        label="Phone",
+        label=_("Phone"),
         label_suffix="",
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     occupation = forms.CharField(
-        label="Occupation",
+        label=_("Occupation"),
         label_suffix="",
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     previous_massage = forms.BooleanField(
-        label="Previous massage",
+        label=_("Previous massage"),
         label_suffix="",
         required=False,
         widget=forms.CheckboxInput(
@@ -318,34 +339,34 @@ class CustomerForm(ModelForm):
         ),
     )
     salon_choice = forms.CharField(
-        label="Why did they choose our salon?",
+        label=_("Why did they choose our salon?"),
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "reason for choosing our salon",
+                "placeholder": _("reason for choosing our salon"),
             }
         ),
     )
 
     frequency = forms.CharField(
-        label="How frequently do they visit a massage salon?",
+        label=_("How frequently do they visit a massage salon?"),
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "3x times a week",
+                "placeholder": _("3x times a week"),
             }
         ),
     )
 
     referral = forms.CharField(
-        label="Where did the customer find us?",
+        label=_("Where did the customer find us?"),
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "friend recommendations",
+                "placeholder": _("friend recommendations"),
             }
         ),
     )
@@ -375,44 +396,46 @@ class CustomerForm(ModelForm):
         ).first()
         if customer:
             raise ValidationError(
-                "Customer already exists in database. Please check for correct input in fields."
+                _(
+                    "Customer already exists in database. Please check for correct input in fields."
+                )
             )
         return cleaned_data
 
 
 class CustomerEditForm(ModelForm):
     name = forms.CharField(
-        label="Name",
+        label=_("Name"),
         label_suffix="",
         required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     surname = forms.CharField(
-        label="Surname",
+        label=_("Surname"),
         label_suffix="",
         required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     email = forms.EmailField(
-        label="Email",
+        label=_("Email"),
         label_suffix="",
         required=False,
         widget=forms.EmailInput(attrs={"class": "form-control", "type": "email"}),
     )
     phone = forms.CharField(
-        label="Phone",
+        label=_("Phone"),
         label_suffix="",
         required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     occupation = forms.CharField(
-        label="Occupation",
+        label=_("Occupation"),
         label_suffix="",
         required=False,
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
     previous_massage = forms.BooleanField(
-        label="Previous massage",
+        label=_("Previous massage"),
         label_suffix="",
         required=False,
         widget=forms.CheckboxInput(
@@ -420,37 +443,37 @@ class CustomerEditForm(ModelForm):
         ),
     )
     salon_choice = forms.CharField(
-        label="Why did they choose our salon?",
+        label=_("Why did they choose our salon?"),
         required=False,
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "reason for choosing our salon",
+                "placeholder": _("reason for choosing our salon"),
             }
         ),
     )
 
     frequency = forms.CharField(
-        label="How frequently do they visit a massage salon?",
+        label=_("How frequently do they visit a massage salon?"),
         required=False,
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "3x times a week",
+                "placeholder": _("3x times a week"),
             }
         ),
     )
 
     referral = forms.CharField(
-        label="Where did the customer find us?",
+        label=_("Where did the customer find us?"),
         required=False,
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
                 "type": "text",
-                "placeholder": "friend recommendations",
+                "placeholder": _("friend recommendations"),
             }
         ),
     )

@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,15 +18,14 @@
         <img class=" logo mb-4" src="/static/images/logo.png" alt="Logo Alenka Masaže">
 
         {% if form.errors %}
-            <h1 class="h3 mb-3 fw-normal">Your username and password didn't match. Please try again.</h1>
+            <h1 class="h3 mb-3 fw-normal">{% translate "Your username and password didn't match. Please try again." %}</h1>
         {% endif %}
 
         {% if next %}
             {% if user.is_authenticated %}
-                <h1 class="h3 mb-3 fw-normal">Your account doesn't have access to this page. To proceed,
-                    please login with an account that has access.</h1>
+                <h1 class="h3 mb-3 fw-normal">{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access." %}</h1>
             {% else %}
-                <h1 class="h3 mb-3 fw-normal">Please login</h1>
+                <h1 class="h3 mb-3 fw-normal">{% translate "Please login" %}</h1>
             {% endif %}
         {% endif %}
         <div>
@@ -48,7 +48,7 @@
     </form>
 
     {# Assumes you set up the password_reset view in your URLconf #}
-    <p><a href="{% url 'password_reset' %}">Forgotten password?</a></p>
+    <p><a href="{% url 'password_reset' %}">{% translate "Forgotten password?" %}</a></p>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

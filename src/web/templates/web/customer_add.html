@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Add Customer{% endblock %}
+{% load i18n %}
+{% block title %}{% translate "Add Customer" %}{% endblock %}
 
 {% block content %}
     <form action="." method="post"> <!-- A DOT POSTS TO CURRENT URL -->
@@ -60,7 +61,7 @@
 
         <div class="col-12 mt-5">
             {{ form.non_field_errors }}
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">{% translate "Submit" %}</button>
         </div>
 
     </form>

@@ -1,11 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Customer Edit{% endblock %}
+{% load i18n %}
+{% block title %}{% translate "Customer Edit" %}{% endblock %}
 
 {% block content %}
     <form action="." method="post"> <!-- A DOT POSTS TO CURRENT URL -->
         {% csrf_token %}
 
-        <h1> Edit customer {{ customer.name }} {{ customer.surname }}</h1>
+        <h1>{% translate "Edit customer:" %} <span class="fw-bold">{{ customer.name }} {{ customer.surname }}</span></h1>
         <div class="row g-3">
             <div class="row g-3">
                 <div class="col-md-4">
@@ -62,7 +63,7 @@
 
         <div class="col-12 mt-5">
             {{ form.non_field_errors }}
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">{% translate "Submit" %}</button>
         </div>
 
     </form>
