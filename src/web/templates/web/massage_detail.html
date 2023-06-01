@@ -4,77 +4,78 @@
 
 {% block content %}
     <div class="container text-left">
-        <div>
-            <h1>{% translate "View massage for:"%} <span class="fw-bold">{{ massage.customer }}</span></h1>
-            <br>
+        <div class="p-4">
+            <span class="fw-lighter">{% translate "View massage for" %}:</span>
+            <h4 class="fw-light uppercase">{{ massage.customer }}</h4>
+            <hr>
+        </div>
+        <div class="px-4">
             <div class="row">
-                <div class="col-sm-4">{% translate "Name and Surname of Customer:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Name and Surname of Customer" %}:</div>
                 <div class="col-sm-8">{{ massage.customer }}</div>
             </div> <!-- name and surname of customer -->
             <div class="row">
-                <div class="col-sm-4">{% translate "Occupation:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Occupation" %}:</div>
                 <div class="col-sm-8">{{ massage.customer.occupation }}</div>
             </div> <!-- occupation -->
         </div>
-        <br>
-        <br>
-        <div>
+        <div class="px-4 ">
+            <hr>
             <div class="row">
-                <div class="col-sm-4">{% translate "Time of therapy:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Time of therapy" %}:</div>
                 <div class="col-sm-8">{{ massage.start }}</div>
             </div> <!-- time of therapy -->
             <div class="row">
-                <div class="col-sm-4">{% translate "Name of Therapist:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Name of Therapist" %}:</div>
                 <div class="col-sm-8">{{ massage.therapist.first_name }}</div>
             </div> <!-- name of therapist -->
             <div class="row">
-                <div class="col-sm-4">{% translate "Reason for visit:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Reason for visit" %}:</div>
                 <div class="col-sm-8">{{ massage.reason_for_visit }}</div>
             </div> <!-- reason for visit-->
             <div class="row">
-                <div class="col-sm-4">{% translate "Type of massage preformed:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Type of massage preformed" %}:</div>
                 <div class="col-sm-8">{{ massage.kind }}</div>
             </div> <!-- type of massage -->
             <div class="row">
-                <div class="col-sm-4">{% translate "Therapy performed:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Therapy performed" %}:</div>
                 <div class="col-sm-8">{{ massage.notes }}</div>
             </div> <!-- therapy preformed -->
             <div class="row">
-                <div class="col-sm-4">{% translate "Therapy to be performed on next visit:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Therapy to be performed on next visit" %}:</div>
                 <div class="col-sm-8">{{ massage.next_visit }}</div>
             </div> <!-- therapy preformed on next visit -->
             <div class="row">
-                <div class="col-sm-4">{% translate "Recommendations:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Recommendations" %}:</div>
                 <div class="col-sm-8">{{ massage.recommendations }}</div>
             </div> <!-- recommendations -->
             {% if therapist == massage.therapist %}
                 <div class="row">
-                    <div class="col-sm-4">{% translate "Personal notes:" %}</div>
+                    <div class="col-sm-4 fw-light">{% translate "Personal notes" %}:</div>
                     <div class="col-sm-8">{{ massage.personal_notes }}</div>
                 </div>
             {% endif %}
         </div>
-        <br>
-        <br>
-        <div>
+        <div class="p-4">
+            <hr>
             <div class="row">
-                <div class="col-sm-4">{% translate "Duration of massage:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Duration of massage" %}:</div>
                 <div class="col-sm-8">{{ massage.duration }}</div>
             </div> <!-- duration-->
             <div class="row">
-                <div class="col-sm-4">{% translate "Amount paid:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Amount paid" %}:</div>
                 <div class="col-sm-8">{{ massage.amount }}</div>
             </div> <!-- amount paid-->
             <div class="row">
-                <div class="col-sm-4">{% translate "Discount:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Discount" %}:</div>
                 <div class="col-sm-8">{{ massage.discount }} %</div>
             </div> <!-- discount-->
             <div class="row">
-                <div class="col-sm-4">{% translate "Reason for discount:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Reason for discount" %}:</div>
                 <div class="col-sm-8">{{ massage.discount_reason }} %</div>
             </div> <!-- discount reason-->
             <div class="row">
-                <div class="col-sm-4">{% translate "Repeat visit:" %}</div>
+                <div class="col-sm-4 fw-light">{% translate "Repeat visit" %}:</div>
                 <div class="col-sm-8">
                     {% if massage.repeat_visit %}
                         {% translate "Yes" %}
@@ -84,8 +85,10 @@
                 </div>
             </div> <!-- repeat visit-->
         </div>
+        <div class="px-4">
+            {% if request.user == massage.therapist %}
+                <a class="btn btn-body" href="{% url 'massage_edit' pk=massage.pk %}">{% translate "Edit" %}</a>
+            {% endif %}
+        </div>
     </div>
-    {% if request.user == massage.therapist %}
-        <a class="btn btn-primary btn-body" href="{% url 'massage_edit' pk=massage.pk %}">{% translate "Edit" %}</a>
-    {% endif %}
 {% endblock %}

@@ -1,64 +1,46 @@
+{% extends "base.html" %}
 {% load i18n %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"> <!--- CHECK IF IT IS CORRECT--->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/css/base.css" type="text/css">
-    <title>Login to Dnevnik</title>
-</head>
-<body class="container text-center">
-<main class="row justify-content-md-center">
-    <form class="form-floating col-4" method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <img class=" logo mb-4" src="/static/images/logo.png" alt="Logo Alenka Masaže">
+{% block title %}Login{% endblock %}
 
-        {% if form.errors %}
-            <h1 class="h3 mb-3 fw-normal">{% translate "Your username and password didn't match. Please try again." %}</h1>
-        {% endif %}
+{% block content %}
 
-        {% if next %}
-            {% if user.is_authenticated %}
-                <h1 class="h3 mb-3 fw-normal">{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access." %}</h1>
-            {% else %}
-                <h1 class="h3 mb-3 fw-normal">{% translate "Please login" %}</h1>
+    <main class="row justify-content-md-center p-4">
+        <form class="form-floating col-4" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <img class=" logo mb-4" src="/static/images/logo.png" alt="Logo Alenka Masaže">
+
+            {% if form.errors %}
+                <h4 class="h3 mb-3 fw-light">{% translate "Your username and password didn't match. Please try again." %}</h4>
             {% endif %}
-        {% endif %}
-        <div>
-            <div class="form-control col-4">{{ form.username.label_tag }} {{ form.username }}</div>
-            <div class="form-control col-4">{{ form.password.label_tag }} {{ form.password }}</div>
-        </div>
-        {#        <table>#}
-        {#            <tr>#}
-        {#                <td>{{ form.username.label_tag }}</td>#}
-        {#                <td>{{ form.username }}</td>#}
-        {#            </tr>#}
-        {#            <tr>#}
-        {#                <td>{{ form.password.label_tag }}</td>#}
-        {#                <td>{{ form.password }}</td>#}
-        {#            </tr>#}
-        {#        </table>#}
 
-        <input type="submit" value="login" class="btn btn-primary btn-body">
-        <input type="hidden" name="next" value="{{ next }}">
-    </form>
+            {% if next %}
+                {% if user.is_authenticated %}
+                    <h4 class="h3 mb-3 fw-light">{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access." %}</h4>
+                {% else %}
+                    <h4 class="h3 mb-3 fw-light">{% translate "Please login" %}</h4>
+                {% endif %}
+            {% endif %}
+            <div class="p-4">
+                <div class="form-control col-4">{{ form.username.label_tag }} {{ form.username }}</div>
+                <div class="form-control col-4">{{ form.password.label_tag }} {{ form.password }}</div>
+            </div>
+            {#        <table>#}
+            {#            <tr>#}
+            {#                <td>{{ form.username.label_tag }}</td>#}
+            {#                <td>{{ form.username }}</td>#}
+            {#            </tr>#}
+            {#            <tr>#}
+            {#                <td>{{ form.password.label_tag }}</td>#}
+            {#                <td>{{ form.password }}</td>#}
+            {#            </tr>#}
+            {#        </table>#}
 
-    {# Assumes you set up the password_reset view in your URLconf #}
-    <p><a href="{% url 'password_reset' %}">{% translate "Forgotten password?" %}</a></p>
-</main>
+            <input type="submit" value="login" class="btn btn-body">
+            <input type="hidden" name="next" value="{{ next }}">
+            {# Assumes you set up the password_reset view in your URLconf #}
+            <p class="fw-light p-2"><a href="{% url 'password_reset' %}">{% translate "Forgotten password?" %}</a></p>
+        </form>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
-        crossorigin="anonymous"></script>
-</body>
-</html>
+
+    </main>
+{% endblock %}

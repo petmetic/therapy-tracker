@@ -1,3 +1,9 @@
+:root {
+    font-family: 'Aleo', serif;
+    color: #16313D;
+}
+
+
 .logo {
     padding: 10px;
     height: 80px;
@@ -5,7 +11,7 @@
 
 
 .nav-background {
-    background-color: #2d2e30;
+    background-color: #88BDD8A6;
 }
 
 .nav {
@@ -15,23 +21,31 @@
 
 .btn-nav {
     color: white;
-    background-color: #444444;
-    padding: 3px;
+    background-color: #54595F;
+    padding: 6px 12px;
     margin: 6px;
 }
 
 .btn-nav:active {
-    color: coral;
+    color: #16313D;
 }
 
 .btn-nav:hover {
-    color: coral;
+    color: #16313D;
+    border-color: #16313D;
 }
 
 .btn-body {
-    margin-top: 25px;
-    margin-bottom: 25px;
+    background-color: #6EC1E4;
+    border-color: #6EC1E4;
+
 }
+
+.btn-body:hover {
+    color: #16313D;
+    border-color: #16313D;
+}
+
 
 .uppercase {
     text-transform: uppercase;

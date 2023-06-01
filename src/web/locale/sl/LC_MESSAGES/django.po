@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 16:37+0100\n"
-"PO-Revision-Date: 2023-05-30 16:38+0100\n"
+"POT-Creation-Date: 2023-06-01 13:47+0100\n"
+"PO-Revision-Date: 2023-06-01 13:54+0100\n"
 "Last-Translator: meta <petmetic@gmail.com>\n"
 "Language-Team: \n"
 "Language: sl\n"
@@ -19,176 +19,177 @@ msgstr ""
 "n%100==4 ? 2 : 3);\n"
 "X-Generator: Poedit 3.3.1\n"
 
-#: web/forms.py:13 web/forms.py:158
+#: web/forms.py:13 web/forms.py:166
 msgid "Time of visit"
 msgstr "Čas obiska"
 
-#: web/forms.py:22 web/forms.py:166
+#: web/forms.py:22 web/forms.py:174 web/templates/web/massage_detail.html:33
 msgid "Reason for visit"
 msgstr "Razlog za obisk"
 
-#: web/forms.py:25 web/forms.py:169
+#: web/forms.py:28 web/forms.py:180
 msgid "back pain"
 msgstr "bolečine v hrbtu"
 
-#: web/forms.py:29 web/forms.py:173
+#: web/forms.py:33 web/forms.py:185 web/templates/web/massage_detail.html:37
 msgid "Type of massage preformed"
 msgstr "Vrsta izvedene masaže"
 
-#: web/forms.py:35 web/forms.py:179
+#: web/forms.py:39 web/forms.py:191
 msgid "pain relief"
 msgstr "lajšanje bolečin"
 
-#: web/forms.py:40
+#: web/forms.py:44
 msgid "Massage notes"
 msgstr "Zapiski masaže"
 
-#: web/forms.py:46 web/forms.py:190
+#: web/forms.py:50 web/forms.py:202
 msgid "please write what you did for customer"
 msgstr "prosimo napišite kako je potekala masaža"
 
-#: web/forms.py:51 web/forms.py:195
+#: web/forms.py:55 web/forms.py:207
 msgid "Massage at next visit"
 msgstr "Nadaljna masaža"
 
-#: web/forms.py:58 web/forms.py:202
+#: web/forms.py:62 web/forms.py:214
 msgid "please write what you are going to do on next visit"
 msgstr "prosimo napišite kaj boste delali ob naslednjem obisku"
 
-#: web/forms.py:63 web/forms.py:207
+#: web/forms.py:67 web/forms.py:219 web/templates/web/massage_detail.html:49
 msgid "Recommendations"
 msgstr "Priporočila"
 
-#: web/forms.py:70 web/forms.py:214
+#: web/forms.py:75 web/forms.py:227
 msgid ""
 "please write what exercises the customer does at home to speed up recovery"
 msgstr "prosim napišite, kaj naj stranka izvaja doma, da pospeši okrevanje"
 
-#: web/forms.py:75 web/forms.py:219
+#: web/forms.py:81 web/forms.py:233 web/templates/web/massage_detail.html:54
 msgid "Personal notes"
 msgstr "Zasebni zapiski masaže"
 
-#: web/forms.py:82 web/forms.py:226
+#: web/forms.py:88 web/forms.py:240 web/templates/web/massage_detail.html:62
 msgid "Duration of massage"
 msgstr "Trajanje masaže"
 
-#: web/forms.py:88 web/forms.py:232
+#: web/forms.py:95 web/forms.py:247
 msgid "please write how long did the massage take in minutes"
 msgstr "napišite koliko časa je potekala masaža v minutah"
 
-#: web/forms.py:94 web/forms.py:238
+#: web/forms.py:102 web/forms.py:254 web/templates/web/massage_detail.html:66
 msgid "Amount paid"
 msgstr "Plačano"
 
-#: web/forms.py:100 web/forms.py:244
+#: web/forms.py:108 web/forms.py:260
 msgid "please write the actual value of massage in euro"
 msgstr "napišite dejansko plačilo v evrih"
 
-#: web/forms.py:106 web/forms.py:250
+#: web/forms.py:114 web/forms.py:266 web/templates/web/massage_detail.html:70
 msgid "Discount"
 msgstr "Popust"
 
-#: web/forms.py:113 web/forms.py:257
+#: web/forms.py:121 web/forms.py:273
 msgid "please write the discount in %"
 msgstr "napišite popust v %"
 
-#: web/forms.py:119 web/forms.py:263
+#: web/forms.py:127 web/forms.py:279 web/templates/web/massage_detail.html:74
 msgid "Reason for discount"
 msgstr "Razlog za popust"
 
-#: web/forms.py:126 web/forms.py:270
+#: web/forms.py:134 web/forms.py:286 web/templates/web/massage_detail.html:78
 msgid "Repeat visit"
 msgstr "Ponovni obisk"
 
-#: web/forms.py:151
+#: web/forms.py:159
 msgid "Please fill in Reason for discount."
 msgstr "Izpolnite Razlog za popust."
 
-#: web/forms.py:184
+#: web/forms.py:196
 msgid "Massage preformed"
 msgstr "Zapiski izvedene masaže"
 
-#: web/forms.py:293 web/forms.py:390
+#: web/forms.py:309 web/forms.py:408
 msgid "Name"
 msgstr "Ime"
 
-#: web/forms.py:298 web/forms.py:396
+#: web/forms.py:314 web/forms.py:414
 msgid "Surname"
 msgstr "Priimek"
 
-#: web/forms.py:303 web/forms.py:402
+#: web/forms.py:319 web/forms.py:420 web/templates/web/customer.html:17
 msgid "Email"
 msgstr "Email"
 
-#: web/forms.py:308 web/forms.py:408
+#: web/forms.py:324 web/forms.py:426
 msgid "Phone"
 msgstr "Telefon"
 
-#: web/forms.py:313 web/forms.py:414
+#: web/forms.py:329 web/forms.py:432 web/templates/web/customer.html:25
+#: web/templates/web/massage_detail.html:18
 msgid "Occupation"
 msgstr "Poklic"
 
-#: web/forms.py:318 web/forms.py:420
+#: web/forms.py:334 web/forms.py:438 web/templates/web/customer.html:29
 msgid "Previous massage"
 msgstr "Prejšnja masaža"
 
-#: web/forms.py:326 web/forms.py:428
+#: web/forms.py:342 web/forms.py:446
 msgid "Why did they choose our salon?"
 msgstr "Zakaj se je stranka odlocila za naš salon?"
 
-#: web/forms.py:331 web/forms.py:434
+#: web/forms.py:347 web/forms.py:452
 msgid "reason for choosing our salon"
 msgstr "razlog zakaj se je odločila za naš salon"
 
-#: web/forms.py:337 web/forms.py:440
+#: web/forms.py:353 web/forms.py:458
 msgid "How frequently do they visit a massage salon?"
 msgstr "Kako pogosto stranka hodi na masaže?"
 
-#: web/forms.py:342 web/forms.py:446
+#: web/forms.py:358 web/forms.py:464
 msgid "3x times a week"
 msgstr "3x na teden"
 
-#: web/forms.py:348 web/forms.py:452
+#: web/forms.py:364 web/forms.py:470
 msgid "Where did the customer find us?"
 msgstr "Kje nas je stranka našla?"
 
-#: web/forms.py:353 web/forms.py:458
+#: web/forms.py:369 web/forms.py:476
 msgid "friend recommendations"
 msgstr "priporocilo prijatelja"
 
-#: web/forms.py:383
+#: web/forms.py:400
 msgid ""
 "Customer already exists in database. Please check for correct input in "
 "fields."
 msgstr "Stranka že obstaja v bazi. Preverite vnos podatkov."
 
-#: web/templates/base.html:25
+#: web/templates/base.html:28
 msgid "Customer List"
 msgstr "Seznam strank"
 
-#: web/templates/base.html:27
+#: web/templates/base.html:30
 msgid "Today's Appointments"
 msgstr "Današnji termini"
 
-#: web/templates/base.html:30
-msgid "Logout:"
-msgstr "Logout:"
+#: web/templates/base.html:33
+msgid "Logout"
+msgstr "Logout"
 
-#: web/templates/registration/login.html:21
+#: web/templates/registration/login.html:13
 msgid "Your username and password didn't match. Please try again."
 msgstr "Uporabniško ime in geslo se ne ujemata. Poskusite ponovno."
 
-#: web/templates/registration/login.html:26
+#: web/templates/registration/login.html:18
 msgid ""
 "Your account doesn't have access to this page. To proceed, please login with "
 "an account that has access."
 msgstr "Vaš račun nima dostopa do strani. Poskusite z drugim računom."
 
-#: web/templates/registration/login.html:28
+#: web/templates/registration/login.html:20
 msgid "Please login"
 msgstr "Logirajte se"
 
-#: web/templates/registration/login.html:51
+#: web/templates/registration/login.html:43
 msgid "Forgotten password?"
 msgstr "Pozabljeno geslo?"
 
@@ -196,37 +197,21 @@ msgstr "Pozabljeno geslo?"
 msgid "Customer Detail View"
 msgstr ""
 
-#: web/templates/web/customer.html:12 web/templates/web/massage_detail.html:11
-msgid "Name and Surname of Customer:"
-msgstr "Ime in priimek stranke:"
+#: web/templates/web/customer.html:21
+msgid "Contact number"
+msgstr "Kontaktna številka"
 
-#: web/templates/web/customer.html:16
-msgid "Email:"
-msgstr "Email:"
+#: web/templates/web/customer.html:33
+msgid "Salon choice"
+msgstr "Izbira salona"
 
-#: web/templates/web/customer.html:20
-msgid "Contact number:"
-msgstr "Kontaktna številka:"
+#: web/templates/web/customer.html:37
+msgid "Frequency"
+msgstr "Pogostost"
 
-#: web/templates/web/customer.html:24 web/templates/web/massage_detail.html:15
-msgid "Occupation:"
-msgstr "Poklic:"
-
-#: web/templates/web/customer.html:28
-msgid "Previous massage:"
-msgstr "Prejšnja masaža:"
-
-#: web/templates/web/customer.html:32
-msgid "Salon choice:"
-msgstr "Izbira salona:"
-
-#: web/templates/web/customer.html:36
-msgid "Frequency:"
-msgstr "Pogostost:"
-
-#: web/templates/web/customer.html:40
-msgid "Refferal:"
-msgstr "Napotitev:"
+#: web/templates/web/customer.html:41
+msgid "Refferal"
+msgstr "Napotitev"
 
 #: web/templates/web/customer.html:45
 msgid "Edit info"
@@ -237,7 +222,7 @@ msgid "Add Customer"
 msgstr "Dodaj stranko"
 
 #: web/templates/web/customer_add.html:64
-#: web/templates/web/customer_edit.html:66
+#: web/templates/web/customer_edit.html:67
 #: web/templates/web/massage_add.html:85 web/templates/web/massage_edit.html:81
 msgid "Submit"
 msgstr "Pošlji"
@@ -247,55 +232,66 @@ msgid "Customer Detail Massage View"
 msgstr ""
 
 #: web/templates/web/customer_detail.html:7
-msgid "List of massages for:"
-msgstr "Seznam masaž za:"
+msgid "List of massages for"
+msgstr "Seznam masaž za"
 
-#: web/templates/web/customer_detail.html:8
+#: web/templates/web/customer_detail.html:12
 msgid "View customer"
 msgstr "Poglej stranko"
 
-#: web/templates/web/customer_detail.html:15
-msgid "date of massage:"
-msgstr "datum masaže:"
+#: web/templates/web/customer_detail.html:19
+msgid "date of massage"
+msgstr "datum masaže"
 
-#: web/templates/web/customer_detail.html:17
-msgid "reason for visit:"
-msgstr "razlog za obisk:"
+#: web/templates/web/customer_detail.html:21
+msgid "reason for visit"
+msgstr "razlog za obisk"
 
-#: web/templates/web/customer_detail.html:20
-#: web/templates/web/customer_list.html:13
+#: web/templates/web/customer_detail.html:24
 msgid "View"
 msgstr "Poglej"
+
+#: web/templates/web/customer_detail.html:29
+msgid "This customer has no past massages."
+msgstr "Stranka še ni bila na masaži."
 
 #: web/templates/web/customer_edit.html:3
 msgid "Customer Edit"
 msgstr "Spremeni"
 
 #: web/templates/web/customer_edit.html:9
-msgid "Edit customer:"
-msgstr "Poglej stranko:"
+msgid "Edit customer"
+msgstr "Uredi stranko"
 
 #: web/templates/web/customer_list.html:3
 msgid "Customer Listing"
 msgstr "Seznam strank"
 
+#: web/templates/web/customer_list.html:8
+msgid "List of Customers"
+msgstr "Seznam strank"
+
+#: web/templates/web/customer_list.html:17
+msgid "View  "
+msgstr "Poglej "
+
 #: web/templates/web/index.html:10
-msgid "Appointments for:"
-msgstr "Termini za:"
+msgid "Appointments for"
+msgstr "Termini za"
 
-#: web/templates/web/index.html:15
-msgid "You do not have appointments today."
-msgstr "Danes ni predvidenih terminov za masaže."
+#: web/templates/web/index.html:16
+msgid "You do not have appointments today"
+msgstr "Danes nimate predvidenih terminov masaž"
 
-#: web/templates/web/index.html:21
+#: web/templates/web/index.html:23
 msgid "at"
 msgstr "ob"
 
-#: web/templates/web/index.html:25
+#: web/templates/web/index.html:28
 msgid "View details"
 msgstr "Poglej podrobno"
 
-#: web/templates/web/index.html:28
+#: web/templates/web/index.html:31
 msgid "Edit massage"
 msgstr "Uredi masažo"
 
@@ -312,70 +308,38 @@ msgid "Massage Detail View"
 msgstr ""
 
 #: web/templates/web/massage_detail.html:8
-msgid "View massage for:"
-msgstr "Poglej masažo za:"
+msgid "View massage for"
+msgstr "Poglej masažo za"
 
-#: web/templates/web/massage_detail.html:23
-msgid "Time of therapy:"
-msgstr "Čas obiska:"
+#: web/templates/web/massage_detail.html:14
+msgid "Name and Surname of Customer"
+msgstr "Ime in priimek stranke"
 
-#: web/templates/web/massage_detail.html:27
-msgid "Name of Therapist:"
-msgstr "Ime maserja:"
+#: web/templates/web/massage_detail.html:25
+msgid "Time of therapy"
+msgstr "Čas obiska"
 
-#: web/templates/web/massage_detail.html:31
-msgid "Reason for visit:"
-msgstr "Razlog za obisk:"
+#: web/templates/web/massage_detail.html:29
+msgid "Name of Therapist"
+msgstr "Ime maserja"
 
-#: web/templates/web/massage_detail.html:35
-msgid "Type of massage preformed:"
-msgstr "Vrsta masaže:"
+#: web/templates/web/massage_detail.html:41
+msgid "Therapy performed"
+msgstr "Zapiski izvedene masaže"
 
-#: web/templates/web/massage_detail.html:39
-msgid "Therapy performed:"
-msgstr "Zapiski izvedene masaže:"
+#: web/templates/web/massage_detail.html:45
+msgid "Therapy to be performed on next visit"
+msgstr "Nadaljna masaža"
 
-#: web/templates/web/massage_detail.html:43
-msgid "Therapy to be performed on next visit:"
-msgstr "Nadaljna masaža:"
-
-#: web/templates/web/massage_detail.html:47
-msgid "Recommendations:"
-msgstr "Priporočila:"
-
-#: web/templates/web/massage_detail.html:52
-msgid "Personal notes:"
-msgstr "Zasebni zapiski masaže:"
-
-#: web/templates/web/massage_detail.html:61
-msgid "Duration of massage:"
-msgstr "Trajanje masaže:"
-
-#: web/templates/web/massage_detail.html:65
-msgid "Amount paid:"
-msgstr "Plačano:"
-
-#: web/templates/web/massage_detail.html:69
-msgid "Discount:"
-msgstr "Popust:"
-
-#: web/templates/web/massage_detail.html:73
-msgid "Reason for discount:"
-msgstr "Razlog za popust:"
-
-#: web/templates/web/massage_detail.html:77
-msgid "Repeat visit:"
-msgstr "Ponovni obisk:"
-
-#: web/templates/web/massage_detail.html:80
+#: web/templates/web/massage_detail.html:81
 msgid "Yes"
 msgstr "Da"
 
-#: web/templates/web/massage_detail.html:82
+#: web/templates/web/massage_detail.html:83
 msgid "No"
 msgstr "Ne"
 
-#: web/templates/web/massage_detail.html:89
+#: web/templates/web/massage_detail.html:90
 msgid "Edit"
 msgstr "Uredi"
 
@@ -383,18 +347,54 @@ msgstr "Uredi"
 msgid "Massage Edit"
 msgstr "Uredi masažo"
 
-#: web/templates/web/massage_edit.html:10
-msgid "Edit massage for:"
-msgstr "Uredi masažo za:"
+#: web/templates/web/massage_edit.html:9
+msgid "Edit massage for"
+msgstr "Uredi masažo za"
+
+#~ msgid "Email:"
+#~ msgstr "Email:"
+
+#~ msgid "Occupation:"
+#~ msgstr "Poklic:"
+
+#~ msgid "Previous massage:"
+#~ msgstr "Prejšnja masaža:"
+
+#~ msgid "reason for visit:"
+#~ msgstr "razlog za obisk:"
+
+#~ msgid "Reason for visit:"
+#~ msgstr "Razlog za obisk:"
+
+#~ msgid "Type of massage preformed:"
+#~ msgstr "Vrsta masaže:"
+
+#~ msgid "Recommendations:"
+#~ msgstr "Priporočila:"
+
+#~ msgid "Personal notes:"
+#~ msgstr "Zasebni zapiski masaže:"
+
+#~ msgid "Duration of massage:"
+#~ msgstr "Trajanje masaže:"
+
+#~ msgid "Amount paid:"
+#~ msgstr "Plačano:"
+
+#~ msgid "Discount:"
+#~ msgstr "Popust:"
+
+#~ msgid "Reason for discount:"
+#~ msgstr "Razlog za popust:"
+
+#~ msgid "Repeat visit:"
+#~ msgstr "Ponovni obisk:"
 
 #, python-format
 #~ msgid ""
 #~ "View massage for\n"
 #~ "                %(customer)s"
 #~ msgstr "Pregled masaže za %(customer)s"
-
-#~ msgid "reason for visit"
-#~ msgstr "razlog za obisk"
 
 #, python-format
 #~ msgid ""
