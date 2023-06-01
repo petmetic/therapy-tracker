@@ -1,27 +1,26 @@
-<<<<<<< HEAD
 {% extends "base.html" %}
 {% load i18n %}
 {% block title %}Login{% endblock %}
 
 {% block content %}
 
-    <main class="row justify-content-md-center">
+    <main class="row justify-content-md-center p-4">
         <form class="form-floating col-4" method="post" action="{% url 'login' %}">
             {% csrf_token %}
             <img class=" logo mb-4" src="/static/images/logo.png" alt="Logo Alenka Masaže">
 
             {% if form.errors %}
-                <h1 class="h3 mb-3 fw-normal">{% translate "Your username and password didn't match. Please try again." %}</h1>
+                <h4 class="h3 mb-3 fw-light">{% translate "Your username and password didn't match. Please try again." %}</h4>
             {% endif %}
 
             {% if next %}
                 {% if user.is_authenticated %}
-                    <h1 class="h3 mb-3 fw-normal">{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access." %}</h1>
+                    <h4 class="h3 mb-3 fw-light">{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access." %}</h4>
                 {% else %}
-                    <h1 class="h3 mb-3 fw-normal">{% translate "Please login" %}</h1>
+                    <h4 class="h3 mb-3 fw-light">{% translate "Please login" %}</h4>
                 {% endif %}
             {% endif %}
-            <div>
+            <div class="p-4">
                 <div class="form-control col-4">{{ form.username.label_tag }} {{ form.username }}</div>
                 <div class="form-control col-4">{{ form.password.label_tag }} {{ form.password }}</div>
             </div>
@@ -36,11 +35,12 @@
             {#            </tr>#}
             {#        </table>#}
 
-            <input type="submit" value="login" class="btn btn-primary btn-body">
+            <input type="submit" value="login" class="btn btn-body">
             <input type="hidden" name="next" value="{{ next }}">
+            {# Assumes you set up the password_reset view in your URLconf #}
+            <p class="fw-light p-2"><a href="{% url 'password_reset' %}">{% translate "Forgotten password?" %}</a></p>
         </form>
 
-        {# Assumes you set up the password_reset view in your URLconf #}
-        <p><a href="{% url 'password_reset' %}">{% translate "Forgotten password?" %}</a></p>
+
     </main>
 {% endblock %}

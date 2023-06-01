@@ -1,5 +1,6 @@
 :root {
     font-family: 'Aleo', serif;
+    color: #16313D;
 }
 
 
@@ -21,32 +22,28 @@
 .btn-nav {
     color: white;
     background-color: #54595F;
-    padding: 3px;
+    padding: 6px 12px;
     margin: 6px;
 }
 
 .btn-nav:active {
-    color: #8DA9B0;
+    color: #16313D;
 }
 
 .btn-nav:hover {
-    color: #8DA9B0;
+    color: #16313D;
+    border-color: #16313D;
 }
 
 .btn-body {
-    margin-top: 25px;
-    margin-bottom: 25px;
-
-}
-
-.btn-color {
     background-color: #6EC1E4;
-    border: #6EC1E4;
+    border-color: #6EC1E4;
+
 }
 
 .btn-body:hover {
-    background-color: #8DA9B0;
-    border: #8DA9B0;
+    color: #16313D;
+    border-color: #16313D;
 }
 
 

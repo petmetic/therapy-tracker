@@ -1,6 +1,6 @@
 {% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sl-SI">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
@@ -16,7 +16,7 @@
 </head>
 <body>
 <header class="nav-background d-flex justify-content-between">
-    <a href="{% url 'index' %}"><img src="/static/images/logo.png"
+    <a class="p-2" href="{% url 'index' %}"><img src="/static/images/logo.png"
                                      alt="Alenka masaže"
                                      href="{% url 'index' %}"
                                      class="logo"/></a>
@@ -30,7 +30,7 @@
                 {% translate "Today's Appointments" %}</a>
             {#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Search</a>#}
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
-               href="{% url 'logout' %}">{% translate "Logout:" %} {{ request.user.first_name }}</a>
+               href="{% url 'logout' %}">{% translate "Logout" %}: {{ request.user.first_name }}</a>
         </ul>
     {% endif %}
 </header>

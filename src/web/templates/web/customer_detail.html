@@ -3,26 +3,32 @@
 {% block title %}{% translate "Customer Detail Massage View" %}{% endblock %}
 
 {% block content %}
+    <div class="p-4">
+        <span class="fw-lighter">{% translate "List of massages for" %}:</span>
+        <h4 class="fw-light uppercase">{{ customer.name }} {{ customer.surname }}</h4>
+    </div>
 
-    <h1>{% translate "List of massages for:" %} <span class="fw-bold">{{ customer.name }} {{ customer.surname }}</span>
-    </h1>
-    <a class="btn btn-primary btn-body"
+    <a class="btn btn-body ms-4"
        href="{% url 'customer' customer_pk=customer.pk %}">{% translate "View customer" %}</a>
 
-
-    {% for massage in massage_list %}
-        <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="justify-content-left align-items-center">
-                    <div class="fw-lighter">{% translate "date of massage:" %}</div>
-                    <div>{{ massage.start|date:"D d M Y " }}</div>
-                    <div class="fw-lighter">{% translate "reason for visit:" %}</div>
-                    <div>{{ massage.reason_for_visit }}</div>
-                </div>
-                <a class="btn btn-primary" href="{% url 'massage_detail' pk=massage.pk %}">{% translate "View" %}</a>
-            </li>
-        </ul>
-    {% endfor %}
+    <div class="p-4">
+        {% for massage in massage_list %}
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="justify-content-left align-items-center">
+                        <div class="fw-lighter">{% translate "date of massage" %}:</div>
+                        <div>{{ massage.start|date:"D, d. M Y " }}</div>
+                        <div class="fw-lighter">{% translate "reason for visit" %}:</div>
+                        <div>{{ massage.reason_for_visit }}</div>
+                    </div>
+                    <a class="btn btn-body" href="{% url 'massage_detail' pk=massage.pk %}">{% translate "View" %}</a>
+                </li>
+            </ul>
+            {% empty %}
+            <hr>
+            <span>{% translate "This customer has no past massages." %}</span>
+        {% endfor %}
+    </div>
 
 
 
