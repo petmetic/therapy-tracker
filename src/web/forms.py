@@ -6,6 +6,7 @@ from .models import Massage, Customer
 
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
+from django.contrib.auth.forms import AuthenticationForm, UsernameField
 
 
 class MassageForm(ModelForm):
@@ -491,3 +492,15 @@ class CustomerEditForm(ModelForm):
             "frequency",
             "referral",
         ]
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["username"].widget.attrs.update(
+            {"placeholder": _("Username"), "class": "form-control"}
+        )
+        self.fields["password"].widget.attrs.update(
+            {"placeholder": _("Password"), "class": "form-control"}
+        )

@@ -3,44 +3,30 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-
-    <main class="row justify-content-md-center p-4">
-        <form class="form-floating col-4" method="post" action="{% url 'login' %}">
+    <main class="row justify-content-md-center p-4 mt-4">
+        <form class="form-floating col-4 mt-4" method="post" action="{% url 'login' %}">
             {% csrf_token %}
-            <img class=" logo mb-4" src="/static/images/logo.png" alt="Logo Alenka Masaže">
 
             {% if form.errors %}
                 <h4 class="h3 mb-3 fw-light">{% translate "Your username and password didn't match. Please try again." %}</h4>
             {% endif %}
 
-            {% if next %}
-                {% if user.is_authenticated %}
-                    <h4 class="h3 mb-3 fw-light">{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access." %}</h4>
-                {% else %}
-                    <h4 class="h3 mb-3 fw-light">{% translate "Please login" %}</h4>
-                {% endif %}
+            {% if next and user.is_authenticated %}
+                <h4 class="h3 mb-3 fw-light">{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access." %}</h4>
             {% endif %}
-            <div class="p-4">
-                <div class="form-control col-4">{{ form.username.label_tag }} {{ form.username }}</div>
-                <div class="form-control col-4">{{ form.password.label_tag }} {{ form.password }}</div>
-            </div>
-            {#        <table>#}
-            {#            <tr>#}
-            {#                <td>{{ form.username.label_tag }}</td>#}
-            {#                <td>{{ form.username }}</td>#}
-            {#            </tr>#}
-            {#            <tr>#}
-            {#                <td>{{ form.password.label_tag }}</td>#}
-            {#                <td>{{ form.password }}</td>#}
-            {#            </tr>#}
-            {#        </table>#}
 
-            <input type="submit" value="login" class="btn btn-body">
+            <div class="d-flex flex-column mb-4 gap-2">
+                <div class="col-12">
+                    {{ form.username }}
+                </div>
+                <div class="col-12">
+                    {{ form.password }}</div>
+            </div>
+
+            <input type="submit" value="login" class="btn btn-body mb-4">
             <input type="hidden" name="next" value="{{ next }}">
             {# Assumes you set up the password_reset view in your URLconf #}
-            <p class="fw-light p-2"><a href="{% url 'password_reset' %}">{% translate "Forgotten password?" %}</a></p>
+            <p><a class="d-flex align-content-start fw-light login-text" href="{% url 'password_reset' %}">{% translate "Forgotten password?" %}</a></p>
         </form>
-
-
     </main>
 {% endblock %}

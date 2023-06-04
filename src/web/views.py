@@ -5,10 +5,17 @@ from django.contrib.auth import logout
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth.views import LoginView
 
 from .models import Customer, Massage
 
-from .forms import MassageForm, CustomerForm, MassageEditForm, CustomerEditForm
+from .forms import (
+    MassageForm,
+    CustomerForm,
+    MassageEditForm,
+    CustomerEditForm,
+    CustomAuthenticationForm,
+)
 
 
 @login_required
@@ -172,3 +179,7 @@ def error(request):
 
     else:
         return render(request, "web/500.html", {})
+
+
+class CustomLoginView(LoginView):
+    form_class = CustomAuthenticationForm
