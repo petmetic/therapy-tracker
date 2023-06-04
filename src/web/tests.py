@@ -4,6 +4,7 @@ from freezegun import freeze_time
 
 from django.test import TestCase
 from django.urls import reverse
+from django.test import override_settings
 
 from .factories import (
     UserFactory,
@@ -24,6 +25,7 @@ from .utility import (
 tz = pytz.timezone("Europe/Ljubljana")
 
 
+@override_settings(LANGUAGE_CODE="en-US")
 class GeneralTest(TestCase):
     def test_check_auth_user_login(self):
         pass
@@ -37,7 +39,7 @@ class GeneralTest(TestCase):
         response = self.client.get("/logout", follow=True)
 
         self.assertRedirects(response, "/accounts/login/?next=/")
-        self.assertContains(response, text="Please")
+        self.assertContains(response, text="Username")
 
     def test_homepage_loads(self):  # therapist already logged in
         therapist = UserFactory()
@@ -327,6 +329,7 @@ class GeneralTest(TestCase):
         pass
 
 
+@override_settings(LANGUAGE_CODE="en-US")
 class CustomerTest(TestCase):
     def test_customer_add(self):
         therapist = UserProfileFactory().user
@@ -454,6 +457,7 @@ class CustomerTest(TestCase):
         self.assertEqual(customer.occupation, "programmer")
 
 
+@override_settings(LANGUAGE_CODE="en-US")
 class MassageTest(TestCase):
     def test_submit_add_massage(self):  # therapist already logged in
         therapist = UserFactory()
