@@ -28,7 +28,7 @@ def index(request):
         start__month=today.month,
         start__day=today.day,
         status="approved",
-    )
+    ).order_by("start")
 
     return render(
         request,
