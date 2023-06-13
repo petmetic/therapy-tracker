@@ -36,7 +36,7 @@ def update_or_create_w_logging(model, external_id, defaults):
         logger.info(f"Changes were found when syncing {model_name} at {sync_time}:")
         for kind, field, change in difference:
             logger.info(
-                f"external id: {old_model.external_id}\n{kind}:\n\t{field}: {change[0]} => {change[1]}\n"
+                f"name: {old_model}, external id:{old_model.external_id}\n{kind}:\n\t{field}: {change[0]} => {change[1]}\n"
             )
         # logger.info(
         #     f"These changes were made to old model with external id: {old_model.external_id}\n: {difference}\n"
