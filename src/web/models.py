@@ -70,3 +70,6 @@ class Service(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     external_id = models.CharField(max_length=200, default="", null=True)
+
+    def __str__(self):
+        return f"external id: {self.external_id}, user: {self.user}"
