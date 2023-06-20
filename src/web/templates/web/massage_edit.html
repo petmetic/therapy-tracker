@@ -7,7 +7,8 @@
         {% csrf_token %}
         <div class="p-4 pb-0">
             <span class="fw-lighter"> {% translate "Edit massage for" %}:</span>
-            <h4 class="fw-light uppercase">{{ massage.customer }}</h4>
+            <h4 class="fw-light uppercase">{{ massage.customer.name }} {{ massage.customer.surname }}</h4>
+            <hr>
         </div>
         <div class='row g-3 p-4'>
             <div class="col-md-4 fw-light">
