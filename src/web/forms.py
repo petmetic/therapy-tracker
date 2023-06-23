@@ -292,6 +292,11 @@ class MassageEditForm(ModelForm):
         ),
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["therapist"].widget = forms.HiddenInput()
+
     class Meta:
         model = Massage
         exclude = [
