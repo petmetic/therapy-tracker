@@ -155,8 +155,8 @@ def massage_edit(request, pk: int):
         if form.is_valid():
             massage = form.save()
             return redirect(reverse("massage_detail", kwargs={"pk": massage.pk}))
-        # else:
-        #     print(form.errors)
+        else:
+            print(form.errors)
     else:
         form = MassageEditForm(
             instance=massage, initial={"customer": customer, "therapist": request.user}
