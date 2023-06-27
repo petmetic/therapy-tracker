@@ -6,3 +6,4 @@ requests
 pytz
 freezegun
 dictdiffer
+sentry-sdk
