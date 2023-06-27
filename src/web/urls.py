@@ -1,7 +1,6 @@
 from django.urls import path, include
 from . import views
 
-
 urlpatterns = [
     path("accounts/login/", views.CustomLoginView.as_view(), name="login"),
     path("accounts/", include("django.contrib.auth.urls")),
