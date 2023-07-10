@@ -7,4 +7,5 @@ pytz
 freezegun
 dictdiffer
 sentry-sdk
-django-anymail[sendgrid,sparkpost]
+django-anymail[mailgun]
+psycopg2-binary
