@@ -53,16 +53,39 @@ def therapist_import(data: dict):
     therapists = data["data"]["employees"]
 
     for raw_therapist in therapists:
-        user, created = User.objects.get_or_create(
-            first_name=raw_therapist.get("firstName"),
-            email=raw_therapist.get("email"),
-            username=raw_therapist.get("email"),
-        )
+        external_id = raw_therapist.get("id")
+        first_name = raw_therapist.get("firstName")
+        email = raw_therapist.get("email")
+        username = raw_therapist.get("email")
 
-        UserProfile.objects.get_or_create(
-            user=user,
-            external_id=raw_therapist.get("id"),
-        )
+        # check if external_id exists
+        if User.objects.get(userprofile__external_id=external_id):
+            user, created = update_or_create_w_logging(
+                User,
+                first_name=first_name,
+                email=email,
+                username=username,
+            )
+
+            userprofile, created = update_or_create_w_logging(
+                UserProfile,
+                external_id=external_id,
+                defaults={
+                    "user": user,
+                },
+            )
+        else:
+            # if not, create it
+            user, created = User.objects.create(
+                first_name=first_name,
+                email=email,
+                username=username,
+            )
+
+            UserProfile.objects.create(
+                user=user,
+                external_id=external_id,
+            )
 
     return user
 
