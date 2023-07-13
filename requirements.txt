@@ -9,3 +9,4 @@ dictdiffer
 sentry-sdk
 django-anymail[mailgun]
 psycopg2-binary
+django_su
