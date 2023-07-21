@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 # Application definition
 
 INSTALLED_APPS = [
+    "django_su",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -155,5 +156,10 @@ LOGGING = {
         "level": "INFO",
     },
 }
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "django_su.backends.SuBackend",
+)
 
 from .localsettings import *  # noqa: F403,F401,E402
