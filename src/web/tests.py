@@ -687,6 +687,79 @@ class ImportDataTest(TestCase):
         self.assertEqual(user.email, "example@alenka-masaze.si")
         self.assertEqual(int(user.userprofile.external_id), 17)
 
+    def test_therapist_update(self):
+        data = {
+            "message": "Successfully retrieved entities",
+            "data": {
+                "employees": [
+                    {
+                        "id": 7,
+                        "firstName": "Anja",
+                        "lastName": "Novak",
+                        "email": "anja@example.com",
+                        "phone": "+386",
+                    },
+                    {
+                        "id": 17,
+                        "firstName": "Blaz",
+                        "lastName": "",
+                        "email": "example@alenka-masaze.si",
+                    },
+                ],
+            },
+        }
+
+        # changed email of first user, changed first name of second user
+        data2 = {
+            "message": "Successfully retrieved entities",
+            "data": {
+                "employees": [
+                    {
+                        "id": 7,
+                        "firstName": "Anja",
+                        "lastName": "Novak",
+                        "email": "novak@example.com",
+                        "phone": "+386",
+                    },
+                    {
+                        "id": 17,
+                        "firstName": "Anamarija",
+                        "lastName": "",
+                        "email": "example@alenka-masaze.si",
+                    },
+                ],
+            },
+        }
+
+        user_count1 = User.objects.all().count()
+
+        therapist_import(data)
+
+        self.assertEqual(User.objects.all().count(), user_count1 + 2)
+
+        user = User.objects.latest("id")
+        self.assertEqual(user.first_name, "Blaz")
+        self.assertEqual(user.email, "example@alenka-masaze.si")
+
+        user = User.objects.get(userprofile__external_id=7)
+        self.assertEqual(user.first_name, "Anja")
+        self.assertEqual(user.email, "anja@example.com")
+
+        user_count2 = User.objects.all().count()
+
+        therapist_import(data2)
+
+        self.assertEqual(User.objects.all().count(), user_count2)
+
+        user = User.objects.latest("id")
+        self.assertEqual(user.first_name, "Anamarija")
+        self.assertEqual(user.email, "example@alenka-masaze.si")
+        self.assertEqual(int(user.userprofile.external_id), 17)
+
+        user = User.objects.get(userprofile__external_id=7)
+        self.assertEqual(user.first_name, "Anja")
+        self.assertEqual(user.email, "novak@example.com")
+
     def test_services_import(self):
         data = {
             "message": "Successfully retrieved entities",
