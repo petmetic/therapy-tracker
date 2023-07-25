@@ -59,24 +59,27 @@ def therapist_import(data: dict):
         username = raw_therapist.get("email")
 
         # check if external_id exists
-        if User.objects.get(userprofile__external_id=external_id):
-            user, created = update_or_create_w_logging(
-                User,
-                first_name=first_name,
-                email=email,
-                username=username,
-            )
+        if User.objects.filter(userprofile__external_id=external_id):
+            user_profile = UserProfile.objects.get(external_id=external_id)
+            changed = False
+            user = user_profile.user
 
-            userprofile, created = update_or_create_w_logging(
-                UserProfile,
-                external_id=external_id,
-                defaults={
-                    "user": user,
-                },
-            )
+            if email != user.email:
+                user.email = email
+                # email and username are the same
+                user.username = username
+                changed = True
+
+            if first_name != user.first_name:
+                user.first_name = first_name
+                changed = True
+
+            if changed:
+                user.save()
+
         else:
             # if not, create it
-            user, created = User.objects.create(
+            user = User.objects.create(
                 first_name=first_name,
                 email=email,
                 username=username,
