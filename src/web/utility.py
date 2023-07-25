@@ -66,7 +66,9 @@ def therapist_import(data: dict):
 
             if email_new != user.email:
                 logger.info(
-                    f"Changed therapist {user} with external_id: {user_profile.external_id}\n\t email - from {user.email} to {email_new}\n\t username - from {user.username} to {username_new}"
+                    f"Changed therapist {user} with external_id: {user_profile.external_id}\n"
+                    f"\t email - from {user.email} to {email_new}\n"
+                    f"\t username - from {user.username} to {username_new}"
                 )
                 user.email = email_new
                 # email and username are the same
@@ -75,7 +77,8 @@ def therapist_import(data: dict):
 
             if first_name_new != user.first_name:
                 logger.info(
-                    f"Changed therapist {user} with external_id: {user_profile.external_id}\n\t first_name - from {user.first_name} to {first_name_new}"
+                    f"Changed therapist {user} with external_id: {user_profile.external_id}\n"
+                    f"\t first_name - from {user.first_name} to {first_name_new}"
                 )
                 user.first_name = first_name_new
                 changed = True
