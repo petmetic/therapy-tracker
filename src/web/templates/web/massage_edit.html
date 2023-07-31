@@ -12,6 +12,11 @@
         </div>
         <div class='row g-3 p-4'>
             <div class="col-md-4 fw-light">
+                {{ form.main_concern.errors }}
+                {{ form.main_concern.label_tag }}
+                {{ form.main_concern }}
+            </div>
+            <div class="col-md-4 fw-light">
                 {{ form.start.errors }}
                 {{ form.start.label_tag }}
                 {{ form.start }}

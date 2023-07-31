@@ -157,17 +157,25 @@ def massage_edit(request, pk: int):
                 "massage": massage,
                 "therapist": request.user,
                 "customer": customer,
+                "main_concern": customer.main_concern,
             },
         )
 
         if form.is_valid():
             massage = form.save()
+            customer.main_concern = form.cleaned_data.get("main_concern")
+            customer.save()
             return redirect(reverse("massage_detail", kwargs={"pk": massage.pk}))
         else:
             print(form.errors)
     else:
         form = MassageEditForm(
-            instance=massage, initial={"customer": customer, "therapist": request.user}
+            instance=massage,
+            initial={
+                "customer": customer,
+                "therapist": request.user,
+                "main_concern": customer.main_concern,
+            },
         )
     return render(
         request,

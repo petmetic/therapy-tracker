@@ -292,6 +292,18 @@ class MassageEditForm(ModelForm):
         ),
     )
 
+    main_concern = forms.CharField(
+        label=_("Main concern"),
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "placeholder": _("car accident"),
+            }
+        ),
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
