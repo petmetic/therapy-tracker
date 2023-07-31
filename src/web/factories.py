@@ -45,6 +45,7 @@ class CustomerFactory(factory.django.DjangoModelFactory):
     email = factory.Faker("email")
     phone = factory.Faker("phone_number")
     occupation = factory.Faker("job")
+    main_concern = factory.Faker("sentence")
     previous_massage = factory.Faker("pybool")
     salon_choice = factory.Faker("sentence")
     frequency = factory.Faker("sentence")
