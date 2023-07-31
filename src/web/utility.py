@@ -54,9 +54,9 @@ def therapist_import(data: dict):
 
     for raw_therapist in therapists:
         external_id = raw_therapist.get("id")
-        first_name_new = raw_therapist.get("firstName")
-        email_new = raw_therapist.get("email")
-        username_new = raw_therapist.get("email")
+        first_name = raw_therapist.get("firstName")
+        email = raw_therapist.get("email")
+        username = raw_therapist.get("email")
 
         # check if external_id exists
         if User.objects.filter(userprofile__external_id=external_id):
@@ -64,23 +64,23 @@ def therapist_import(data: dict):
             changed = False
             user = user_profile.user
 
-            if email_new != user.email:
+            if email != user.email:
                 logger.info(
                     f"Changed therapist {user} with external_id: {user_profile.external_id}\n"
-                    f"\t email - from {user.email} to {email_new}\n"
-                    f"\t username - from {user.username} to {username_new}"
+                    f"\t email - from {user.email} to {email}\n"
+                    f"\t username - from {user.username} to {username}"
                 )
-                user.email = email_new
+                user.email = email
                 # email and username are the same
-                user.username = username_new
+                user.username = username
                 changed = True
 
-            if first_name_new != user.first_name:
+            if first_name != user.first_name:
                 logger.info(
                     f"Changed therapist {user} with external_id: {user_profile.external_id}\n"
-                    f"\t first_name - from {user.first_name} to {first_name_new}"
+                    f"\t first_name - from {user.first_name} to {first_name}"
                 )
-                user.first_name = first_name_new
+                user.first_name = first_name
                 changed = True
 
             if changed:
@@ -89,9 +89,9 @@ def therapist_import(data: dict):
         else:
             # if not, create it
             user = User.objects.create(
-                first_name=first_name_new,
-                email=email_new,
-                username=username_new,
+                first_name=first_name,
+                email=email,
+                username=username,
             )
 
             UserProfile.objects.create(
