@@ -22,18 +22,26 @@ from .forms import (
 def index(request):
     therapist = request.user
     today = datetime.datetime.now()
-    massages = Massage.objects.filter(
-        therapist=therapist,
-        start__year=today.year,
-        start__month=today.month,
-        start__day=today.day,
-        status="approved",
-    ).order_by("start")
+    massages = (
+        Massage.objects.filter(
+            therapist=therapist,
+            start__year=today.year,
+            start__month=today.month,
+            start__day=today.day,
+            status="approved",
+        )
+        .prefetch_related("customer")
+        .order_by("start")
+    )
 
     return render(
         request,
         "web/index.html",
-        {"therapist": therapist, "massages": massages, "today": today},
+        {
+            "therapist": therapist,
+            "massages": massages,
+            "today": today,
+        },
     )
 
 
