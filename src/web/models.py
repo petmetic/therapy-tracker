@@ -44,6 +44,7 @@ class Customer(models.Model):
     email = models.EmailField(max_length=254, null=True, default="")
     phone = models.CharField(max_length=100, null=True, default="")
     occupation = models.CharField(max_length=200, null=True, default="", blank=True)
+    main_concern = models.CharField(max_length=200, null=True, default="", blank=True)
     previous_massage = models.BooleanField(default=False)
     salon_choice = models.CharField(max_length=200, default="", blank=True)
     frequency = models.CharField(max_length=200, default="", blank=True)
