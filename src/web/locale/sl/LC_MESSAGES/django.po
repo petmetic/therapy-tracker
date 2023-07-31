@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-04 16:16+0100\n"
-"PO-Revision-Date: 2023-06-04 16:17+0100\n"
+"POT-Creation-Date: 2023-07-31 11:25+0200\n"
+"PO-Revision-Date: 2023-07-31 11:28+0200\n"
 "Last-Translator: meta <petmetic@gmail.com>\n"
 "Language-Team: \n"
 "Language: sl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3);\n"
-"X-Generator: Poedit 3.3.1\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: web/forms.py:14 web/forms.py:167
 msgid "Time of visit"
@@ -108,66 +108,74 @@ msgstr "Izpolnite Razlog za popust."
 msgid "Massage preformed"
 msgstr "Zapiski izvedene masaže"
 
-#: web/forms.py:310 web/forms.py:409
+#: web/forms.py:315 web/forms.py:415
 msgid "Name"
 msgstr "Ime"
 
-#: web/forms.py:315 web/forms.py:415
+#: web/forms.py:320 web/forms.py:421
 msgid "Surname"
 msgstr "Priimek"
 
-#: web/forms.py:320 web/forms.py:421 web/templates/web/customer.html:17
+#: web/forms.py:325 web/forms.py:427 web/templates/web/customer.html:17
 msgid "Email"
 msgstr "Email"
 
-#: web/forms.py:325 web/forms.py:427
+#: web/forms.py:330 web/forms.py:433
 msgid "Phone"
 msgstr "Telefon"
 
-#: web/forms.py:330 web/forms.py:433 web/templates/web/customer.html:25
+#: web/forms.py:335 web/forms.py:439 web/templates/web/customer.html:25
 #: web/templates/web/massage_detail.html:18
 msgid "Occupation"
 msgstr "Poklic"
 
-#: web/forms.py:335 web/forms.py:439 web/templates/web/customer.html:29
+#: web/forms.py:341 web/forms.py:445 web/templates/web/customer.html:29
 msgid "Previous massage"
 msgstr "Prejšnja masaža"
 
-#: web/forms.py:343 web/forms.py:447
+#: web/forms.py:349 web/forms.py:453
 msgid "Why did they choose our salon?"
 msgstr "Zakaj se je stranka odlocila za naš salon?"
 
-#: web/forms.py:348 web/forms.py:453
+#: web/forms.py:354 web/forms.py:459
 msgid "reason for choosing our salon"
 msgstr "razlog zakaj se je odločila za naš salon"
 
-#: web/forms.py:354 web/forms.py:459
+#: web/forms.py:360 web/forms.py:465
 msgid "How frequently do they visit a massage salon?"
 msgstr "Kako pogosto stranka hodi na masaže?"
 
-#: web/forms.py:359 web/forms.py:465
+#: web/forms.py:365 web/forms.py:471
 msgid "3x times a week"
 msgstr "3x na teden"
 
-#: web/forms.py:365 web/forms.py:471
+#: web/forms.py:371 web/forms.py:477
 msgid "Where did the customer find us?"
 msgstr "Kje nas je stranka našla?"
 
-#: web/forms.py:370 web/forms.py:477
+#: web/forms.py:376 web/forms.py:483
 msgid "friend recommendations"
 msgstr "priporocilo prijatelja"
 
-#: web/forms.py:401
+#: web/forms.py:407
 msgid ""
 "Customer already exists in database. Please check for correct input in "
 "fields."
 msgstr "Stranka že obstaja v bazi. Preverite vnos podatkov."
 
-#: web/forms.py:502
+#: web/forms.py:489 web/templates/web/index.html:28
+msgid "Main concern"
+msgstr "Glavni problem"
+
+#: web/forms.py:495
+msgid "car accident"
+msgstr "prometna nesreča"
+
+#: web/forms.py:521
 msgid "Username"
 msgstr "Uporabniško ime"
 
-#: web/forms.py:505
+#: web/forms.py:524
 msgid "Password"
 msgstr "Geslo"
 
@@ -226,8 +234,8 @@ msgid "Add Customer"
 msgstr "Dodaj stranko"
 
 #: web/templates/web/customer_add.html:64
-#: web/templates/web/customer_edit.html:67
-#: web/templates/web/massage_add.html:85 web/templates/web/massage_edit.html:81
+#: web/templates/web/customer_edit.html:68
+#: web/templates/web/massage_add.html:85 web/templates/web/massage_edit.html:82
 msgid "Submit"
 msgstr "Pošlji"
 
@@ -287,15 +295,15 @@ msgstr "Termini za"
 msgid "You do not have appointments today"
 msgstr "Danes nimate predvidenih terminov masaž"
 
-#: web/templates/web/index.html:23
+#: web/templates/web/index.html:24
 msgid "at"
 msgstr "ob"
 
-#: web/templates/web/index.html:28
+#: web/templates/web/index.html:33
 msgid "View details"
 msgstr "Poglej podrobno"
 
-#: web/templates/web/index.html:31
+#: web/templates/web/index.html:36
 msgid "Edit massage"
 msgstr "Uredi masažo"
 

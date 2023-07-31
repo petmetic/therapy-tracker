@@ -11,16 +11,18 @@
         </div>
         <div class="px-4">
             <div class="row">
-                <div class="col-sm-4 fw-light">{% translate "Name and Surname of Customer" %}:</div>
-                <div class="col-sm-8">{{ massage.customer }}</div>
-            </div> <!-- name and surname of customer -->
-            <div class="row">
                 <div class="col-sm-4 fw-light">{% translate "Occupation" %}:</div>
                 <div class="col-sm-8">{{ massage.customer.occupation }}</div>
             </div> <!-- occupation -->
+            <div class="row">
+                <div class="col-sm-4 fw-light">{% translate "Main concern" %}:</div>
+                <div class="col-sm-8">{{ massage.customer.main_concern }}</div>
+            </div> <!-- main concern -->
+            <hr>
+        </div>
+        <div class="px-4">
         </div>
         <div class="px-4 ">
-            <hr>
             <div class="row">
                 <div class="col-sm-4 fw-light">{% translate "Time of therapy" %}:</div>
                 <div class="col-sm-8">{{ massage.start }}</div>

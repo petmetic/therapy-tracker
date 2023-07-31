@@ -336,6 +336,7 @@ class CustomerForm(ModelForm):
         label_suffix="",
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
+
     previous_massage = forms.BooleanField(
         label=_("Previous massage"),
         label_suffix="",
@@ -484,6 +485,18 @@ class CustomerEditForm(ModelForm):
         ),
     )
 
+    main_concern = forms.CharField(
+        label=_("Main concern"),
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "placeholder": _("car accident"),
+            }
+        ),
+    )
+
     class Meta:
         model = Customer
         fields = [
@@ -496,6 +509,7 @@ class CustomerEditForm(ModelForm):
             "salon_choice",
             "frequency",
             "referral",
+            "main_concern",
         ]
 
 

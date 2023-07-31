@@ -24,8 +24,9 @@
                                         class="fw-normal uppercase">{{ massage.customer.name }} {{ massage.customer.surname }}</span> {% translate "at" %}
                                     {{ massage.start|time:"H:i" }}
                                 </span>
-                                    <br>
-                                    <span class="fw-lighter">{{ massage.customer.main_concern }}</span>
+                                    <br/>
+                                    <span class="fw-lighter">{% translate "Main concern" %}:</span>
+                                    <span class="fw-light">{{ massage.customer.main_concern }}</span>
                                 </div>
                                 <div>
                                     <a class="btn btn-body"
