@@ -7,12 +7,12 @@
         <div class="p-4">
             <div class="row p-1">
                 <h4 class="col-sm-8 fw-light uppercase">{{ customer.name }} {{ customer.surname }}</h4>
-                <hr>
             </div>
-            {#            <div class="row">#}
-            {#                <div class="col-sm-4">{% translate "Name and Surname of Customer:" %}</div>#}
-            {#                <div class="col-sm-8">{{ customer.name }} {{ customer.surname }}</div>#}
-            {#            </div> <!-- name and surname of customer -->#}
+            <div class="row">
+                <div class="col-sm-4 fw-light">{% translate "Main concern" %}:</div>
+                <div class="col-sm-8">{{ customer.main_concern }}</div>
+                <hr>
+            </div> <!-- main_concern -->
             <div class="row">
                 <div class="col-sm-4 fw-light">{% translate "Email" %}:</div>
                 <div class="col-sm-8">{{ customer.email }}</div>
