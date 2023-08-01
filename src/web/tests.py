@@ -326,7 +326,7 @@ class GeneralTest(TestCase):
         self.assertNotContains(response, text="Cooper")
 
     @freeze_time("2023-04-06 13:21:34", tz_offset=2)
-    def test_main_concern_displays(self):
+    def test_main_concern_displays_on_index_page(self):
         therapist1 = UserProfileFactory(user__first_name="Jane").user
         self.client.force_login(therapist1)
 
@@ -695,6 +695,59 @@ class MassageTest(TestCase):
         )
         response = self.client.get(response.url)
         self.assertContains(response, text="PAIN")
+
+    def test_edit_main_concern(self):
+        therapist = UserProfileFactory(user__first_name="Jane").user
+        self.client.force_login(therapist)
+        customer = CustomerFactory(name="Brian", main_concern="car accident")
+
+        massage = MassageFactory(
+            therapist=therapist,
+            customer=customer,
+            start=datetime.datetime(2023, 4, 6, 16, 0, 0).astimezone(tz=tz),
+            status="approved",
+        )
+
+        data = {
+            "customer": customer.id,
+            "therapist": therapist.id,
+            "start": massage.start,
+            "reason_for_visit": "pain",
+            "kind": "therapeutic",
+            "notes": "continue massage at home",
+            "next_visit": "in 14 days",
+            "recommendations": "",
+            "personal_notes": "",
+            "duration": 30,
+            "amount": 7,
+            "discount": 30,
+            "discount_reason": "friend",
+            "repeat_visit": "on",
+            "main_concern": customer.main_concern,
+        }
+
+        response = self.client.post(
+            reverse("massage_add", kwargs={"customer_pk": customer.pk}), data=data
+        )
+        self.assertEqual(response.status_code, 302)
+
+        massage = Massage.objects.latest("id")
+
+        response = self.client.get(reverse("massage_edit", kwargs={"pk": massage.pk}))
+        self.assertContains(response, "2023-04-06 16:00:00")
+        self.assertContains(response, text="car accident")
+        data["main_concern"] = "bike accident"
+
+        response = self.client.post(
+            reverse("massage_edit", kwargs={"pk": massage.pk}), data=data
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, reverse("massage_detail", kwargs={"pk": massage.pk})
+        )
+        response = self.client.get(response.url)
+        self.assertContains(response, text="bike accident")
 
     def test_discount_reason_not_filled(self):
         therapist = UserFactory()
