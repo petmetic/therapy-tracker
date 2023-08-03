@@ -390,6 +390,18 @@ class CustomerForm(ModelForm):
         ),
     )
 
+    main_concern = forms.CharField(
+        label=_("Main concern"),
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "placeholder": _("car accident"),
+            }
+        ),
+    )
+
     class Meta:
         model = Customer
         fields = [
@@ -402,6 +414,7 @@ class CustomerForm(ModelForm):
             "salon_choice",
             "frequency",
             "referral",
+            "main_concern",
         ]
 
     def clean(self):

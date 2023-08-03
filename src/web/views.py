@@ -30,7 +30,7 @@ def index(request):
             start__day=today.day,
             status="approved",
         )
-        .prefetch_related("customer")
+        # .select_related("customer")
         .order_by("start")
     )
 

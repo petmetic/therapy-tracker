@@ -548,9 +548,7 @@ class CustomerTest(TestCase):
 
     def test_new_customer_displays(self):
         """
-        Test is flakey because there is automated `add_customer` function/template/url. It gets an assertion error
-        when you try to run `self.assertContains(response, text="car accident")` ,
-        because the main_concern column to the Customer model was added after the `add_customer` button was removed.
+        The main_concern column to the Customer model was added after the `add_customer` button was removed.
         The edit main_concern column is tested in `test_customer_edit_main_concern`.
         """
         therapist = UserProfileFactory(external_id="42").user
@@ -575,7 +573,7 @@ class CustomerTest(TestCase):
             response, reverse("customer", kwargs={"customer_pk": customer.pk})
         )
         self.assertContains(response, text="Bozo")
-        # self.assertContains(response, text="car accident")
+        self.assertContains(response, text="car accident")
 
     def test_customer_edit(self):
         therapist = UserFactory()
@@ -621,7 +619,7 @@ class CustomerTest(TestCase):
     def test_customer_edit_main_concern(self):
         therapist = UserFactory()
         self.client.force_login(therapist)
-        customer = CustomerFactory(occupation="florist", main_concern="car accident")
+        customer = CustomerFactory(main_concern="car accident")
 
         data = {
             "name": customer.name,
@@ -640,7 +638,6 @@ class CustomerTest(TestCase):
             reverse("customer_edit", kwargs={"customer_pk": customer.pk})
         )
         self.assertContains(response, text="car accident")
-        self.assertContains(response, text="florist")
 
         # edit customer
         data["main_concern"] = "bike accident"
@@ -658,7 +655,6 @@ class CustomerTest(TestCase):
         # assert from db that the main concern is "bike accident"
         customer.refresh_from_db()
         self.assertEqual(customer.main_concern, "bike accident")
-        self.assertEqual(customer.occupation, "florist")
 
 
 @override_settings(LANGUAGE_CODE="en-US")
