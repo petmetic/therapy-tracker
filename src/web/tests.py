@@ -325,6 +325,160 @@ class GeneralTest(TestCase):
         self.assertNotContains(response, text="Bob")
         self.assertNotContains(response, text="Cooper")
 
+    @freeze_time("2023-04-06 13:21:34", tz_offset=2)
+    def test_main_concern_displays_on_index_page(self):
+        therapist1 = UserProfileFactory(user__first_name="Jane").user
+        self.client.force_login(therapist1)
+
+        customer1 = CustomerFactory(name="Brian", main_concern="car accident")
+        customer2 = CustomerFactory(name="Alice", main_concern="bike accident")
+        customer3 = CustomerFactory(name="David", main_concern="fall off tree")
+
+        massage1 = MassageFactory(
+            therapist=therapist1,
+            customer=customer1,
+            start=datetime.datetime(2023, 4, 6, 16, 0, 0).astimezone(tz=tz),
+            status="approved",
+        )
+        massage2 = MassageFactory(
+            therapist=therapist1,
+            customer=customer2,
+            start=datetime.datetime(2023, 4, 6, 18, 0, 0).astimezone(tz=tz),
+            status="canceled",
+        )
+        massage3 = MassageFactory(
+            therapist=therapist1,
+            customer=customer3,
+            start=datetime.datetime(2023, 4, 7, 17, 0, 0).astimezone(tz=tz),
+            status="approved",
+        )
+
+        data = {
+            "message": "Successfully retrieved appointments",
+            "data": {
+                "appointments": {
+                    "2023-04-06": {
+                        "date": "2023-04-06",
+                        "appointments": [
+                            {
+                                "id": 576,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer1.external_id,
+                                            "firstName": customer1.name,
+                                            "lastName": customer1.surname,
+                                            "email": customer1.email,
+                                            "phone": customer1.phone,
+                                        },
+                                        "status": massage1.status,
+                                        "price": massage1.service.price,
+                                        "appointmentId": massage1.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": massage1.status,
+                                "serviceId": massage1.service.external_id,
+                                "providerId": massage1.therapist.userprofile.external_id,
+                                "bookingStart": massage1.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage1.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                            },
+                            {
+                                "id": 577,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer2.external_id,
+                                            "firstName": customer2.name,
+                                            "lastName": customer2.surname,
+                                            "email": customer2.email,
+                                            "phone": customer2.phone,
+                                        },
+                                        "status": massage2.status,
+                                        "price": massage2.service.price,
+                                        "appointmentId": massage2.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": massage2.status,
+                                "serviceId": massage2.service.external_id,
+                                "providerId": massage2.therapist.userprofile.external_id,
+                                "bookingStart": massage2.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage2.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                            },
+                        ],
+                    },
+                    "2023-04-07": {
+                        "date": "2023-04-07",
+                        "appointments": [
+                            {
+                                "id": 579,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer3.external_id,
+                                            "firstName": customer3.name,
+                                            "lastName": customer3.surname,
+                                            "email": customer3.email,
+                                            "phone": customer3.phone,
+                                        },
+                                        "status": massage3.status,
+                                        "price": massage3.service.price,
+                                        "appointmentId": massage3.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": massage3.status,
+                                "serviceId": massage3.service.external_id,
+                                "providerId": massage3.therapist.userprofile.external_id,
+                                "bookingStart": massage3.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage3.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        }
+
+        customer_import(data)
+        massage_import(data)
+        response = self.client.get("/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, text="Jane")
+        self.assertContains(response, text="Appointments for")
+        self.assertContains(response, text="Brian")
+        self.assertNotContains(response, text="Alice")
+        self.assertContains(response, text="car accident")
+        # "bike accident" should not display because "Alice" status="canceled" and does not display
+        self.assertNotContains(response, text="bike accident")
+        # "fall off tree" should not display because "David" is not in today's massages and does not display
+        self.assertNotContains(response, text="fall off tree")
+
     def test_check_access_permission(self):
         pass
 
@@ -393,6 +547,10 @@ class CustomerTest(TestCase):
         self.assertContains(response, text="Customer already exists in database")
 
     def test_new_customer_displays(self):
+        """
+        The main_concern column to the Customer model was added after the `add_customer` button was removed.
+        The edit main_concern column is tested in `test_customer_edit_main_concern`.
+        """
         therapist = UserProfileFactory(external_id="42").user
         self.client.force_login(therapist)
         data = {
@@ -404,6 +562,7 @@ class CustomerTest(TestCase):
             "salon_choice": "na",
             "frequency": "na",
             "referral": "na",
+            "main_concern": "car accident",
         }
 
         response = self.client.post(reverse("customer_add"), data=data, follow=True)
@@ -414,6 +573,7 @@ class CustomerTest(TestCase):
             response, reverse("customer", kwargs={"customer_pk": customer.pk})
         )
         self.assertContains(response, text="Bozo")
+        self.assertContains(response, text="car accident")
 
     def test_customer_edit(self):
         therapist = UserFactory()
@@ -455,6 +615,46 @@ class CustomerTest(TestCase):
         # assert from db that the occupation is programmer
         customer.refresh_from_db()
         self.assertEqual(customer.occupation, "programmer")
+
+    def test_customer_edit_main_concern(self):
+        therapist = UserFactory()
+        self.client.force_login(therapist)
+        customer = CustomerFactory(main_concern="car accident")
+
+        data = {
+            "name": customer.name,
+            "surname": customer.surname,
+            "email": customer.email,
+            "phone": customer.phone,
+            "occupation": customer.occupation,
+            "salon_choice": customer.salon_choice,
+            "frequency": customer.frequency,
+            "referral": customer.referral,
+            "main_concern": customer.main_concern,
+        }
+
+        # create customer
+        response = self.client.get(
+            reverse("customer_edit", kwargs={"customer_pk": customer.pk})
+        )
+        self.assertContains(response, text="car accident")
+
+        # edit customer
+        data["main_concern"] = "bike accident"
+        response = self.client.post(
+            reverse("customer_edit", kwargs={"customer_pk": customer.pk}), data=data
+        )
+
+        # assert that the main_concern changed to "bike accident"
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, reverse("customer", kwargs={"customer_pk": customer.pk})
+        )
+        response = self.client.get(response.url)
+        self.assertContains(response, text="bike accident")
+        # assert from db that the main concern is "bike accident"
+        customer.refresh_from_db()
+        self.assertEqual(customer.main_concern, "bike accident")
 
 
 @override_settings(LANGUAGE_CODE="en-US")
@@ -541,6 +741,59 @@ class MassageTest(TestCase):
         )
         response = self.client.get(response.url)
         self.assertContains(response, text="PAIN")
+
+    def test_edit_main_concern_in_edit_massage_view(self):
+        therapist = UserProfileFactory(user__first_name="Jane").user
+        self.client.force_login(therapist)
+        customer = CustomerFactory(name="Brian", main_concern="car accident")
+
+        massage = MassageFactory(
+            therapist=therapist,
+            customer=customer,
+            start=datetime.datetime(2023, 4, 6, 16, 0, 0).astimezone(tz=tz),
+            status="approved",
+        )
+
+        data = {
+            "customer": customer.id,
+            "therapist": therapist.id,
+            "start": massage.start,
+            "reason_for_visit": "pain",
+            "kind": "therapeutic",
+            "notes": "continue massage at home",
+            "next_visit": "in 14 days",
+            "recommendations": "",
+            "personal_notes": "",
+            "duration": 30,
+            "amount": 7,
+            "discount": 30,
+            "discount_reason": "friend",
+            "repeat_visit": "on",
+            "main_concern": customer.main_concern,
+        }
+
+        response = self.client.post(
+            reverse("massage_add", kwargs={"customer_pk": customer.pk}), data=data
+        )
+        self.assertEqual(response.status_code, 302)
+
+        massage = Massage.objects.latest("id")
+
+        response = self.client.get(reverse("massage_edit", kwargs={"pk": massage.pk}))
+        self.assertContains(response, "2023-04-06 16:00:00")
+        self.assertContains(response, text="car accident")
+        data["main_concern"] = "bike accident"
+
+        response = self.client.post(
+            reverse("massage_edit", kwargs={"pk": massage.pk}), data=data
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, reverse("massage_detail", kwargs={"pk": massage.pk})
+        )
+        response = self.client.get(response.url)
+        self.assertContains(response, text="bike accident")
 
     def test_discount_reason_not_filled(self):
         therapist = UserFactory()

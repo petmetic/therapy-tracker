@@ -45,6 +45,7 @@ class CustomerFactory(factory.django.DjangoModelFactory):
     email = factory.Faker("email")
     phone = factory.Faker("phone_number")
     occupation = factory.Faker("job")
+    main_concern = factory.Faker("sentence")
     previous_massage = factory.Faker("pybool")
     salon_choice = factory.Faker("sentence")
     frequency = factory.Faker("sentence")
@@ -58,8 +59,8 @@ class MassageFactory(factory.django.DjangoModelFactory):
 
     customer = factory.SubFactory(CustomerFactory)
     therapist = factory.SubFactory(UserFactory)
-    start = factory.Faker("date_time", tzinfo=tz)  # "%Y-%m-%d %H:%M:%S")
-    end = factory.Faker("date_time", tzinfo=tz)
+    start = factory.Faker("date_time", tzinfo=tz)  # "%Y-%m-%d %H:%M:%S"
+    end = factory.Faker("date_time", tzinfo=tz)  # "%Y-%m-%d %H:%M:%S"
     reason_for_visit = factory.Faker("sentence")
     kind = factory.Faker("sentences")
     notes = factory.Faker("sentences")
