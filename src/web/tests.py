@@ -413,6 +413,7 @@ class CustomerTest(TestCase):
         self.assertRedirects(
             response, reverse("customer", kwargs={"customer_pk": customer.pk})
         )
+        # name of customer displays
         self.assertContains(response, text="Bozo")
 
     def test_customer_edit(self):

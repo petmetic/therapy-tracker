@@ -60,7 +60,7 @@ def therapist_import(data: dict):
 
         # check if external_id exists
         if User.objects.filter(userprofile__external_id=external_id):
-            user_profile = UserProfile.objects.get(external_id=external_id)
+            user_profile = UserProfile.objects.filter(external_id=external_id)[0]
             changed = False
             user = user_profile.user
 
