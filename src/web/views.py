@@ -22,18 +22,26 @@ from .forms import (
 def index(request):
     therapist = request.user
     today = datetime.datetime.now()
-    massages = Massage.objects.filter(
-        therapist=therapist,
-        start__year=today.year,
-        start__month=today.month,
-        start__day=today.day,
-        status="approved",
-    ).order_by("start")
+    massages = (
+        Massage.objects.filter(
+            therapist=therapist,
+            start__year=today.year,
+            start__month=today.month,
+            start__day=today.day,
+            status="approved",
+        )
+        .select_related("customer")
+        .order_by("start")
+    )
 
     return render(
         request,
         "web/index.html",
-        {"therapist": therapist, "massages": massages, "today": today},
+        {
+            "therapist": therapist,
+            "massages": massages,
+            "today": today,
+        },
     )
 
 
@@ -149,17 +157,25 @@ def massage_edit(request, pk: int):
                 "massage": massage,
                 "therapist": request.user,
                 "customer": customer,
+                "main_concern": customer.main_concern,
             },
         )
 
         if form.is_valid():
             massage = form.save()
+            customer.main_concern = form.cleaned_data.get("main_concern")
+            customer.save()
             return redirect(reverse("massage_detail", kwargs={"pk": massage.pk}))
         else:
             print(form.errors)
     else:
         form = MassageEditForm(
-            instance=massage, initial={"customer": customer, "therapist": request.user}
+            instance=massage,
+            initial={
+                "customer": customer,
+                "therapist": request.user,
+                "main_concern": customer.main_concern,
+            },
         )
     return render(
         request,

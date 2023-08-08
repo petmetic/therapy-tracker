@@ -292,6 +292,18 @@ class MassageEditForm(ModelForm):
         ),
     )
 
+    main_concern = forms.CharField(
+        label=_("Main concern"),
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "placeholder": _("car accident"),
+            }
+        ),
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -336,6 +348,7 @@ class CustomerForm(ModelForm):
         label_suffix="",
         widget=forms.TextInput(attrs={"class": "form-control", "type": "text"}),
     )
+
     previous_massage = forms.BooleanField(
         label=_("Previous massage"),
         label_suffix="",
@@ -377,6 +390,18 @@ class CustomerForm(ModelForm):
         ),
     )
 
+    main_concern = forms.CharField(
+        label=_("Main concern"),
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "placeholder": _("car accident"),
+            }
+        ),
+    )
+
     class Meta:
         model = Customer
         fields = [
@@ -389,6 +414,7 @@ class CustomerForm(ModelForm):
             "salon_choice",
             "frequency",
             "referral",
+            "main_concern",
         ]
 
     def clean(self):
@@ -451,6 +477,7 @@ class CustomerEditForm(ModelForm):
     salon_choice = forms.CharField(
         label=_("Why did they choose our salon?"),
         required=False,
+        label_suffix="",
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
@@ -463,6 +490,7 @@ class CustomerEditForm(ModelForm):
     frequency = forms.CharField(
         label=_("How frequently do they visit a massage salon?"),
         required=False,
+        label_suffix="",
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
@@ -475,11 +503,25 @@ class CustomerEditForm(ModelForm):
     referral = forms.CharField(
         label=_("Where did the customer find us?"),
         required=False,
+        label_suffix="",
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
                 "type": "text",
                 "placeholder": _("friend recommendations"),
+            }
+        ),
+    )
+
+    main_concern = forms.CharField(
+        label=_("Main concern"),
+        required=False,
+        label_suffix="",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "text",
+                "placeholder": _("car accident"),
             }
         ),
     )
@@ -496,6 +538,7 @@ class CustomerEditForm(ModelForm):
             "salon_choice",
             "frequency",
             "referral",
+            "main_concern",
         ]
 
 
