@@ -1,16 +1,17 @@
 from django.core.management.base import BaseCommand
 from ...models import Customer, User, Massage, Service
-import requests
-import re
-from django.conf import settings
-import json
-from ...utility import (
+from ...wordpress_api_calls import (
+    get_therapist_service_data_from_wp,
+    get_massage_customer_data_from_wp,
+    get_wp_credentials,
+)
+from ...importer import (
     therapist_import,
     services_import,
     customer_import,
     massage_import,
 )
-from datetime import datetime, timedelta
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
@@ -20,40 +21,13 @@ class Command(BaseCommand):
     help = "Help to do sync"
 
     def handle(self, *args, **options):
-        regex = r"var\s+wpAmeliaNonce\s*=\s*['\"]?([a-fA-F0-9]+)['\"]?"
+        nonce, session = get_wp_credentials()
 
-        with requests.Session() as s:
-            headers1 = {"Cookie": "wordpress_test_cookie=WP Cookie check"}
-            datas = {
-                "log": settings.WP_USER,
-                "pwd": settings.WP_PASSWORD,
-                "wp-submit": "Log In",
-                "redirect_to": settings.WP_ADMIN,
-                "testcookie": "1",
-            }
-            s.post(settings.WP_LOGIN, headers=headers1, data=datas)
-            resp = s.get(settings.WP_ADMIN)
+        data_entities = get_therapist_service_data_from_wp(nonce=nonce, session=session)
 
-            match = re.search(regex, resp.text)
-            if not match:
-                print("No nonce found")
-                return
-            nonce = match.group(1)
-            entities_json = s.get(settings.WP_URL_ENTITIES.format(nonce=nonce)).text
-            data_entities = json.loads(entities_json)
-
-            # The sync with WP is meant to sync for a day before and up to 7 days in the future from sync date
-            date_sync_before = (datetime.today() - timedelta(days=1)).strftime(
-                "%Y-%m-%d"
-            )
-            date_sync_week = (datetime.today() + timedelta(days=7)).strftime("%Y-%m-%d")
-            url = settings.WP_URL_APPOINTMENTS.format(
-                nonce=nonce,
-                date_sync_before=date_sync_before,
-                date_sync_week=date_sync_week,
-            )
-            appointments_json = s.get(url).text
-            data_appointments = json.loads(appointments_json)
+        data_appointments = get_massage_customer_data_from_wp(
+            day_past=1, day_future=7, nonce=nonce, session=session
+        )
 
         # import services, therapist
         therapist_import(data_entities)
@@ -80,4 +54,4 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS("Successfully synced massage appointments")
         )
-        logger.info(f"Successfully synced appointments at {sync_time}")
+        logger.info(f"Successfully synced massage appointments at {sync_time}")

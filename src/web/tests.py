@@ -14,7 +14,7 @@ from .factories import (
     ServiceFactory,
 )
 from .models import Massage, Customer, User, Service
-from .utility import (
+from .importer import (
     therapist_import,
     services_import,
     customer_import,
@@ -1302,14 +1302,14 @@ class ImportDataTest(TestCase):
         )
 
 
-class LogDatatest(TestCase):
+class LogDataTest(TestCase):
     def test_custom_logger(self):
         customer = CustomerFactory()
         user = UserProfileFactory().user
         user2 = UserProfileFactory().user
         service = ServiceFactory()
 
-        with self.assertLogs("web.utility", level="INFO") as cm:
+        with self.assertLogs("web.importer", level="INFO") as cm:
             massage, created = update_or_create_w_logging(
                 Massage,
                 external_id=55,
@@ -1323,7 +1323,7 @@ class LogDatatest(TestCase):
 
             self.assertIn("Imported new", cm.output[0])
 
-        with self.assertLogs("web.utility", level="INFO") as cm:
+        with self.assertLogs("web.importer", level="INFO") as cm:
             massage, created = update_or_create_w_logging(
                 Massage,
                 external_id=55,
@@ -1334,5 +1334,8 @@ class LogDatatest(TestCase):
                     "therapist": user2,
                 },
             )
-            print(cm.output)
             self.assertIn("approved => canceled", cm.output[1])
+
+
+class WordpressApiCallTest(TestCase):
+    pass
