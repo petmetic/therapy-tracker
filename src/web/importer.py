@@ -38,13 +38,6 @@ def update_or_create_w_logging(model, external_id, defaults):
             logger.info(
                 f"name: {old_model}, external id:{old_model.external_id}\n{kind}:\n\t{field}: {change[0]} => {change[1]}\n"
             )
-        # logger.info(
-        #     f"These changes were made to old model with external id: {old_model.external_id}\n: {difference}\n"
-        # )
-    # else:
-    #     logger.info(f"No changes were made when syncing {model_name}.\n")
-
-    # logger.info(f"Successfully synced {model_name} at {sync_time}.")
 
     return model, created
 
