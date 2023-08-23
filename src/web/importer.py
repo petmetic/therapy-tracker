@@ -198,3 +198,61 @@ def massage_import(data: dict):
                 )
 
     return massage
+
+
+def massage_appointments(data: dict):
+    """
+    Get a list of external_id from the wodrpess API call
+    """
+    massages = data["data"]["appointments"]
+    wordpress_api_db = []
+
+    for raw_appointment in massages.values():
+        individual_appointments = raw_appointment["appointments"]
+
+        for appointment in individual_appointments:
+            for app in appointment["bookings"]:
+                external_id_massage = app["appointmentId"]  # external_id
+                # create a wordpress_db to check against local_db
+                wordpress_api_db.append(external_id_massage)
+
+    return wordpress_api_db
+
+
+def massage_date_comparison_with_wp_db(wordpress_api_db: list):
+    """
+    Checking the db of massages for a day in past and week in future against the wordpress_api_ db from the Wordpress API.
+    """
+    date_sync_before = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+    date_sync_week = (datetime.today() + timedelta(days=7)).strftime("%Y-%m-%d")
+
+    local_db = set(
+        Massage.objects.filter(
+            data_field__range=(date_sync_before, date_sync_week)
+        ).values_list("external_id", flat=True)
+    )
+    wordpress_api_db = set(wordpress_api_db)
+
+    only_in_local_db = sorted(local_db.difference(wordpress_api_db))
+    only_in_wordpress_db = sorted(wordpress_api_db.difference(local_db))
+
+    return only_in_local_db, only_in_wordpress_db
+
+
+def only_in_wordpress_db_import(only_in_wordpress_db: list, data: dict):
+    """
+    Import massages that are new appointments and are not already in local db.
+    """
+    for external_id in only_in_wordpress_db:
+        massage_import(data)
+
+    return massage
+
+
+def only_in_local_db_import(only_in_local_db):
+    for external_id in only_in_local_db:
+        data = get_single_appointment_data_from_wp(
+            nonce=nonce, session=session, wp_id=external_id
+        )
+
+        massages = data["data"]["appointments"]

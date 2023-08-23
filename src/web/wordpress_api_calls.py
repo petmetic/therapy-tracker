@@ -54,3 +54,11 @@ def get_therapist_service_data_from_wp(nonce, session):
     wp_therapist_service = json.loads(wp_json)
 
     return wp_therapist_service
+
+
+def get_single_appointment_data_from_wp(nonce, session, external_id):
+    url = settings.WP_URL_SINGLE_APPOINTMENT.format(nonce=nonce, wp_id=external_id)
+    wp_json = session.get(url).text
+    wp_therapist_service = json.loads(wp_json)
+
+    return wp_therapist_service
