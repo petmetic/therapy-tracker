@@ -1,8 +1,9 @@
 from .models import User, UserProfile, Service, Massage, Customer
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 import dictdiffer
 import logging
+from .wordpress_api_calls import get_single_appointment_data_from_wp
 
 logger = logging.getLogger(__name__)
 
@@ -200,7 +201,48 @@ def massage_import(data: dict):
     return massage
 
 
-def massage_appointments(data: dict):
+def single_massage_import(data: dict):
+    massages = data["data"]["appointment"]
+    tz = pytz.timezone("Europe/Ljubljana")
+
+    external_id_massage = massages["id"]
+    service = massages["serviceId"]
+    service_massage = Service.objects.get(
+        external_id=service,
+    )
+    massage_start = datetime.strptime(
+        massages["bookingStart"], "%Y-%m-%d %H:%M:%S"
+    ).astimezone(tz=tz)
+    massage_end = datetime.strptime(
+        massages["bookingEnd"], "%Y-%m-%d %H:%M:%S"
+    ).astimezone(tz=tz)
+    therapist = User.objects.filter(
+        userprofile__external_id=massages["providerId"]
+    ).first()
+    status = massages["status"]
+
+    for app in massages["bookings"]:
+        external_id_customer = app["customerId"]
+        customer = Customer.objects.get(
+            external_id=external_id_customer,
+        )
+
+    massage, created = update_or_create_w_logging(
+        Massage,
+        external_id=external_id_massage,
+        defaults={
+            "customer": customer,
+            "status": status,
+            "service": service_massage,
+            "therapist": therapist,
+            "start": massage_start,
+            "end": massage_end,
+        },
+    )
+    return massage
+
+
+def massage_appointments(data: dict) -> list:
     """
     Get a list of external_id from the wodrpess API call
     """
@@ -219,16 +261,19 @@ def massage_appointments(data: dict):
     return wordpress_api_db
 
 
-def massage_date_comparison_with_wp_db(wordpress_api_db: list):
+def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> list:
     """
     Checking the db of massages for a day in past and week in future against the wordpress_api_ db from the Wordpress API.
     """
+
+    # because start__range=(date_sync_before, date_sync_week) is a given as range,
+    # it is checked for 7 days in future + 1 day
     date_sync_before = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
-    date_sync_week = (datetime.today() + timedelta(days=7)).strftime("%Y-%m-%d")
+    date_sync_week = (datetime.today() + timedelta(days=8)).strftime("%Y-%m-%d")
 
     local_db = set(
         Massage.objects.filter(
-            data_field__range=(date_sync_before, date_sync_week)
+            start__range=(date_sync_before, date_sync_week)
         ).values_list("external_id", flat=True)
     )
     wordpress_api_db = set(wordpress_api_db)
@@ -239,20 +284,9 @@ def massage_date_comparison_with_wp_db(wordpress_api_db: list):
     return only_in_local_db, only_in_wordpress_db
 
 
-def only_in_wordpress_db_import(only_in_wordpress_db: list, data: dict):
-    """
-    Import massages that are new appointments and are not already in local db.
-    """
-    for external_id in only_in_wordpress_db:
-        massage_import(data)
-
-    return massage
-
-
-def only_in_local_db_import(only_in_local_db):
+def only_in_local_db_import(only_in_local_db: list, nonce, session):
     for external_id in only_in_local_db:
         data = get_single_appointment_data_from_wp(
-            nonce=nonce, session=session, wp_id=external_id
+            nonce=nonce, session=session, id=external_id
         )
-
-        massages = data["data"]["appointments"]
+        single_massage_import(data)

@@ -9,9 +9,8 @@ from ...importer import (
     therapist_import,
     services_import,
     customer_import,
-    # massage_import,
     massage_appointments,
-    only_in_wordpress_db_import,
+    massage_import,
     only_in_local_db_import,
     massage_date_comparison_with_wp_db,
 )
@@ -30,50 +29,80 @@ class Command(BaseCommand):
         # API call for therapists and services
         data_entities = get_therapist_service_data_from_wp(nonce=nonce, session=session)
         # API call for customers and massages
-
         data_appointments = get_massage_customer_data_from_wp(
             day_past=1, day_future=7, nonce=nonce, session=session
         )
 
-        # import services, therapist
-        therapist_import(data_entities)
-        services_import(data_entities)
-
         sync_time = datetime.now()
-        self.stdout.write(str(Service.objects.all().count()))
-
-        self.stdout.write(self.style.SUCCESS("Successfully synced services"))
-        logger.info(f"Successfully synced services at {sync_time}")
-
+        # import therapist
+        logger.info(f"NEW SYNC at {sync_time}")
+        therapist_import(data_entities)
+        self.stdout.write(self.style.SUCCESS("Successfully synced therapists:"))
         self.stdout.write(str(User.objects.all().count()))
-        self.stdout.write(self.style.SUCCESS("Successfully synced therapists"))
         logger.info(f"Successfully synced therapists at {sync_time}")
+
+        # import services
+        services_import(data_entities)
+        self.stdout.write(self.style.SUCCESS("Successfully synced services:"))
+        self.stdout.write(str(Service.objects.all().count()))
+        logger.info(f"Successfully synced services at {sync_time}")
 
         # import customers
         customer_import(data_appointments)
-        # import appointments
+        self.stdout.write(self.style.SUCCESS("Successfully synced customers:"))
+        self.stdout.write(str(Customer.objects.all().count()))
+        logger.info(f"Successfully synced customers at {sync_time}")
+
+        # import massages
+        # import all appointments --> also the ones with changes (canceled ect.)
+        massage_import(data_appointments)
+        self.stdout.write(
+            self.style.SUCCESS("Successfully synced massages from wp_db:")
+        )
+        self.stdout.write(str(Massage.objects.all().count()))
+        logger.info(f"Successfully synced massages from wp_db at {sync_time}")
+
+        # check wp IDs against local IDs
+        # import appointment IDs
         massage_appointments_in_wp_db = massage_appointments(data_appointments)
+        self.stdout.write(
+            self.style.SUCCESS(
+                "Successfully retrieved list of massage_appointments_in_wp_db:"
+            )
+        )
+        self.stdout.write(str(len(massage_appointments_in_wp_db)))
+        logger.info(
+            f"Successfully retrieved list of massage_appointments_in_wp_db at {sync_time}"
+        )
+
         # check against external_id in local_db
         only_in_local_db, only_in_wordpress_db = massage_date_comparison_with_wp_db(
             massage_appointments_in_wp_db
         )
-        # import appointments that have no external_id in local_db
-        only_in_wordpress_db_import(only_in_wordpress_db, data_appointments)
-        #
-        for external_id in only_in_local_db:
-            data_appointments = get_single_appointment_data_from_wp(
-                nonce=nonce, session=session, wp_id=external_id
-            )
-
-        """
-        massage_import(data_appointments)
-        """
-
-        self.stdout.write(str(Customer.objects.all().count()))
-        self.stdout.write(self.style.SUCCESS("Successfully synced customers"))
-        logger.info(f"Successfully synced customers at {sync_time}")
-        self.stdout.write(str(Massage.objects.all().count()))
         self.stdout.write(
-            self.style.SUCCESS("Successfully synced massage appointments")
+            self.style.SUCCESS(
+                "Successfully successfully checked list of wp_id to local_db:"
+            )
         )
-        logger.info(f"Successfully synced massage appointments at {sync_time}")
+        self.stdout.write(self.style.SUCCESS("\tNumber of massages in only local_db:"))
+        self.stdout.write(str(len(only_in_local_db)))
+        self.stdout.write(self.style.SUCCESS("\tNumber of massages in only wp_db:"))
+        self.stdout.write(str(len(only_in_wordpress_db)))
+        logger.info(f"successfully checked list of wp_id to local_db at {sync_time}")
+
+        # import single_appointments that have only external_id in local_db
+        only_in_local_db_import(only_in_local_db, nonce, session)
+        self.stdout.write(
+            self.style.SUCCESS(
+                "Successfully checked and synced massages from local_db that are not in wp_db:"
+            )
+        )
+        logger.info(
+            f"Successfully checked and synced massages from local_db that are not in wp_db: at {sync_time}"
+        )
+
+        self.stdout.write(
+            self.style.SUCCESS("Successfully synced massage appointments:")
+        )
+        self.stdout.write(str(Massage.objects.all().count()))
+        logger.info(f"Successfully synced all massage appointments at {sync_time}")
