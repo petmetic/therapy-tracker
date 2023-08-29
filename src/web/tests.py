@@ -1304,6 +1304,7 @@ class ImportDataTest(TestCase):
             massage.start.astimezone(tz).isoformat(), expected_date.isoformat()
         )
 
+    # test for PR: massages that are rescheduled to future dates longer than 7 days should not be shown#129 #130
     def test_single_massage_import(self):
         therapist = UserProfileFactory()
         massage1 = MassageFactory.build(
@@ -1465,6 +1466,7 @@ class ImportDataTest(TestCase):
         massage.refresh_from_db()
         self.assertEqual(massage.start, expected_date)
 
+    # test for PR: massages that are rescheduled to future dates longer than 7 days should not be shown#129 #130
     def test_get_massage_appointments(self):
         """
         Get a list of external_id from the wodrpess API call
@@ -1612,6 +1614,7 @@ class ImportDataTest(TestCase):
         massage_appointments_in_wp_db = massage_appointments(data)
         self.assertEqual(massage_appointments_in_wp_db, [5, 7, 8])
 
+    # test for PR: massages that are rescheduled to future dates longer than 7 days should not be shown#129 #130
     @freeze_time("2023-04-06 13:21:34", tz_offset=2)
     def test_compare_massage_date_with_wp_db(self):
         therapist1 = UserProfileFactory(user__first_name="Jane").user
