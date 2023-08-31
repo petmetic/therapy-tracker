@@ -304,6 +304,8 @@ class GeneralTest(TestCase):
             },
         }
 
+        customer_import(data)
+        massage_import(data)
         response = self.client.get("/")
 
         self.assertEqual(response.status_code, 200)
