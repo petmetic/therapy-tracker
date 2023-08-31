@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import pytz
 import dictdiffer
 import logging
-from .wordpress_api_calls import get_single_appointment_data_from_wp
+
 
 logger = logging.getLogger(__name__)
 
@@ -242,25 +242,6 @@ def single_massage_import(data: dict):
     return massage
 
 
-def massage_appointments(data: dict) -> list:
-    """
-    Get a list of external_id from the wodrpess API call
-    """
-    massages = data["data"]["appointments"]
-    wordpress_api_db = []
-
-    for raw_appointment in massages.values():
-        individual_appointments = raw_appointment["appointments"]
-
-        for appointment in individual_appointments:
-            for app in appointment["bookings"]:
-                external_id_massage = app["appointmentId"]  # external_id
-                # create a wordpress_db to check against local_db
-                wordpress_api_db.append(external_id_massage)
-
-    return wordpress_api_db
-
-
 def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> list:
     """
     Checking the db of massages for a day in past and week in future against the wordpress_api_ db from the Wordpress API.
@@ -282,11 +263,3 @@ def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> list:
     only_in_wordpress_db = sorted(wordpress_api_db.difference(local_db))
 
     return only_in_local_db, only_in_wordpress_db
-
-
-def only_in_local_db_import(only_in_local_db: list, nonce, session):
-    for external_id in only_in_local_db:
-        data = get_single_appointment_data_from_wp(
-            nonce=nonce, session=session, id=external_id
-        )
-        single_massage_import(data)
