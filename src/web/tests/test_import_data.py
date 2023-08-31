@@ -736,7 +736,7 @@ class ImportDataTest(TestCase):
         customer3 = CustomerFactory(name="David")
         customer4 = CustomerFactory(name="Sam")
 
-        massage1 = MassageFactory(
+        MassageFactory(
             therapist=therapist1,
             customer=customer1,
             start=datetime.datetime(2023, 4, 6, 16, 0, 0).astimezone(tz=tz),
