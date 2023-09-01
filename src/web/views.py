@@ -184,6 +184,14 @@ def massage_edit(request, pk: int):
     )
 
 
+@login_required
+def report(request):
+    return render(
+        request,
+        "web/report.html",
+    )
+
+
 def custom_logout(request):
     logout(request)
     return redirect("/")

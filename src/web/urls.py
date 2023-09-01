@@ -16,5 +16,6 @@ urlpatterns = [
     path("massage_list/<int:pk>/edit/", views.massage_edit, name="massage_edit"),
     path("massage_list/<int:customer_pk>/add/", views.massage_add, name="massage_add"),
     path("logout", views.custom_logout, name="logout"),
+    path("report", views.report, name="report"),
     path("", views.index, name="index"),
 ]
