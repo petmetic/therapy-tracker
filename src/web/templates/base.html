@@ -29,7 +29,7 @@
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="{% url 'index' %}">
                 {% translate "Today's Appointments" %}</a>
             {#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Search</a>#}
-            {% if request.user.username == "info@alenka-masaze.si" %}
+            {% if request.user.is_staff %}
                 <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
                    href="{% url 'report' %}">{% translate "Reports" %}</a>
             {% endif %}

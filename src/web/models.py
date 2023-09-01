@@ -74,3 +74,17 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"external id: {self.external_id}, user: {self.user}"
+
+
+class Billable(models.Model):
+    therapist = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    service = models.ForeignKey(
+        "Service", on_delete=models.CASCADE, default="", null=True
+    )
+    amount = models.IntegerField(default=0, null=True)
+
+    def __str__(self):
+        return f"{self.therapist} {self.service} {self.amount}"

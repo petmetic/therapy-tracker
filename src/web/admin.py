@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Customer, Massage, Service, UserProfile
+from .models import Customer, Massage, Service, UserProfile, Billable
 
 admin.site.register(UserProfile)
 
@@ -28,3 +28,8 @@ class MassageAdmin(admin.ModelAdmin):
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_filter = ["name", "price"]
+
+
+@admin.register(Billable)
+class BillableAdmin(admin.ModelAdmin):
+    list_filter = ["therapist", "service"]

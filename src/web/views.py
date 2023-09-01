@@ -1,4 +1,5 @@
 import datetime
+import pytz
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -7,8 +8,9 @@ from django.urls import reverse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
+from django.contrib.admin.views.decorators import staff_member_required
 
-from .models import Customer, Massage, UserProfile
+from .models import Customer, Massage
 
 from .forms import (
     MassageForm,
@@ -17,6 +19,8 @@ from .forms import (
     CustomerEditForm,
     CustomAuthenticationForm,
 )
+
+tz = pytz.timezone("Europe/Ljubljana")
 
 
 @login_required
@@ -185,8 +189,10 @@ def massage_edit(request, pk: int):
     )
 
 
-@login_required
+@staff_member_required
 def report(request):
+    if not request.user.is_superuser():
+        raise PermissionDenied
     therapists = (
         User.objects.all()
         .exclude(first_name="Meta")
@@ -196,10 +202,19 @@ def report(request):
     return render(request, "web/report.html", {"therapist_list": therapists})
 
 
-@login_required
+@staff_member_required
 def report_therapist(request, pk: int):
-    therapist = get_object_or_404(UserProfile, pk=pk)
-    return render(request, "web/report_therapist.html", {"therapist": therapist})
+    therapist = get_object_or_404(User, pk=pk)
+    massages = Massage.objects.filter(therapist=therapist)
+    amount = 0
+    for massage in massages:
+        amount += massage.amount
+
+    return render(
+        request,
+        "web/report_therapist.html",
+        {"therapist": therapist, "massages": massages, "amount": amount},
+    )
 
 
 def custom_logout(request):
