@@ -29,12 +29,13 @@
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="{% url 'index' %}">
                 {% translate "Today's Appointments" %}</a>
             {#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Search</a>#}
-            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
-               href="{% url 'logout' %}">{% translate "Logout" %}: {{ request.user.first_name }}</a>
             {% if request.user.username == "info@alenka-masaze.si" %}
                 <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
                    href="{% url 'report' %}">{% translate "Reports" %}</a>
             {% endif %}
+            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
+               href="{% url 'logout' %}">{% translate "Logout" %}: {{ request.user.first_name }}</a>
+
         </ul>
     {% endif %}
 </header>

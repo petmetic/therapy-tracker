@@ -6,8 +6,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.models import User
 
-from .models import Customer, Massage
+from .models import Customer, Massage, UserProfile
 
 from .forms import (
     MassageForm,
@@ -186,10 +187,19 @@ def massage_edit(request, pk: int):
 
 @login_required
 def report(request):
-    return render(
-        request,
-        "web/report.html",
+    therapists = (
+        User.objects.all()
+        .exclude(first_name="Meta")
+        .exclude(username="meta")
+        .order_by("first_name")
     )
+    return render(request, "web/report.html", {"therapist_list": therapists})
+
+
+@login_required
+def report_therapist(request, pk: int):
+    therapist = get_object_or_404(UserProfile, pk=pk)
+    return render(request, "web/report_therapist.html", {"therapist": therapist})
 
 
 def custom_logout(request):
