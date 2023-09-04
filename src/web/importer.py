@@ -4,7 +4,6 @@ import pytz
 import dictdiffer
 import logging
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -247,10 +246,11 @@ def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> list:
     Checking the db of massages for a day in past and week in future against the wordpress_api_ db from the Wordpress API.
     """
 
+    tz = pytz.timezone("Europe/Ljubljana")
     # because start__range=(date_sync_before, date_sync_week) is a given as range,
     # it is checked for 7 days in future + 1 day
-    date_sync_before = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
-    date_sync_week = (datetime.today() + timedelta(days=8)).strftime("%Y-%m-%d")
+    date_sync_before = (datetime.today() - timedelta(days=1)).astimezone(tz=tz)
+    date_sync_week = (datetime.today() + timedelta(days=8)).astimezone(tz=tz)
 
     local_db = set(
         Massage.objects.filter(
