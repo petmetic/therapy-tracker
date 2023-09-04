@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-04 15:25+0200\n"
-"PO-Revision-Date: 2023-09-04 15:25+0200\n"
+"POT-Creation-Date: 2023-09-04 18:59+0200\n"
+"PO-Revision-Date: 2023-09-04 19:00+0200\n"
 "Last-Translator: meta <petmetic@gmail.com>\n"
 "Language-Team: \n"
 "Language: sl\n"
@@ -373,25 +373,33 @@ msgstr "Poročilo"
 msgid "Breakdown of Hours"
 msgstr "Podatki za obračun"
 
-#: web/templates/web/report_therapist.html:14
+#: web/templates/web/report_therapist.html:10
+msgid "Therapist"
+msgstr "Maser"
+
+#: web/templates/web/report_therapist.html:15
 msgid "Customer"
 msgstr "Stranka"
 
-#: web/templates/web/report_therapist.html:17
+#: web/templates/web/report_therapist.html:16
 msgid "Service"
 msgstr "Masaža"
 
-#: web/templates/web/report_therapist.html:20
+#: web/templates/web/report_therapist.html:17
 msgid "Amount Paid"
 msgstr "Plačano"
 
-#: web/templates/web/report_therapist.html:23
+#: web/templates/web/report_therapist.html:18
 msgid "Amount Due to Therapist"
 msgstr "Za plačilo"
 
-#: web/templates/web/report_therapist.html:45
+#: web/templates/web/report_therapist.html:33
 msgid "To be paid in total to therapist"
-msgstr "Za izplačilo maserju"
+msgstr "Za izplačilo skupaj"
+
+#: web/templates/web/report_therapist.html:37
+msgid "Download"
+msgstr ""
 
 #~ msgid "Name and Surname of Customer"
 #~ msgstr "Ime in priimek stranke"
