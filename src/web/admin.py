@@ -22,6 +22,8 @@ class MassageAdmin(admin.ModelAdmin):
         "service",
         "start",
         "external_id",
+        "added",
+        "changed",
     ]
 
 

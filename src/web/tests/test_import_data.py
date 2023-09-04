@@ -1,5 +1,6 @@
 import datetime
 import pytz
+from freezegun import freeze_time
 
 from django.test import TestCase
 
@@ -15,7 +16,10 @@ from ..importer import (
     services_import,
     customer_import,
     massage_import,
+    single_massage_import,
+    massage_date_comparison_with_wp_db,
 )
+from ..wordpress_api_calls import get_massage_appointments
 
 tz = pytz.timezone("Europe/Ljubljana")
 
@@ -413,3 +417,478 @@ class ImportDataTest(TestCase):
         self.assertEqual(
             massage.start.astimezone(tz).isoformat(), expected_date.isoformat()
         )
+
+    def test_single_massage_import(self):
+        therapist = UserProfileFactory()
+        massage1 = MassageFactory.build(
+            external_id=30, start=datetime.datetime(2023, 5, 5, 17, 0, 0)
+        )
+        massage2 = MassageFactory.build(
+            external_id=270, start=datetime.datetime(2023, 4, 7, 9, 0, 0)
+        )
+        customer1 = CustomerFactory.build()
+        customer2 = CustomerFactory.build()
+        service1 = ServiceFactory()
+        service2 = ServiceFactory()
+
+        data1 = {
+            "message": "Successfully retrieved appointments",
+            "data": {
+                "appointments": {
+                    "2023-06-07": {
+                        "date": "2023-06-07",
+                        "appointments": [
+                            {
+                                "id": 576,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer1.external_id,
+                                            "firstName": customer1.name,
+                                            "lastName": customer1.surname,
+                                            "email": customer1.email,
+                                            "phone": customer1.phone,
+                                        },
+                                        "status": massage1.status,
+                                        "price": service1.price,
+                                        "appointmentId": massage1.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": massage1.status,
+                                "serviceId": service1.external_id,
+                                "providerId": therapist.external_id,
+                                "bookingStart": massage1.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage1.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                            },
+                        ],
+                    },
+                    "2023-05-05": {
+                        "date": "2023-05-05",
+                        "appointments": [
+                            {
+                                "id": 555,
+                                "bookings": [
+                                    {
+                                        "id": 270,
+                                        "customerId": 41,
+                                        "customer": {
+                                            "id": customer2.external_id,
+                                            "firstName": customer2.name,
+                                            "lastName": customer2.surname,
+                                            "birthday": None,
+                                            "email": customer2.email,
+                                            "phone": customer2.phone,
+                                        },
+                                        "status": massage2.status,
+                                        "price": service2.price,
+                                        "appointmentId": massage2.external_id,
+                                        "persons": 1,
+                                        "duration": 5400,
+                                        "created": "2023-04-4 09:20:20",
+                                    }
+                                ],
+                                "status": massage2.status,
+                                "serviceId": service2.external_id,
+                                "providerId": therapist.external_id,
+                                "bookingStart": massage2.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage2.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        }
+
+        # changed massage date of massage2 from 2023-04-7 at 9:00 to 2023-10-7 at 10:00
+        data2 = {
+            "message": "Successfully retrieved appointment",
+            "data": {
+                "appointment": {
+                    "id": massage2.external_id,
+                    "bookings": [
+                        {
+                            "id": 691,
+                            "customerId": customer2.external_id,
+                            "customer": None,
+                            "status": massage2.status,
+                            "price": service2.price,
+                            "appointmentId": massage2.external_id,
+                            "persons": 1,
+                            "duration": 5400,
+                            "created": "2023-04-4 09:20:20",
+                        }
+                    ],
+                    "status": massage2.status,
+                    "serviceId": service2.external_id,
+                    "providerId": therapist.external_id,
+                    "bookingStart": "2023-10-7 10:00:00",
+                    "bookingEnd": massage2.end.strftime("%Y-%m-%d %H:%M:%S"),
+                    "type": "appointment",
+                    "isRescheduled": None,
+                    "isFull": None,
+                    "resources": [],
+                },
+                "recurring": [],
+            },
+        }
+
+        UserProfileFactory(external_id="42")
+
+        massage_count = Massage.objects.all().count()
+
+        customer_import(data1)
+        massage_import(data1)
+
+        single_massage_import(data2)
+
+        # check that date and hour of massage1 has not changed
+        massage = Massage.objects.get(external_id=30)
+        tz = pytz.timezone("Europe/Berlin")
+        expected_date = datetime.datetime(2023, 5, 5, 17, 0, 0)
+        expected_date = tz.localize(expected_date)
+        self.assertEqual(
+            massage.start.astimezone(tz).isoformat(), expected_date.isoformat()
+        )
+
+        massage = Massage.objects.get(external_id=270)
+        # check if massage is only changed and not added
+        self.assertEqual(Massage.objects.all().count(), massage_count + 2)
+        # check if start date  of massage2 is changed from 2023-04-7 at 9:00 to 2023-10-7 at 10:00
+        tz = pytz.timezone("Europe/Berlin")
+        expected_date = datetime.datetime(2023, 10, 7, 10, 0)
+        expected_date = tz.localize(expected_date)
+        self.assertEqual(
+            massage.start.astimezone(tz).isoformat(), expected_date.isoformat()
+        )
+
+        # when start date is changed to future date, does it register in db
+        massage = Massage.objects.latest("id")
+        massage.refresh_from_db()
+        self.assertEqual(massage.start, expected_date)
+
+    def test_get_massage_appointments(self):
+        """
+        Get a list of external_id from the wodrpess API call
+        """
+        therapist1 = UserProfileFactory(user__first_name="Jane").user
+        self.client.force_login(therapist1)
+
+        customer1 = CustomerFactory.build(name="Brian", main_concern="car accident")
+        customer2 = CustomerFactory.build(name="Alice", main_concern="bike accident")
+        customer3 = CustomerFactory.build(name="David", main_concern="fall off tree")
+
+        massage1 = MassageFactory.build(
+            therapist=therapist1,
+            customer=customer1,
+            start=datetime.datetime(2023, 4, 6, 16, 0, 0).astimezone(tz=tz),
+            status="approved",
+            external_id=5,
+        )
+        massage2 = MassageFactory.build(
+            therapist=therapist1,
+            customer=customer2,
+            start=datetime.datetime(2023, 4, 6, 18, 0, 0).astimezone(tz=tz),
+            status="canceled",
+            external_id=7,
+        )
+        massage3 = MassageFactory.build(
+            therapist=therapist1,
+            customer=customer3,
+            start=datetime.datetime(2023, 4, 7, 17, 0, 0).astimezone(tz=tz),
+            status="approved",
+            external_id=8,
+        )
+
+        data = {
+            "message": "Successfully retrieved appointments",
+            "data": {
+                "appointments": {
+                    "2023-04-06": {
+                        "date": "2023-04-06",
+                        "appointments": [
+                            {
+                                "id": 576,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer1.external_id,
+                                            "firstName": customer1.name,
+                                            "lastName": customer1.surname,
+                                            "email": customer1.email,
+                                            "phone": customer1.phone,
+                                        },
+                                        "status": massage1.status,
+                                        "price": massage1.service.price,
+                                        "appointmentId": massage1.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": massage1.status,
+                                "serviceId": massage1.service.external_id,
+                                "providerId": massage1.therapist.userprofile.external_id,
+                                "bookingStart": massage1.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage1.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                            },
+                            {
+                                "id": 577,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer2.external_id,
+                                            "firstName": customer2.name,
+                                            "lastName": customer2.surname,
+                                            "email": customer2.email,
+                                            "phone": customer2.phone,
+                                        },
+                                        "status": massage2.status,
+                                        "price": massage2.service.price,
+                                        "appointmentId": massage2.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": massage2.status,
+                                "serviceId": massage2.service.external_id,
+                                "providerId": massage2.therapist.userprofile.external_id,
+                                "bookingStart": massage2.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage2.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                            },
+                        ],
+                    },
+                    "2023-04-07": {
+                        "date": "2023-04-07",
+                        "appointments": [
+                            {
+                                "id": 579,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer3.external_id,
+                                            "firstName": customer3.name,
+                                            "lastName": customer3.surname,
+                                            "email": customer3.email,
+                                            "phone": customer3.phone,
+                                        },
+                                        "status": massage3.status,
+                                        "price": massage3.service.price,
+                                        "appointmentId": massage3.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": massage3.status,
+                                "serviceId": massage3.service.external_id,
+                                "providerId": massage3.therapist.userprofile.external_id,
+                                "bookingStart": massage3.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage3.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        }
+
+        massage_appointments_in_wp_db = get_massage_appointments(data)
+        self.assertEqual(massage_appointments_in_wp_db, [5, 7, 8])
+
+    @freeze_time("2023-04-06 13:21:34", tz_offset=2)
+    def test_massage_date_comparison_with_wp_db(self):
+        therapist1 = UserProfileFactory(user__first_name="Jane").user
+        self.client.force_login(therapist1)
+
+        customer1 = CustomerFactory(name="Brian")
+        customer2 = CustomerFactory(name="Alice")
+        customer3 = CustomerFactory(name="David")
+        customer4 = CustomerFactory(name="Sam")
+
+        MassageFactory(
+            therapist=therapist1,
+            customer=customer1,
+            start=datetime.datetime(2023, 4, 6, 16, 0, 0).astimezone(tz=tz),
+            status="approved",
+            external_id=5,
+        )
+        massage2 = MassageFactory(
+            therapist=therapist1,
+            customer=customer2,
+            start=datetime.datetime(2023, 4, 6, 18, 0, 0).astimezone(tz=tz),
+            status="canceled",
+            external_id=7,
+        )
+        massage3 = MassageFactory(
+            therapist=therapist1,
+            customer=customer3,
+            start=datetime.datetime(2023, 4, 7, 17, 0, 0).astimezone(tz=tz),
+            status="approved",
+            external_id=8,
+        )
+        massage4 = MassageFactory.build(
+            therapist=therapist1,
+            customer=customer4,
+            start=datetime.datetime(2023, 4, 7, 20, 0, 0).astimezone(tz=tz),
+            status="approved",
+            external_id=10,
+        )
+
+        # does not contain massage4(ex_id=10, name=Sam)
+        # contains ex_id=[5, 7, 8]
+        massages = list(Massage.objects.values_list("external_id", flat=True))
+        self.assertEqual(massages, [5, 7, 8])
+
+        # added massage4(ex_id=10, name=Sam)
+        # contains ex_id=[7, 8, 10]
+        wordpress_data = {
+            "message": "Successfully retrieved appointments",
+            "data": {
+                "appointments": {
+                    "2023-04-06": {
+                        "date": "2023-04-06",
+                        "appointments": [
+                            {
+                                "id": 577,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer2.external_id,
+                                            "firstName": customer2.name,
+                                            "lastName": customer2.surname,
+                                            "email": customer2.email,
+                                            "phone": customer2.phone,
+                                        },
+                                        "status": massage2.status,
+                                        "price": massage2.service.price,
+                                        "appointmentId": massage2.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": massage2.status,
+                                "serviceId": massage2.service.external_id,
+                                "providerId": massage2.therapist.userprofile.external_id,
+                                "bookingStart": massage2.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage2.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                            },
+                        ],
+                    },
+                    "2023-04-07": {
+                        "date": "2023-04-07",
+                        "appointments": [
+                            {
+                                "id": 579,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer3.external_id,
+                                            "firstName": customer3.name,
+                                            "lastName": customer3.surname,
+                                            "email": customer3.email,
+                                            "phone": customer3.phone,
+                                        },
+                                        "status": massage3.status,
+                                        "price": massage3.service.price,
+                                        "appointmentId": massage3.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": massage3.status,
+                                "serviceId": massage3.service.external_id,
+                                "providerId": massage3.therapist.userprofile.external_id,
+                                "bookingStart": massage3.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage3.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                            },
+                            {
+                                "id": 600,
+                                "bookings": [
+                                    {
+                                        "id": 345,
+                                        "customerId": 333,
+                                        "customer": {
+                                            "id": customer4.external_id,
+                                            "firstName": customer4.name,
+                                            "lastName": customer4.surname,
+                                            "email": customer4.email,
+                                            "phone": customer4.phone,
+                                        },
+                                        "status": massage4.status,
+                                        "price": massage4.service.price,
+                                        "appointmentId": massage4.external_id,
+                                        "persons": 1,
+                                        "duration": 3600,
+                                        "created": "2023-03-31 15:15:50",
+                                    }
+                                ],
+                                "status": massage4.status,
+                                "serviceId": massage4.service.external_id,
+                                "providerId": massage4.therapist.userprofile.external_id,
+                                "bookingStart": massage4.start.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                                "bookingEnd": massage4.end.strftime(
+                                    "%Y-%m-%d %H:%M:%S"
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        }
+
+        # get WP appointment IDs from WP
+        wordpress_external_id = get_massage_appointments(wordpress_data)
+
+        # check against external_id in local_db
+        only_in_local_db, only_in_wordpress_db = massage_date_comparison_with_wp_db(
+            wordpress_external_id
+        )
+        self.assertEqual(only_in_local_db, [5])
+        self.assertEqual(only_in_wordpress_db, [10])

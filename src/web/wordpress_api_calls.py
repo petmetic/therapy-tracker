@@ -54,3 +54,32 @@ def get_therapist_service_data_from_wp(nonce, session):
     wp_therapist_service = json.loads(wp_json)
 
     return wp_therapist_service
+
+
+def get_single_appointment_data_from_wp(nonce, session, external_id):
+    url = settings.WP_URL_SINGLE_APPOINTMENT.format(
+        nonce=nonce, external_id=external_id
+    )
+    wp_json = session.get(url).text
+    wp_single_appointment = json.loads(wp_json)
+
+    return wp_single_appointment
+
+
+def get_massage_appointments(data: dict) -> list:
+    """
+    Get a list of external_id from the wodrpess API call
+    """
+    massages = data["data"]["appointments"]
+    wordpress_api_db = []
+
+    for raw_appointment in massages.values():
+        individual_appointments = raw_appointment["appointments"]
+
+        for appointment in individual_appointments:
+            for app in appointment["bookings"]:
+                external_id_massage = app["appointmentId"]  # external_id
+                # create a wordpress_db to check against local_db
+                wordpress_api_db.append(external_id_massage)
+
+    return wordpress_api_db
