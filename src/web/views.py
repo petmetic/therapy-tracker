@@ -191,8 +191,6 @@ def massage_edit(request, pk: int):
 
 @staff_member_required
 def report(request):
-    if not request.user.is_superuser():
-        raise PermissionDenied
     therapists = (
         User.objects.all()
         .exclude(first_name="Meta")
@@ -208,7 +206,7 @@ def report_therapist(request, pk: int):
     massages = Massage.objects.filter(therapist=therapist)
     amount = 0
     for massage in massages:
-        amount += massage.amount
+        amount += massage.service.payout
 
     return render(
         request,

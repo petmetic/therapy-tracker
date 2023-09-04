@@ -21,15 +21,14 @@
                             <div class="col-sm-8">{{ massage.service.name }}</div>
                             <div class="col-sm-4 fw-light">{% translate "Amount paid" %}:</div>
                             <div class="col-sm-8">{{ massage.amount }}</div>
-                            <div class="col-sm-6 fw-light">{% translate "To be paid to therapist" %}:</div>
-                            {#                            <div class="col-sm-8">{{ massage.amount }}</div>#}
+                            <div class="col-sm-4 fw-light">{% translate "To be paid to therapist" %}:</div>
+                            <div class="col-sm-8">{{ massage.service.payout }}</div>
                         </div>
                     </li>
                     <hr>
                 {% endfor %}
             </div>
             <div class="row">
-                <hr>
                 <div class="col-sm-4 fw-light">{% translate "To be paid in total to therapist" %}:</div>
                 <div class="col-sm-8">{{ amount }}</div>
             </div>
