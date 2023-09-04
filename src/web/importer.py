@@ -252,9 +252,6 @@ def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> list:
     date_sync_before = (datetime.today() - timedelta(days=1)).astimezone(tz=tz)
     date_sync_week = (datetime.today() + timedelta(days=8)).astimezone(tz=tz)
 
-    print(date_sync_before)
-    print(date_sync_week)
-
     local_db = set(
         Massage.objects.filter(
             start__range=(date_sync_before, date_sync_week)
