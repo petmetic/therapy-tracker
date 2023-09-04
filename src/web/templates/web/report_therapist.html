@@ -6,34 +6,52 @@
     <div class="container text-left">
         <div class="p-4">
             <div class="row p-1">
-                <h4 class="col-sm-8 fw-light uppercase">{{ therapist.first_name }}</h4>
+                <h4 class="col-sm-8 fw-light uppercase"><span
+                        class="fw-lighter uppercase">{% translate "Therapist" %}:</span> {{ therapist.first_name }}</h4>
             </div>
-            <div class="row">
-                {% for massage in massages %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="fw-light"><span
-                                class="fw-bold">{{ massage.customer.surname }}</span> , {{ massage.customer.name }}
-                        </div>
-                        <hr>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="row">
-                            <div class="col-sm-4 fw-light">{% translate "Service" %}:</div>
-                            <div class="col-sm-8">{{ massage.service.name }}</div>
-                            <div class="col-sm-4 fw-light">{% translate "Amount paid" %}:</div>
-                            <div class="col-sm-8">{{ massage.amount }}</div>
-                            <div class="col-sm-4 fw-light">{% translate "To be paid to therapist" %}:</div>
-                            <div class="col-sm-8">{{ massage.service.payout }}</div>
-                        </div>
-                    </li>
+            <div>
+                <div class="row">
+                    <div class="col fw-light text-break uppercase">
+                        {% translate "Customer" %}
+                    </div>
+                    <div class="col fw-light text-break uppercase">
+                        {% translate "Service" %}
+                    </div>
+                    <div class="col fw-light text-break uppercase">
+                        {% translate "Amount Paid" %}
+                    </div>
+                    <div class="col fw-light text-break uppercase">
+                        {% translate "Amount Due to Therapist" %}
+                    </div>
                     <hr>
-                {% endfor %}
+                    {% for massage in massages %}
+                        <div class="row">
+                            <div class="col fw-light text-break">
+                                {{ massage.customer.surname }}, {{ massage.customer.name }}
+                            </div>
+                            <div class="col fw-light text-break">
+                                {{ massage.service.name }}
+                            </div>
+                            <div class="col fw-light text-break">
+                                {{ massage.amount }} eur
+                            </div>
+                            <div class="col fw-light text-break">
+                                {{ massage.service.payout }} eur
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <hr>
+                    <div class="col fw-light uppercase">{% translate "To be paid in total to therapist" %}:</div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col-sm fw-bold">{{ amount }} eur</div>
+                </div>
             </div>
-            <div class="row">
-                <div class="col-sm-4 fw-light">{% translate "To be paid in total to therapist" %}:</div>
-                <div class="col-sm-8">{{ amount }}</div>
-            </div>
-
         </div>
-
+        <div class="col-12 px-4">
+            <a class="btn btn-body" href="#">{% translate "Download" %}</a>
+        </div>
     </div>
 {% endblock %}
