@@ -9,7 +9,8 @@
                 <h4 class="col-sm-8 fw-light uppercase"><span
                         class="fw-lighter uppercase">{% translate "Therapist" %}:</span> {{ therapist.first_name }}</h4>
             </div>
-            <table class="table table-striped">
+            <table class="table table-striped caption-top">
+                <caption class="fw-light">{% translate "Report for date" %}: <span>12.7.2023 - 24.7.2023</span></caption>
                 <thead>
                 <tr>
                     <th scope="col" class="fw-bold text-break">{% translate "Customer" %}</th>
@@ -18,17 +19,17 @@
                     <th scope="col" class="fw-bold text-break">{% translate "Amount Due to Therapist" %}</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="table-group-divider">
                 {% for massage in massages %}
                     <tr>
-                        <td>{{ massage.customer.surname }}, {{ massage.customer.name }}</td>
-                        <td>{{ massage.service.name }}</td>
-                        <td>{{ massage.amount }} eur</td>
-                        <td>{{ massage.service.payout }} eur</td>
+                        <td class="fw-light text-break">{{ massage.customer.surname }}, {{ massage.customer.name }}</td>
+                        <td class="fw-light text-break">{{ massage.service.name }}</td>
+                        <td class="fw-light text-break">{{ massage.amount }} eur</td>
+                        <td class="fw-light text-break">{{ massage.service.payout }} eur</td>
                     </tr>
                 {% endfor %}
                 </tbody>
-                <tfoot>
+                <tfoot class="table-group-divider">
                 <tr>
                     <td colspan="3" class="col fw-bold uppercase">{% translate "To be paid in total to therapist" %}:
                     </td>

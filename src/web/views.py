@@ -190,18 +190,28 @@ def massage_edit(request, pk: int):
 
 
 @staff_member_required
-def report(request):
+def reports(request):
+    start_date = request.GET.get("start-date")
+    end_date = request.GET.get("end-date")
+
+    return render(
+        request, "web/reports.html", {"start_date": start_date, "end_date": end_date}
+    )
+
+
+@staff_member_required
+def report_hours(request):
     therapists = (
         User.objects.all()
         .exclude(first_name="Meta")
         .exclude(username="meta")
         .order_by("first_name")
     )
-    return render(request, "web/report.html", {"therapist_list": therapists})
+    return render(request, "web/report_hours.html", {"therapist_list": therapists})
 
 
 @staff_member_required
-def report_therapist(request, pk: int):
+def report_hours_detail(request, pk: int):
     therapist = get_object_or_404(User, pk=pk)
     massages = Massage.objects.filter(therapist=therapist)
     amount = 0
@@ -210,7 +220,7 @@ def report_therapist(request, pk: int):
 
     return render(
         request,
-        "web/report_therapist.html",
+        "web/report_hours_detail.html",
         {"therapist": therapist, "massages": massages, "amount": amount},
     )
 

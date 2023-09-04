@@ -31,7 +31,7 @@
             {#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Search</a>#}
             {% if request.user.is_staff %}
                 <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
-                   href="{% url 'report' %}">{% translate "Reports" %}</a>
+                   href="{% url 'reports' %}">{% translate "Reports" %}</a>
             {% endif %}
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
                href="{% url 'logout' %}">{% translate "Logout" %}: {{ request.user.first_name }}</a>
