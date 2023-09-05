@@ -229,7 +229,8 @@ def report_hours(request):
 
 
 @staff_member_required
-def report_hours_detail(request, pk: int, first_day, last_day):
+def report_hours_detail(request, pk: int):
+    first_day_str, last_day_str, first_day, last_day = define_month()
     start_date = request.GET.get("start_date", first_day)
     end_date = request.GET.get("end-date", last_day)
 
