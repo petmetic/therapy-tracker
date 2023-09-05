@@ -205,18 +205,10 @@ def reports(request):
 def report_hours(request):
     first_day, last_day = define_month()
     start_date = request.GET.get("start-date", first_day)
-    print(start_date)
     end_date = request.GET.get("end-date", last_day)
-    print(end_date)
 
     start_day = datetime.strptime(start_date, "%Y-%m-%d").astimezone(tz=tz)
-    print(start_day)
     end_day = datetime.strptime(end_date, "%Y-%m-%d").astimezone(tz=tz)
-    print(end_day)
-
-    # TODO: convert start and enddate to datetime
-    # TODO: call my_custom_report_function(therapist,start, end) in datetime
-    # TODO: pass list of dicts to template
 
     therapists = (
         User.objects.all()
