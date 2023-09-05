@@ -1,6 +1,5 @@
-import datetime
-import pytz
 from datetime import datetime
+import pytz
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
