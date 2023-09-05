@@ -10,7 +10,10 @@
                         class="fw-lighter uppercase">{% translate "Therapist" %}:</span> {{ therapist.first_name }}</h4>
             </div>
             <table class="table table-striped caption-top">
-                <caption class="fw-light">{% translate "Report for date" %}: <span>12.7.2023 - 24.7.2023</span></caption>
+                <caption class="fw-light">{% translate "Report for" %}: <span
+                        class="p-1 fw-light">{{ first_day|date:"j. M Y" }} - {{ last_day|date:"j. M Y" }}</span>
+                </caption>
+
                 <thead>
                 <tr>
                     <th scope="col" class="fw-bold text-break">{% translate "Customer" %}</th>

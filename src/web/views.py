@@ -1,5 +1,6 @@
 import datetime
 import pytz
+from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -19,6 +20,7 @@ from .forms import (
     CustomerEditForm,
     CustomAuthenticationForm,
 )
+from .report import define_month
 
 tz = pytz.timezone("Europe/Ljubljana")
 
@@ -26,7 +28,7 @@ tz = pytz.timezone("Europe/Ljubljana")
 @login_required
 def index(request):
     therapist = request.user
-    today = datetime.datetime.now()
+    today = datetime.now()
     massages = (
         Massage.objects.filter(
             therapist=therapist,
@@ -191,8 +193,10 @@ def massage_edit(request, pk: int):
 
 @staff_member_required
 def reports(request):
-    start_date = request.GET.get("start-date")
-    end_date = request.GET.get("end-date")
+    first_day_str, last_day_str, _, _ = define_month()
+
+    start_date = request.GET.get("start_date", first_day_str)
+    end_date = request.GET.get("end-date", last_day_str)
 
     return render(
         request, "web/reports.html", {"start_date": start_date, "end_date": end_date}
@@ -201,17 +205,35 @@ def reports(request):
 
 @staff_member_required
 def report_hours(request):
+    first_day_str, last_day_str, first_day, last_day = define_month()
+
+    start_date = request.GET.get("start_date", first_day_str)
+    end_date = request.GET.get("end-date", last_day_str)
+
     therapists = (
         User.objects.all()
         .exclude(first_name="Meta")
         .exclude(username="meta")
         .order_by("first_name")
     )
-    return render(request, "web/report_hours.html", {"therapist_list": therapists})
+    return render(
+        request,
+        "web/report_hours.html",
+        {
+            "therapist_list": therapists,
+            "start_date": start_date,
+            "end_date": end_date,
+            "first_day": first_day,
+            "last_day": last_day,
+        },
+    )
 
 
 @staff_member_required
-def report_hours_detail(request, pk: int):
+def report_hours_detail(request, pk: int, first_day, last_day):
+    start_date = request.GET.get("start_date", first_day)
+    end_date = request.GET.get("end-date", last_day)
+
     therapist = get_object_or_404(User, pk=pk)
     massages = Massage.objects.filter(therapist=therapist)
     amount = 0
@@ -221,7 +243,15 @@ def report_hours_detail(request, pk: int):
     return render(
         request,
         "web/report_hours_detail.html",
-        {"therapist": therapist, "massages": massages, "amount": amount},
+        {
+            "therapist": therapist,
+            "massages": massages,
+            "amount": amount,
+            "start_date": start_date,
+            "end_date": end_date,
+            "first_day": first_day,
+            "last_day": last_day,
+        },
     )
 
 
