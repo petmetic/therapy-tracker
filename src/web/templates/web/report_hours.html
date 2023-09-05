@@ -5,14 +5,14 @@
 {% block content %}
     <h4 class="p-4 fw-lighter uppercase">{% translate "Breakdown of Hours" %}</h4>
     <span class="p-1 fw-lighter">{% translate "date" %}:</span>
-    <span class="p-1 fw-light">{{ first_day|date:"j. M Y" }} - {{ last_day|date:"j. M Y" }}</span>
+    <span class="p-1 fw-light">{{ start_day|date:"j. M Y" }} - {{ end_day|date:"j. M Y" }}</span>
     <hr>
     <ul class="list-group">
         {% for therapist in therapist_list %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <span class="fw-light"><span class="fw-bold">{{ therapist.first_name }}</span></span>
                 <a class="btn btn-body"
-                   href="{% url 'report_hours_detail' pk=therapist.pk %}?start_date={{ start_date }}&end_date={{ end_date }}"
+                   href="{% url 'report_hours_detail' pk=therapist.pk %}?start-date={{ start_date }}&end-date={{ end_date }}"
                 >{% translate "View" %}
                 </a>
             </li>

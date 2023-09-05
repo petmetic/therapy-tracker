@@ -11,11 +11,12 @@
             </div>
             <table class="table table-striped caption-top">
                 <caption class="fw-light">{% translate "Report for" %}: <span
-                        class="p-1 fw-light">{{ first_day|date:"j. M Y" }} - {{ last_day|date:"j. M Y" }}</span>
+                        class="p-1 fw-light">{{ start_day|date:"j. M Y" }} - {{ end_day|date:"j. M Y" }}</span>
                 </caption>
 
                 <thead>
                 <tr>
+                    <th scope="col" class="fw-bold text-break">{% translate "Date" %}</th>
                     <th scope="col" class="fw-bold text-break">{% translate "Customer" %}</th>
                     <th scope="col" class="fw-bold text-break">{% translate "Service" %}</th>
                     <th scope="col" class="fw-bold text-break">{% translate "Amount Paid" %}</th>
@@ -25,6 +26,7 @@
                 <tbody class="table-group-divider">
                 {% for massage in massages %}
                     <tr>
+                        <td class="fw-light text-break">{{ massage.start|date:"j. M Y"}} {% translate "at" %} {{ massage.start| time:"H:i"}}</td>
                         <td class="fw-light text-break">{{ massage.customer.surname }}, {{ massage.customer.name }}</td>
                         <td class="fw-light text-break">{{ massage.service.name }}</td>
                         <td class="fw-light text-break">{{ massage.amount }} eur</td>
@@ -34,9 +36,9 @@
                 </tbody>
                 <tfoot class="table-group-divider">
                 <tr>
-                    <td colspan="3" class="col fw-bold uppercase">{% translate "To be paid in total to therapist" %}:
+                    <td colspan="4" class="col fw-bold uppercase">{% translate "To be paid in total to therapist" %}:
                     </td>
-                    <td colspan="4" class="col-sm fw-bold">{{ amount }} eur</td>
+                    <td colspan="1" class="col-sm fw-bold">{{ amount }} eur</td>
                 </tr>
                 </tfoot>
             </table>

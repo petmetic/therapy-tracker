@@ -63,7 +63,7 @@ def customer_detail(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     massage_list = customer.massage_set.filter(
         status="approved",
-        start__lte=datetime.datetime.now(),
+        start__lte=datetime.now(),
     )
     return render(
         request,
@@ -192,10 +192,9 @@ def massage_edit(request, pk: int):
 
 @staff_member_required
 def reports(request):
-    first_day_str, last_day_str, _, _ = define_month()
-
-    start_date = request.GET.get("start_date", first_day_str)
-    end_date = request.GET.get("end-date", last_day_str)
+    first_day, last_day = define_month()
+    start_date = request.GET.get("start-date", first_day)
+    end_date = request.GET.get("end-date", last_day)
 
     return render(
         request, "web/reports.html", {"start_date": start_date, "end_date": end_date}
@@ -204,10 +203,20 @@ def reports(request):
 
 @staff_member_required
 def report_hours(request):
-    first_day_str, last_day_str, first_day, last_day = define_month()
+    first_day, last_day = define_month()
+    start_date = request.GET.get("start-date", first_day)
+    print(start_date)
+    end_date = request.GET.get("end-date", last_day)
+    print(end_date)
 
-    start_date = request.GET.get("start_date", first_day_str)
-    end_date = request.GET.get("end-date", last_day_str)
+    start_day = datetime.strptime(start_date, "%Y-%m-%d").astimezone(tz=tz)
+    print(start_day)
+    end_day = datetime.strptime(end_date, "%Y-%m-%d").astimezone(tz=tz)
+    print(end_day)
+
+    # TODO: convert start and enddate to datetime
+    # TODO: call my_custom_report_function(therapist,start, end) in datetime
+    # TODO: pass list of dicts to template
 
     therapists = (
         User.objects.all()
@@ -222,20 +231,29 @@ def report_hours(request):
             "therapist_list": therapists,
             "start_date": start_date,
             "end_date": end_date,
-            "first_day": first_day,
-            "last_day": last_day,
+            "start_day": start_day,
+            "end_day": end_day,
         },
     )
 
 
 @staff_member_required
 def report_hours_detail(request, pk: int):
-    first_day_str, last_day_str, first_day, last_day = define_month()
-    start_date = request.GET.get("start_date", first_day)
+    first_day, last_day = define_month()
+    start_date = request.GET.get("start-date", first_day)
     end_date = request.GET.get("end-date", last_day)
 
+    start_day = datetime.strptime(start_date, "%Y-%m-%d").astimezone(tz=tz)
+    end_day = datetime.strptime(end_date, "%Y-%m-%d").astimezone(tz=tz)
+
     therapist = get_object_or_404(User, pk=pk)
-    massages = Massage.objects.filter(therapist=therapist)
+    massages = (
+        Massage.objects.filter(therapist=therapist)
+        .filter(status="approved")
+        .filter(start__range=(start_day, end_day))
+        .exclude(customer__name="prostovoljec")
+        .order_by("start")
+    )
     amount = 0
     for massage in massages:
         amount += massage.service.payout
@@ -249,8 +267,8 @@ def report_hours_detail(request, pk: int):
             "amount": amount,
             "start_date": start_date,
             "end_date": end_date,
-            "first_day": first_day,
-            "last_day": last_day,
+            "start_day": start_day,
+            "end_day": end_day,
         },
     )
 
