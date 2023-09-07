@@ -12,11 +12,6 @@ from .factories import (
     UserProfileFactory,
 )
 
-from ..importer import (
-    customer_import,
-    massage_import,
-)
-
 tz = pytz.timezone("Europe/Ljubljana")
 
 
