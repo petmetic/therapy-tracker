@@ -11,9 +11,7 @@ from .factories import (
     CustomerFactory,
     MassageFactory,
     ServiceFactory,
-    UserProfileFactory,
 )
-from ..models import Massage
 
 tz = pytz.timezone("Europe/Ljubljana")
 
@@ -24,6 +22,7 @@ class ReportTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.therapist1 = UserFactory(is_superuser=True, is_staff=True)
+        cls.therapist2 = UserFactory()
         cls.customer1 = CustomerFactory(name="Jane")
         cls.customer2 = CustomerFactory(name="Adam")
         cls.customer3 = CustomerFactory(name="John")
@@ -47,3 +46,6 @@ class ReportTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, text="Breakdown of Hours")
+
+    def test_report_date_displays(self):
+        pass
