@@ -1,15 +1,16 @@
 import datetime
 import pytz
 
-
 from django.test import TestCase
 from django.urls import reverse
 from django.test import override_settings
+from freezegun import freeze_time
 
 from .factories import (
     UserFactory,
     CustomerFactory,
     MassageFactory,
+    ServiceFactory,
     UserProfileFactory,
 )
 from ..models import Massage
@@ -18,40 +19,31 @@ tz = pytz.timezone("Europe/Ljubljana")
 
 
 @override_settings(LANGUAGE_CODE="en-US")
+@freeze_time("2023-8-1 13:21:34", tz_offset=2)
 class ReportTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        pass
-
-    def test_reports(self):
-        therapist = UserFactory()
-        self.client.force_login(therapist)
-        customer = CustomerFactory(email="test@example.com")
-        data = {
-            "customer": customer.id,
-            "therapist": therapist.id,
-            "start": "2023-04-12 15:00:00",
-            "reason_for_visit": "pain",
-            "kind": "therapeutic",
-            "notes": "continue massage at home",
-            "next_visit": "in 14 days",
-            "recommendations": "",
-            "personal_notes": "",
-            "duration": 30,
-            "amount": 6,
-            "discount": 30,
-            "discount_reason": "friend",
-            "repeat_visit": "on",
-        }
-
-        response = self.client.post(
-            reverse("massage_add", kwargs={"customer_pk": customer.pk}), data=data
+        cls.therapist1 = UserFactory(is_superuser=True, is_staff=True)
+        cls.customer1 = CustomerFactory(name="Jane")
+        cls.customer2 = CustomerFactory(name="Adam")
+        cls.customer3 = CustomerFactory(name="John")
+        cls.massage1 = MassageFactory(
+            therapist=cls.therapist1,
+            customer=cls.customer1,
+            start=datetime.datetime(2023, 8, 1, 17, 0, 0).astimezone(tz=tz),
         )
-        massage = Massage.objects.latest("id")
+        cls.massage2 = MassageFactory()
+        cls.massage3 = MassageFactory()
+        cls.massage4 = MassageFactory()
+        cls.massage5 = MassageFactory()
+        cls.massage6 = MassageFactory()
 
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(
-            response, reverse("massage_detail", kwargs={"pk": massage.pk})
-        )
-        response = self.client.get(response.url)
-        self.assertContains(response, text="friend")
+        cls.service1 = ServiceFactory(payout=30)
+
+    def test_reports_page_displays(self):
+        self.client.force_login(self.therapist1)
+
+        response = self.client.get(reverse("reports"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, text="Breakdown of Hours")

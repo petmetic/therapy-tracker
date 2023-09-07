@@ -34,6 +34,7 @@ class ServiceFactory(factory.django.DjangoModelFactory):
     duration = factory.Faker("pyint")
     time_before = factory.Faker("pyint")
     time_after = factory.Faker("pyint")
+    payout = factory.Faker("pyint")
 
 
 class CustomerFactory(factory.django.DjangoModelFactory):

@@ -21,7 +21,7 @@ urlpatterns = [
         views.report_hours_detail,
         name="report_hours_detail",
     ),
-    path("report_hours", views.report_hours, name="report_hours"),
-    path("reports", views.reports, name="reports"),
+    path("report_hours/", views.report_hours, name="report_hours"),
+    path("reports/", views.reports, name="reports"),
     path("", views.index, name="index"),
 ]
