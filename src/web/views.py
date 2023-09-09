@@ -204,11 +204,12 @@ def reports(request):
 @staff_member_required
 def report_hours(request):
     first_day, last_day = define_month()
+
     start_date = request.GET.get("start-date", first_day)
     end_date = request.GET.get("end-date", last_day)
 
-    start_day = datetime.strptime(start_date, "%Y-%m-%d").astimezone(tz=tz)
-    end_day = datetime.strptime(end_date, "%Y-%m-%d").astimezone(tz=tz)
+    start_day = datetime.strptime(start_date, "%Y-%m-%d").date()
+    end_day = datetime.strptime(end_date, "%Y-%m-%d").date()
 
     therapists = (
         User.objects.all()
@@ -235,8 +236,8 @@ def report_hours_detail(request, pk: int):
     start_date = request.GET.get("start-date", first_day)
     end_date = request.GET.get("end-date", last_day)
 
-    start_day = datetime.strptime(start_date, "%Y-%m-%d").astimezone(tz=tz)
-    end_day = datetime.strptime(end_date, "%Y-%m-%d").astimezone(tz=tz)
+    start_day = datetime.strptime(start_date, "%Y-%m-%d").date()
+    end_day = datetime.strptime(end_date, "%Y-%m-%d").date()
 
     therapist = get_object_or_404(User, pk=pk)
     massages = (

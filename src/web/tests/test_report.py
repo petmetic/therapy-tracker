@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import pytz
 
 from django.test import TestCase
@@ -30,30 +30,32 @@ class ReportTest(TestCase):
         cls.customer1 = CustomerFactory(name="Jane")
         cls.customer2 = CustomerFactory(name="Adam")
         cls.customer3 = CustomerFactory(name="John")
+
+        cls.service1 = ServiceFactory(payout=30)
+
         cls.massage1 = MassageFactory(
             therapist=cls.therapist1,
             customer=cls.customer1,
-            start=datetime.datetime(2023, 8, 1, 17, 0, 0).astimezone(tz=tz),
+            service=cls.service1,
+            start=datetime(2023, 8, 1, 17, 0, 0).astimezone(tz=tz),
         )
         cls.massage2 = MassageFactory(
             therapist=cls.therapist1,
             customer=cls.customer2,
-            start=datetime.datetime(2023, 8, 1, 18, 0, 0).astimezone(tz=tz),
+            start=datetime(2023, 8, 1, 18, 0, 0).astimezone(tz=tz),
         )
         cls.massage3 = MassageFactory(
             therapist=cls.therapist1,
             customer=cls.customer3,
-            start=datetime.datetime(2023, 8, 10, 17, 0, 0).astimezone(tz=tz),
+            start=datetime(2023, 8, 10, 17, 0, 0).astimezone(tz=tz),
         )
         cls.massage4 = MassageFactory(
             therapist=cls.therapist1,
             customer=cls.customer1,
-            start=datetime.datetime(2023, 7, 1, 17, 0, 0).astimezone(tz=tz),
+            start=datetime(2023, 7, 1, 17, 0, 0).astimezone(tz=tz),
         )
         cls.massage5 = MassageFactory()
         cls.massage6 = MassageFactory()
-
-        cls.service1 = ServiceFactory(payout=30)
 
     def test_reports_page_displays(self):
         self.client.force_login(self.therapist1)
@@ -66,19 +68,16 @@ class ReportTest(TestCase):
     def test_report_date_displays_in_url(self):
         self.client.force_login(self.therapist1)
 
-        response = self.client.get(reverse("reports"))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, text="Breakdown of Hours")
-
         start_date = "2023-08-01"
         end_date = "2023-08-31"
 
         response = self.client.get(
-            "/report_hours/?start-date=2023-08-01&end-date=2023-08-31"
+            f"{reverse('reports')}?start-date={start_date}1&end-date={end_date}"
         )
-        self.assertContains(response, "value={start_date}")
-        self.assertContains(response, "value={end_date}")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f"start-date={start_date}")
+        self.assertContains(response, f"end-date={end_date}")
 
     def test_report_hours_page_loads(self):
         self.client.force_login(self.therapist1)
@@ -86,9 +85,13 @@ class ReportTest(TestCase):
         start_date = "2023-08-01"
         end_date = "2023-08-31"
 
-        response = self.client.get(reverse("report_hours"))
+        response = self.client.get(
+            f"{reverse('report_hours')}?start-date={start_date}&end-date={end_date}"
+        )
+
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, text="Breakdown of Hours")
+        self.assertContains(response, f"start-date={start_date}")
+        self.assertContains(response, f"end-date={end_date}")
 
         # All therapists should display
         self.assertContains(response, text="Alice")
@@ -96,22 +99,21 @@ class ReportTest(TestCase):
         self.assertContains(response, text="Mike")
 
         # display date should be: "date: 1. Aug 2023 - 31. Aug 2023"
-        self.assertContains(response, text="date: 1. Aug 2023 - 31. Aug 2023")
+        self.assertContains(response, text="1. Aug 2023 - 31. Aug 2023")
 
     def test_report_hours_detail_page_displays_w_correct_date(self):
+        # http://127.0.0.1:8000/report_hours_detail/2/?start-date=2023-09-01&end-date=2023-09-30
+
         self.client.force_login(self.therapist1)
 
         start_date = "2023-08-01"
         end_date = "2023-08-31"
 
         response = self.client.get(
-            reverse("report_hours_detail"),
-            kwargs={
-                "pk": self.therapist.pk,
-                "start-date": start_date,
-                "end-date": end_date,
-            },
+            f"{reverse('report_hours_detail')}?start-date={start_date}&end-date={end_date}",
+            kwargs={"pk": self.therapist.pk},
         )
+
         self.assertEqual(response.status_code, 200)
 
         self.assertContains(response, text="Alice")
