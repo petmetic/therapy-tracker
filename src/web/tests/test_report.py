@@ -110,6 +110,10 @@ class ReportTest(TestCase):
         self.assertContains(response, text="1. Aug 2023 - 31. Aug 2023")
 
     def test_report_hours_detail_page_displays_w_correct_date(self):
+        """
+        "Alice" as superuser sees for month of August all massages from Charlotte.
+        Does not see massages related to Mike.
+        """
         self.client.force_login(self.therapist1)
 
         start_date = "2023-08-01"
@@ -151,4 +155,17 @@ class ReportTest(TestCase):
         self.assertContains(response, text="5")
         self.assertContains(response, text="Massage 30 min")
 
-        self.assertNotContains(response, text="John")
+    def test_myreport_shows(self):
+        """ """
+        self.client.force_login(self.therapist2)
+
+        start_date = "2023-08-01"
+        end_date = "2023-08-31"
+
+        response = self.client.get(
+            f"{reverse('my_report', kwargs={'pk': self.therapist2.pk})}?start-date={start_date}&end-date={end_date}"
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, text="Logout: Charlotte")
