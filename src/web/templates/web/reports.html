@@ -4,19 +4,19 @@
 
 {% block content %}
     <h4 class="p-4 fw-lighter uppercase">{% translate "Reports" %}</h4>
-        <form action="/reports" method="get" class="row align-items-end">
-            <div class="col-md-2 fw-light">
-                <label for="start-date" class="col-md-4 fw-light">{% translate "from" %}:</label>
-                <input id="start-date" class="form-control" type="date" name="start-date" value="{{ start_date }}">
-            </div>
-            <div class="col-md-2 fw-light">
-                <label for="end-date" class="col-md-4 fw-light">{% translate "to" %}:</label>
-                <input id="end-date" class="form-control" type="date" name="end-date" value="{{ end_date }}"/>
-            </div>
-            <div class="col-md-2 fw-light">
-                <button type="submit" class="btn btn-body">{% translate "Submit" %}</button>
-            </div>
-        </form>
+    <form action="{% url 'reports' %}" method="get" class="row align-items-end">
+        <div class="col-md-2 fw-light">
+            <label for="start-date" class="col-md-4 fw-light">{% translate "from" %}:</label>
+            <input id="start-date" class="form-control" type="date" name="start-date" value="{{ start_date }}">
+        </div>
+        <div class="col-md-2 fw-light">
+            <label for="end-date" class="col-md-4 fw-light">{% translate "to" %}:</label>
+            <input id="end-date" class="form-control" type="date" name="end-date" value="{{ end_date }}"/>
+        </div>
+        <div class="col-md-2 fw-light">
+            <button type="submit" class="btn btn-body">{% translate "Submit" %}</button>
+        </div>
+    </form>
     <hr>
     <div>
         <li class="list-group-item d-flex justify-content-between align-items-center">
