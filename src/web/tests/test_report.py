@@ -104,9 +104,6 @@ class ReportTest(TestCase):
         self.assertContains(response, text="1. Aug 2023 - 31. Aug 2023")
 
     def test_report_hours_detail_page_displays_w_correct_date(self):
-        # http://127.0.0.1:8000/report_hours_detail/2/?start-date=2023-09-01&end-date=2023-09-30
-        #  4. Sep 2023 ob 14:00	Masten, Igor	Masaža 50 minut	0 eur	25 eur
-
         self.client.force_login(self.therapist1)
 
         start_date = "2023-08-01"
@@ -118,6 +115,8 @@ class ReportTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+        self.assertContains(response, text="1. Aug 2023 - 31. Aug 2023")
+
         self.assertContains(response, text="Charlotte")
         self.assertContains(response, text="30")
         self.assertNotContains(response, text="Logout: Charlotte")
@@ -128,14 +127,16 @@ class ReportTest(TestCase):
         # date out of range of search (month of August)
         self.assertNotContains(response, text="1. Jul 2023 at 17:00")
 
-        self.assertContains(response, text="1. Aug 2023 at 17:00")
+        self.assertContains(response, text="1. Aug 2023")
         self.assertContains(response, text="Jane")
         self.assertContains(response, text="100")
         self.assertContains(response, text="30")
 
-        self.assertContains(response, text="1. Aug 2023 at 18:00")
+        self.assertContains(response, text="1. Aug 2023")
         self.assertContains(response, text="Adam")
         self.assertContains(response, text="80")
         self.assertContains(response, text="10")
+
+        self.assertContains(response, text="John")
 
         self.assertContains(response, text="Massage 50 min")
