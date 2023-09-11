@@ -247,6 +247,7 @@ def report_hours_detail(request, pk: int):
         .exclude(customer__name="prostovoljec")
         .order_by("start")
     )
+
     amount = 0
     for massage in massages:
         amount += massage.service.payout

@@ -21,6 +21,12 @@ tz = pytz.timezone("Europe/Ljubljana")
 class ReportTest(TestCase):
     @classmethod
     def setUpTestData(cls):
+        """
+        The superuser(Alice) wants to see the massages of "Charlotte" from 1.Aug - 31. Aug 2023.
+        The massages that must be seen are: massage1, massage2.
+        Massage3  is from therapist Mike and should not be shown.
+
+        """
         cls.therapist1 = UserFactory(
             is_superuser=True, is_staff=True, first_name="Alice"
         )
@@ -31,29 +37,29 @@ class ReportTest(TestCase):
         cls.customer2 = CustomerFactory(name="Adam")
         cls.customer3 = CustomerFactory(name="John")
 
-        cls.service1 = ServiceFactory(payout=30, name="Massage 50 min", price=100)
-        cls.service2 = ServiceFactory(payout=10, name="Massage 30 min", price=80)
+        cls.service1 = ServiceFactory(payout="15", name="Massage 50 min", price="45")
+        cls.service2 = ServiceFactory(payout="5", name="Massage 30 min", price="80")
 
         cls.massage1 = MassageFactory(
-            therapist=cls.therapist1,
+            therapist=cls.therapist2,
             customer=cls.customer1,
             service=cls.service1,
             start=datetime(2023, 8, 1, 17, 0, 0).astimezone(tz=tz),
         )
         cls.massage2 = MassageFactory(
-            therapist=cls.therapist1,
+            therapist=cls.therapist2,
             customer=cls.customer2,
             service=cls.service2,
             start=datetime(2023, 8, 1, 18, 0, 0).astimezone(tz=tz),
         )
         cls.massage3 = MassageFactory(
-            therapist=cls.therapist1,
+            therapist=cls.therapist3,
             customer=cls.customer3,
             service=cls.service1,
             start=datetime(2023, 8, 10, 17, 0, 0).astimezone(tz=tz),
         )
         cls.massage4 = MassageFactory(
-            therapist=cls.therapist1,
+            therapist=cls.therapist2,
             customer=cls.customer1,
             service=cls.service1,
             start=datetime(2023, 7, 1, 17, 0, 0).astimezone(tz=tz),
@@ -114,27 +120,36 @@ class ReportTest(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
+        print(response.content)
 
-        self.assertContains(response, text="1. Aug 2023 - 31. Aug 2023")
-
-        self.assertContains(response, text="Charlotte")
-        self.assertContains(response, text="30")
+        # assert right superuser (Alice) is logged in and can see "Charlotte"
         self.assertNotContains(response, text="Logout: Charlotte")
         self.assertContains(response, text="Logout: Alice")
-        self.assertContains(response, text="Therapist:")
-        self.assertNotContains(response, text="Mike")
 
+        # date  in range of search (month of August)
+        self.assertContains(response, text="1. Aug 2023 - 31. Aug 2023")
         # date out of range of search (month of August)
         self.assertNotContains(response, text="1. Jul 2023 at 17:00")
 
-        self.assertContains(response, text="1. Aug 2023")
-        self.assertContains(response, text="Jane")
-        self.assertContains(response, text="100")
-        self.assertContains(response, text="30")
+        # assert right therapist (Charlotte) is shown
+        self.assertContains(response, text="Therapist:")
+        self.assertNotContains(response, text="Mike")
+        self.assertContains(response, text="Charlotte")
+
+        # Massage 50 min of 1.8.2023 at 17.00, customer='Doe, Jane', amount paid="45", Amount Due to therapist="15"
+        self.assertContains(response, text="1. Aug 2023 at 17:00")
+        self.assertContains(response, text="Doe, Jane")
+        self.assertContains(response, text="Massage 50 min")
+        self.assertContains(response, text="Amount Paid")
+        self.assertContains(response, text="45")
+        self.assertContains(response, text="Amount Due to Therapist")
+        self.assertContains(response, text="15")
+
+        # Massage 30 min of 1.8.2023 at 18.00, customer='Adam', amount paid="80, Amount Due to therapist="5"
         self.assertContains(response, text="Adam")
         self.assertContains(response, text="80")
-        self.assertContains(response, text="10")
+        self.assertContains(response, text="Amount Paid")
+        self.assertContains(response, text="5")
+        self.assertContains(response, text="Massage 30 min")
 
-        self.assertContains(response, text="John")
-
-        self.assertContains(response, text="Massage 50 min")
+        self.assertNotContains(response, text="John")

@@ -74,5 +74,5 @@ class MassageFactory(factory.django.DjangoModelFactory):
     discount_reason = factory.Faker("sentences")
     repeat_visit = factory.Faker("pybool")
     external_id = factory.Faker("pyint")
-    status = factory.Faker("word")
+    status = "approved"
     service = factory.SubFactory(ServiceFactory)

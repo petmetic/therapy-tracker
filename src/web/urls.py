@@ -10,7 +10,7 @@ urlpatterns = [
     ),
     path("customer/<int:customer_pk>/detail/", views.customer, name="customer"),
     path("customer/<int:customer_pk>/edit/", views.customer_edit, name="customer_edit"),
-    path("customer_list/add/", views.customer_add, name="customer_add"),
+    path("customer/list/add/", views.customer_add, name="customer_add"),
     path("error/", views.error, name="error"),
     path("massage/list/<int:pk>/detail/", views.massage_detail, name="massage_detail"),
     path("massage/list/<int:pk>/edit/", views.massage_edit, name="massage_edit"),
