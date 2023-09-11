@@ -20,14 +20,18 @@
         </form>
     </div>
     <hr>
-    <div>
+    <ul class="list-group">
         <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span class="fw-light">{% translate "Breakdown of Hours" %}</span><a class="btn btn-body"
-                                                                                 href="{% url 'report_hours' %}?start-date={{ start_date }}&end-date={{ end_date }}">{% translate "View" %}
-        </a>
-            <span class="fw-light">{% translate "Therapist Statistics" %}</span><a class="btn btn-body"
-                                                                                 href="{% url 'report_hours' %}?start-date={{ start_date }}&end-date={{ end_date }}">{% translate "View" %}
-        </a>
+            <div><span class="fw-light">{% translate "Breakdown of Hours" %}</span><a class="btn btn-body"
+                                                                                      href="{% url 'report_hours' %}?start-date={{ start_date }}&end-date={{ end_date }}">{% translate "View" %}
+            </a>
+            </div>
         </li>
-    </div>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div><span class="fw-light">{% translate "Therapist Statistics" %}</span><a class="btn btn-body"
+                                                                                        href="{% url 'report_hours' %}?start-date={{ start_date }}&end-date={{ end_date }}">{% translate "View" %}
+            </a>
+            </div>
+        </li>
+    </ul>
 {% endblock %}
