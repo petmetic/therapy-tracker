@@ -34,6 +34,7 @@ class ServiceFactory(factory.django.DjangoModelFactory):
     duration = factory.Faker("pyint")
     time_before = factory.Faker("pyint")
     time_after = factory.Faker("pyint")
+    payout = factory.Faker("pyint")
 
 
 class CustomerFactory(factory.django.DjangoModelFactory):
@@ -73,5 +74,5 @@ class MassageFactory(factory.django.DjangoModelFactory):
     discount_reason = factory.Faker("sentences")
     repeat_visit = factory.Faker("pybool")
     external_id = factory.Faker("pyint")
-    status = factory.Faker("word")
+    status = "approved"
     service = factory.SubFactory(ServiceFactory)

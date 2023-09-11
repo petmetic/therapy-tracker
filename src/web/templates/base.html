@@ -17,9 +17,9 @@
 <body>
 <header class="nav-background d-flex justify-content-between">
     <a class="p-2" href="{% url 'index' %}"><img src="/static/images/logo.png"
-                                     alt="Alenka masaže"
-                                     href="{% url 'index' %}"
-                                     class="logo"/></a>
+                                                 alt="Alenka masaže"
+                                                 href="{% url 'index' %}"
+                                                 class="logo"/></a>
     {% if request.user.is_authenticated %}
         <ul class="nav">
             {#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"#}
@@ -29,8 +29,13 @@
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="{% url 'index' %}">
                 {% translate "Today's Appointments" %}</a>
             {#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Search</a>#}
+            {% if request.user.is_staff %}
+                <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
+                   href="{% url 'reports' %}">{% translate "Reports" %}</a>
+            {% endif %}
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
                href="{% url 'logout' %}">{% translate "Logout" %}: {{ request.user.first_name }}</a>
+
         </ul>
     {% endif %}
 </header>

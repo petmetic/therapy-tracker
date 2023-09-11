@@ -1,4 +1,5 @@
-import datetime
+from datetime import datetime
+import pytz
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -6,6 +7,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.models import User
+from django.contrib.admin.views.decorators import staff_member_required
 
 from .models import Customer, Massage
 
@@ -16,12 +19,15 @@ from .forms import (
     CustomerEditForm,
     CustomAuthenticationForm,
 )
+from .report import define_month
+
+tz = pytz.timezone("Europe/Ljubljana")
 
 
 @login_required
 def index(request):
     therapist = request.user
-    today = datetime.datetime.now()
+    today = datetime.now()
     massages = (
         Massage.objects.filter(
             therapist=therapist,
@@ -57,7 +63,7 @@ def customer_detail(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     massage_list = customer.massage_set.filter(
         status="approved",
-        start__lte=datetime.datetime.now(),
+        start__lte=datetime.now(),
     )
     return render(
         request,
@@ -181,6 +187,83 @@ def massage_edit(request, pk: int):
         request,
         "web/massage_edit.html",
         {"form": form, "massage": massage, "therapist": request.user},
+    )
+
+
+@staff_member_required
+def reports(request):
+    first_day, last_day = define_month()
+    start_date = request.GET.get("start-date", first_day)
+    end_date = request.GET.get("end-date", last_day)
+
+    return render(
+        request, "web/reports.html", {"start_date": start_date, "end_date": end_date}
+    )
+
+
+@staff_member_required
+def report_hours(request):
+    first_day, last_day = define_month()
+
+    start_date = request.GET.get("start-date", first_day)
+    end_date = request.GET.get("end-date", last_day)
+
+    start_day = datetime.strptime(start_date, "%Y-%m-%d").date()
+    end_day = datetime.strptime(end_date, "%Y-%m-%d").date()
+
+    therapists = (
+        User.objects.all()
+        .exclude(first_name="Meta")
+        .exclude(username="meta")
+        .order_by("first_name")
+    )
+    return render(
+        request,
+        "web/report_hours.html",
+        {
+            "therapist_list": therapists,
+            "start_date": start_date,
+            "end_date": end_date,
+            "start_day": start_day,
+            "end_day": end_day,
+        },
+    )
+
+
+@staff_member_required
+def report_hours_detail(request, pk: int):
+    first_day, last_day = define_month()
+    start_date = request.GET.get("start-date", first_day)
+    end_date = request.GET.get("end-date", last_day)
+
+    start_day = datetime.strptime(start_date, "%Y-%m-%d").date()
+    end_day = datetime.strptime(end_date, "%Y-%m-%d").date()
+
+    therapist = get_object_or_404(User, pk=pk)
+    massages = (
+        Massage.objects.filter(therapist=therapist)
+        .filter(status="approved")
+        .filter(start__range=(start_day, end_day))
+        .exclude(customer__name="prostovoljec")
+        .order_by("start")
+    )
+
+    amount = 0
+    for massage in massages:
+        amount += massage.service.payout
+
+    return render(
+        request,
+        "web/report_hours_detail.html",
+        {
+            "therapist": therapist,
+            "massages": massages,
+            "amount": amount,
+            "start_date": start_date,
+            "end_date": end_date,
+            "start_day": start_day,
+            "end_day": end_day,
+        },
     )
 
 

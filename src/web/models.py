@@ -63,6 +63,7 @@ class Service(models.Model):
     duration = models.IntegerField(default=0)
     time_before = models.IntegerField(default=0)
     time_after = models.IntegerField(default=0)
+    payout = models.IntegerField(default=0, null=True)
 
     def __str__(self):
         return f"external_id: {self.external_id}, service group: {self.service_group}, name: {self.name}"

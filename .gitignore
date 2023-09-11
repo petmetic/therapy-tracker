@@ -9,3 +9,5 @@ requests_cache.sqlite
 __pycache__
 *.pyc
 *.pyo
+*.log
+*.mo
