@@ -25,6 +25,9 @@
             <span class="fw-light">{% translate "Breakdown of Hours" %}</span><a class="btn btn-body"
                                                                                  href="{% url 'report_hours' %}?start-date={{ start_date }}&end-date={{ end_date }}">{% translate "View" %}
         </a>
+            <span class="fw-light">{% translate "Therapist Statistics" %}</span><a class="btn btn-body"
+                                                                                 href="{% url 'report_hours' %}?start-date={{ start_date }}&end-date={{ end_date }}">{% translate "View" %}
+        </a>
         </li>
     </div>
 {% endblock %}
