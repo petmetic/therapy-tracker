@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% translate "Report" %}{% endblock %}
+{% block title %}{% translate "Detail Breakdow of Hours" %}{% endblock %}
 
 {% block content %}
     <div class="container text-left">
@@ -29,8 +29,8 @@
                         <td class="fw-light text-break">{{ massage.start|date:"j. M Y"}} {% translate "at" %} {{ massage.start| time:"H:i"}}</td>
                         <td class="fw-light text-break">{{ massage.customer.surname }}, {{ massage.customer.name }}</td>
                         <td class="fw-light text-break">{{ massage.service.name }}</td>
-                        <td class="fw-light text-break">{{ massage.amount }} eur</td>
-                        <td class="fw-light text-break">{{ massage.service.payout }} eur</td>
+                        <td class="fw-light text-break">{{ massage.amount }} €</td>
+                        <td class="fw-light text-break">{{ massage.service.payout }} €</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -38,13 +38,13 @@
                 <tr>
                     <td colspan="4" class="col fw-bold uppercase">{% translate "To be paid in total to therapist" %}:
                     </td>
-                    <td colspan="1" class="col-sm fw-bold">{{ amount }} eur</td>
+                    <td colspan="1" class="col-sm fw-bold">{{ amount }} €</td>
                 </tr>
                 </tfoot>
             </table>
         </div>
-        <div class="col-12 px-4">
-            <a class="btn btn-body" href="#">{% translate "Download" %}</a>
-        </div>
+{#        <div class="col-12 px-4">#}
+{#            <a class="btn btn-body" href="#">{% translate "Download" %}</a>#}
+{#        </div>#}
     </div>
 {% endblock %}
