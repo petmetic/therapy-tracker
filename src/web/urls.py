@@ -22,6 +22,7 @@ urlpatterns = [
         name="report_hours_detail",
     ),
     path("report/hours/", views.report_hours, name="report_hours"),
+    path("report/myreport/", views.my_report, name="my_report"),
     path("reports/", views.reports, name="reports"),
     path("", views.index, name="index"),
 ]

@@ -25,7 +25,6 @@ class ReportTest(TestCase):
         The superuser(Alice) wants to see the massages of "Charlotte" from 1.Aug - 31. Aug 2023.
         The massages that must be seen are: massage1, massage2.
         Massage3  is from therapist Mike and should not be shown.
-
         """
         cls.therapist1 = UserFactory(
             is_superuser=True, is_staff=True, first_name="Alice"
@@ -110,6 +109,10 @@ class ReportTest(TestCase):
         self.assertContains(response, text="1. Aug 2023 - 31. Aug 2023")
 
     def test_report_hours_detail_page_displays_w_correct_date(self):
+        """
+        "Alice" as superuser sees for month of August all massages from Charlotte.
+        Does not see massages related to Mike.
+        """
         self.client.force_login(self.therapist1)
 
         start_date = "2023-08-01"
@@ -151,4 +154,44 @@ class ReportTest(TestCase):
         self.assertContains(response, text="5")
         self.assertContains(response, text="Massage 30 min")
 
-        self.assertNotContains(response, text="John")
+    def test_myreport_shows(self):
+        """ """
+        self.client.force_login(self.therapist2)
+
+        start_date = "2023-08-01"
+        end_date = "2023-08-31"
+
+        response = self.client.get(
+            f"{reverse('my_report')}?start-date={start_date}&end-date={end_date}"
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        # assert Alice is not logged in and Charlotte is logged in
+        self.assertContains(response, text="Logout: Charlotte")
+        self.assertNotContains(response, text="Logout: Alice")
+        self.assertNotContains(response, text="Logout: Mike")
+
+        # assert right therapist (Charlotte) is shown
+        self.assertContains(response, text="Therapist:")
+        self.assertNotContains(response, text="Mike")
+        self.assertContains(response, text="Charlotte")
+
+        # Massage 50 min of 1.8.2023 at 17.00, customer='Doe, Jane', amount paid="45", Amount Due to therapist="15"
+        self.assertContains(response, text="17:00")
+        self.assertContains(response, text="Doe, Jane")
+        self.assertContains(response, text="Massage 50 min")
+        self.assertContains(response, text="Amount Paid")
+        self.assertContains(response, text="45")
+        self.assertContains(response, text="Amount Due to Therapist")
+        self.assertContains(response, text="15")
+
+        # Massage 30 min of 1.8.2023 at 18.00, customer='Adam', amount paid="80, Amount Due to therapist="5"
+        self.assertContains(response, text="Adam")
+        self.assertContains(response, text="80")
+        self.assertContains(response, text="Amount Paid")
+        self.assertContains(response, text="5")
+        self.assertContains(response, text="Massage 30 min")
+
+        self.assertContains(response, text="To be paid in total to therapist")
+        self.assertContains(response, text="20")

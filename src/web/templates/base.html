@@ -33,6 +33,8 @@
                 <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
                    href="{% url 'reports' %}">{% translate "Reports" %}</a>
             {% endif %}
+                <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
+                   href="{% url 'my_report' %}">{% translate "My Report" %}</a>
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
                href="{% url 'logout' %}">{% translate "Logout" %}: {{ request.user.first_name }}</a>
 

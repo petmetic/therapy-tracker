@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Detail Breakdown of Hours" %}{% endblock %}
+
+{% block content %}
+    <div class="container text-left">
+        <div class="p-4">
+            <div class="row p-1">
+                <h4 class="col-sm-8 fw-light uppercase"><span
+                        class="fw-lighter uppercase">{% translate "Therapist" %}:</span> {{ therapist.first_name }}</h4>
+                <div>
+                    <form action="." method="get" class="row  align-items-end">
+                        <div class="col-md-2 fw-light">
+                            <label for="start-date" class="col-md-4 fw-light">{% translate "from" %}:</label>
+                            <input id="start-date" class="form-control" type="date" name="start-date"
+                                   value="{{ start_date }}">
+                        </div>
+                        <div class="col-md-2 fw-light">
+                            <label for="end-date" class="col-md-4 fw-light">{% translate "to" %}:</label>
+                            <input id="end-date" class="form-control" type="date" name="end-date"
+                                   value="{{ end_date }}"/>
+                        </div>
+                        <div class="col-md-2 fw-light">
+                            <button type="submit" class="btn btn-body">{% translate "Submit" %}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <table class="table table-striped caption-top mt-4">
+                <caption class="fw-light">{% translate "Report for" %}: <span
+                        class="p-1 fw-light">{{ start_day|date:"j. M Y" }} - {{ end_day|date:"j. M Y" }}</span>
+                </caption>
+
+                <thead>
+                <tr>
+                    <th scope="col" class="fw-bold text-break">{% translate "Date" %}</th>
+                    <th scope="col" class="fw-bold text-break">{% translate "Customer" %}</th>
+                    <th scope="col" class="fw-bold text-break">{% translate "Service" %}</th>
+                    <th scope="col" class="fw-bold text-break">{% translate "Amount Paid" %}</th>
+                    <th scope="col" class="fw-bold text-break">{% translate "Amount Due to Therapist" %}</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                {% for massage in massages %}
+                    <tr>
+                        <td class="fw-light text-break">{{ massage.start|date:"j. M Y"}} {% translate "at" %}
+                            {{ massage.start| time:"H:i"}}</td>
+                        <td class="fw-light text-break">{{ massage.customer.surname }}, {{ massage.customer.name }}</td>
+                        <td class="fw-light text-break">{{ massage.service.name }}</td>
+                        <td class="fw-light text-break">{{ massage.amount }} €</td>
+                        <td class="fw-light text-break">{{ massage.service.payout }} €</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot class="table-group-divider">
+                <tr>
+                    <td colspan="4" class="col fw-bold uppercase">{% translate "To be paid in total to therapist" %}:
+                    </td>
+                    <td colspan="1" class="col-sm fw-bold">{{ amount }} €</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -267,6 +267,44 @@ def report_hours_detail(request, pk: int):
     )
 
 
+@login_required
+def my_report(request):
+    therapist = request.user
+
+    first_day, last_day = define_month()
+    start_date = request.GET.get("start-date", first_day)
+    end_date = request.GET.get("end-date", last_day)
+
+    start_day = datetime.strptime(start_date, "%Y-%m-%d").date()
+    end_day = datetime.strptime(end_date, "%Y-%m-%d").date()
+
+    massages = (
+        Massage.objects.filter(therapist=therapist)
+        .filter(status="approved")
+        .filter(start__range=(start_day, end_day))
+        .exclude(customer__name="prostovoljec")
+        .order_by("start")
+    )
+
+    amount = 0
+    for massage in massages:
+        amount += massage.service.payout
+
+    return render(
+        request,
+        "web/myreport.html",
+        {
+            "therapist": therapist,
+            "massages": massages,
+            "amount": amount,
+            "start_date": start_date,
+            "end_date": end_date,
+            "start_day": start_day,
+            "end_day": end_day,
+        },
+    )
+
+
 def custom_logout(request):
     logout(request)
     return redirect("/")
