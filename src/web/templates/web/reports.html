@@ -4,27 +4,26 @@
 
 {% block content %}
     <h4 class="p-4 fw-lighter uppercase">{% translate "Reports" %}</h4>
-    <div class="d-flex justify-content-between align-items-center">
-        <form action="/reports" method="get" class='row'>
-            <div class="col-md-4 fw-light">
+        <form action="/reports" method="get" class='row align-items-end'>
+            <div class="col-md-2 fw-light">
                 <label for="start-date" class="col-md-4 fw-light">{% translate "from" %}:</label>
                 <input id="start-date" class="form-control" type="date" name="start-date" value="{{ start_date }}">
             </div>
-            <div class="col-md-4 fw-light">
+            <div class="col-md-2 fw-light">
                 <label for="end-date" class="col-md-4 fw-light">{% translate "to" %}:</label>
                 <input id="end-date" class="form-control" type="date" name="end-date" value="{{ end_date }}"/>
             </div>
-            <div class="col-md-4 fw-light">
+            <div class="col-md-2 fw-light">
                 <button type="submit" class="btn btn-body">{% translate "Submit" %}</button>
             </div>
         </form>
-    </div>
     <hr>
     <div>
         <li class="list-group-item d-flex justify-content-between align-items-center">
             <span class="fw-light">{% translate "Breakdown of Hours" %}</span><a class="btn btn-body"
                                                                                  href="{% url 'report_hours' %}?start-date={{ start_date }}&end-date={{ end_date }}">{% translate "View" %}
         </a>
+
         </li>
     </div>
 {% endblock %}

@@ -8,23 +8,24 @@
             <div class="row p-1">
                 <h4 class="col-sm-8 fw-light uppercase"><span
                         class="fw-lighter uppercase">{% translate "Therapist" %}:</span> {{ therapist.first_name }}</h4>
-
-                <form action="." method="get" class='row'>
-                    <div class="col-md-4 fw-light">
+<div>
+                <form action="." method="get" class='row  align-items-end'>
+                    <div class="col-md-2 fw-light">
                         <label for="start-date" class="col-md-4 fw-light">{% translate "from" %}:</label>
                         <input id="start-date" class="form-control" type="date" name="start-date"
                                value="{{ start_date }}">
                     </div>
-                    <div class="col-md-4 fw-light">
+                    <div class="col-md-2 fw-light">
                         <label for="end-date" class="col-md-4 fw-light">{% translate "to" %}:</label>
                         <input id="end-date" class="form-control" type="date" name="end-date" value="{{ end_date }}"/>
                     </div>
-                    <div class="col-md-4 fw-light">
+                    <div class="col-md-2 fw-light">
                         <button type="submit" class="btn btn-body">{% translate "Submit" %}</button>
                     </div>
                 </form>
+    </div>
             </div>
-            <table class="table table-striped caption-top">
+            <table class="table table-striped caption-top mt-4">
                 <caption class="fw-light">{% translate "Report for" %}: <span
                         class="p-1 fw-light">{{ start_day|date:"j. M Y" }} - {{ end_day|date:"j. M Y" }}</span>
                 </caption>
