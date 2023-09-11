@@ -170,6 +170,7 @@ class ReportTest(TestCase):
         # assert Alice is not logged in and Charlotte is logged in
         self.assertContains(response, text="Logout: Charlotte")
         self.assertNotContains(response, text="Logout: Alice")
+        self.assertNotContains(response, text="Logout: Mike")
 
         # assert right therapist (Charlotte) is shown
         self.assertContains(response, text="Therapist:")
