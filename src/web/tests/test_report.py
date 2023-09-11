@@ -120,7 +120,6 @@ class ReportTest(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        print(response.content)
 
         # assert right superuser (Alice) is logged in and can see "Charlotte"
         self.assertNotContains(response, text="Logout: Charlotte")
