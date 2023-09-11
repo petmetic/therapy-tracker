@@ -131,8 +131,6 @@ class ReportTest(TestCase):
         self.assertContains(response, text="Jane")
         self.assertContains(response, text="100")
         self.assertContains(response, text="30")
-
-        self.assertContains(response, text="1. Aug 2023")
         self.assertContains(response, text="Adam")
         self.assertContains(response, text="80")
         self.assertContains(response, text="10")

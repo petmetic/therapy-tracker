@@ -25,7 +25,6 @@ def get_wp_credentials():
         print("No nonce found")
         return
     nonce = match.group(1)
-    print(nonce)
 
     return nonce, session
 
