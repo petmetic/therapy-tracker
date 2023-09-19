@@ -245,6 +245,7 @@ def report_hours_detail(request, pk: int):
         .filter(status="approved")
         .filter(start__range=(start_day, end_day))
         .exclude(customer__name="prostovoljec")
+        .exclude(reason_for_visit="")
         .order_by("start")
     )
 
@@ -283,6 +284,7 @@ def my_report(request):
         .filter(status="approved")
         .filter(start__range=(start_day, end_day))
         .exclude(customer__name="prostovoljec")
+        .exclude(reason_for_visit="")
         .order_by("start")
     )
 
