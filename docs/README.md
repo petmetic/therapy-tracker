@@ -7,8 +7,8 @@ An app that helps you keep your client's therapy history up to date.
 - App Name : Therapy tracker
 - Customer : Alenka masaže
 - Development Team : Meta Petrič
-- Design Team : ______
-- Web URL : _______
+- Design Team : Meta Petrič
+- Web URL : dnevnik.alenka-masaze.si
 
 ## Why
 
@@ -42,14 +42,6 @@ know what work has been done on them.
 1. At some point make an app that can be viewed on multiple devices. It is currently a test phase, so we should try
    to make it work for the web and then expand, if the need arises.
 
-[//]: # (2. Explain why they are not goals)
-
-[//]: # (3. These are as important and clarifying as the goals)
-
-[//]: # (## Hypothesis)
-
-[//]: # (If we <achieve/enable X>, then <user behavior Y changes in this way> leading to positive metrics Z. Include guesses for size of the win on specific metrics, using past launches as a baseline. )
-
 ## Vision Narrative
 A small massage business (cca. 5 employees and roughly 25 clients/ week, some reoccurring) wants to digitize it's
 logging of therapies for easy access and better time management.
@@ -81,15 +73,12 @@ For the app we need:
 
 ## Key Trade Offs & Decisions
 **Login: the authentication login approach**
-- For now we do the authentication via Google since it is safer and faster to set up.
+- Because the app is a CRM application, we need just a username and password for authentication. If the needs change, we can alter the authentication to suite the needs.
 
 **Database: a relational DB or document DB?**
-- Since it is a simple app and there is not going to be huge data input, we can go for the document DB.
+- Since it is a simple app and there is not going to be huge data input,we can go for a relational database. The key is a sigular massage, everything else (clients, therapists, services) is connected to it.
 
 ## Concept Mocks
-![IMG_7152.png](IMG_7152.png)
-![IMG_7153.png](IMG_7153.png)
-
 
 # Project Proposal
 
@@ -147,9 +136,9 @@ The app also has an **analytic user** that keeps track of all the analytics and 
 
 ## Key Features
 - login / logout
-- input form for new client
 - input form for current client
 - search database for patient
+- automatic input of new massages via API call
 
 Login/logout:
 - INDEX PAGE has login button that redirects to google login pop up window.
@@ -192,27 +181,18 @@ DATABASE MODEL:
 
 GENERAL:
 - setup DB - MySQL
-- integration with Google Auth
 - integration with database
-- error handling
+- error handling - done by Django
 - deploy settings
 
 
 For later:
 - sms/email notification of future therapy date and time
 - calendar
-- monthly results from Google analitics
+- monthly analytics
 
 
 ## Key Flows
+This is just the inital workflow of the therapist. For the end result, please contact me.
 [Therapy log web app_therapist workflow.pdf](Therapy%20log%20web%20app_therapist%20workflow.pdf)
 
-
-
-## Risks & Mitigations
-
-
-## Open Issues & Key Decisions
-
-
-[//]: # (## Appendix: Research)
