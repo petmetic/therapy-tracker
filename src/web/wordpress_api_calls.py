@@ -4,6 +4,11 @@ import json
 from django.conf import settings
 from datetime import datetime, timedelta
 
+import sys
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def get_wp_credentials():
     regex = r"var\s+wpAmeliaNonce\s*=\s*['\"]?([a-fA-F0-9]+)['\"]?"
@@ -60,6 +65,10 @@ def get_single_appointment_data_from_wp(nonce, session, external_id):
     url = settings.WP_URL_SINGLE_APPOINTMENT.format(
         nonce=nonce, external_id=external_id
     )
+    if KeyError:
+        logger.info(f"There is no massage with external_id: {external_id}")
+        sys.exit(0)
+
     wp_json = session.get(url).text
     wp_single_appointment = json.loads(wp_json)
 
