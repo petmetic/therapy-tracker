@@ -60,6 +60,7 @@ def get_single_appointment_data_from_wp(nonce, session, external_id):
     url = settings.WP_URL_SINGLE_APPOINTMENT.format(
         nonce=nonce, external_id=external_id
     )
+
     wp_json = session.get(url).text
     wp_single_appointment = json.loads(wp_json)
 

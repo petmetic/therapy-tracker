@@ -2,6 +2,7 @@ from .models import User, UserProfile, Service, Massage, Customer
 from datetime import datetime, timedelta
 import pytz
 import dictdiffer
+import sys
 import logging
 
 logger = logging.getLogger(__name__)
@@ -203,6 +204,10 @@ def massage_import(data: dict):
 def single_massage_import(data: dict):
     massages = data["data"]["appointment"]
     tz = pytz.timezone("Europe/Ljubljana")
+
+    if KeyError:
+        logger.info(f"There is no massage with external_id: {external_id}")
+        sys.exit(0)
 
     external_id_massage = massages["id"]
     service = massages["serviceId"]
