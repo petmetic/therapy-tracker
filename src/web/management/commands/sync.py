@@ -78,6 +78,7 @@ class Command(BaseCommand):
         )
         self.stdout.write(self.style.SUCCESS("\tNumber of massages in only local_db:"))
         self.stdout.write(str(len(only_in_local_db)))
+        logger.info(f"\tID of massages in only local_db:{only_in_local_db}")
         self.stdout.write(self.style.SUCCESS("\tNumber of massages in only wp_db:"))
         self.stdout.write(str(len(only_in_wordpress_db)))
         logger.info(f"successfully checked list of wp_id to local_db at {sync_time}")
