@@ -1,9 +1,9 @@
 from django.core.management.base import BaseCommand
+
 from ...models import Customer, User, Massage, Service
 from ...wordpress_api_calls import (
     get_therapist_service_data_from_wp,
     get_massage_customer_data_from_wp,
-    get_wp_credentials,
     get_massage_appointments,
     get_single_appointment_data_from_wp,
 )
@@ -25,14 +25,11 @@ class Command(BaseCommand):
     help = "Help to do sync"
 
     def handle(self, *args, **options):
-        nonce, session = get_wp_credentials()
-
         # API call for therapists and services
-        data_entities = get_therapist_service_data_from_wp(nonce=nonce, session=session)
+        data_entities = get_therapist_service_data_from_wp()
+
         # API call for customers and massages
-        data_appointments = get_massage_customer_data_from_wp(
-            day_past=1, day_future=7, nonce=nonce, session=session
-        )
+        data_appointments = get_massage_customer_data_from_wp(day_past=1, day_future=7)
 
         sync_time = datetime.now()
         # import therapist
@@ -93,9 +90,7 @@ class Command(BaseCommand):
 
         # 5. import single_appointments that have only external_id in local_db
         for external_id in only_in_local_db:
-            data = get_single_appointment_data_from_wp(
-                nonce=nonce, session=session, external_id=external_id
-            )
+            data = get_single_appointment_data_from_wp(external_id=external_id)
             single_massage_import(data)
 
         self.stdout.write(
