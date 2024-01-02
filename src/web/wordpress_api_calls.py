@@ -12,31 +12,32 @@ def get_massage_customer_data_from_wp(day_past, day_future):
         "%Y-%m-%d"
     )
 
-    url = requests.get(
+    response = requests.get(
         settings.WP_URL_APPOINTMENTS,
         headers={"Amelia": settings.WP_API_KEY},
         data={"date_sync_before": date_sync_before, "date_sync_week": date_sync_week},
     )
-    wp_massage_customer = url.json()
+    wp_massage_customer = response.json()
 
     return wp_massage_customer
 
 
 def get_therapist_service_data_from_wp():
-    url = requests.get(
+    response = requests.get(
         settings.WP_URL_ENTITIES, headers={"Amelia": settings.WP_API_KEY}
     )
-    wp_therapist_service = url.json()
+    wp_therapist_service = response.json()
 
     return wp_therapist_service
 
 
 def get_single_appointment_data_from_wp(external_id):
-    url = requests.get(
+    response = requests.get(
         settings.WP_URL_SINGLE_APPOINTMENT,
-        headers={"Amelia": settings.WP_API_KEY, "external_id": external_id},
+        headers={"Amelia": settings.WP_API_KEY},
+        data={"external_id": external_id},
     )
-    wp_single_appointment = url.json()
+    wp_single_appointment = response.json()
 
     return wp_single_appointment
 

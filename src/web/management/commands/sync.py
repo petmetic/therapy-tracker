@@ -1,13 +1,13 @@
 from django.core.management.base import BaseCommand
 
-from ...models import Customer, User, Massage, Service
-from ...wordpress_api_calls import (
+from web.models import Customer, User, Massage, Service
+from web.wordpress_api_calls import (
     get_therapist_service_data_from_wp,
     get_massage_customer_data_from_wp,
     get_massage_appointments,
     get_single_appointment_data_from_wp,
 )
-from ...importer import (
+from web.importer import (
     therapist_import,
     services_import,
     customer_import,
