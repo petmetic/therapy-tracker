@@ -1,12 +1,7 @@
 import requests
 from datetime import datetime, timedelta
 
-from therapytracker.localsettings import (
-    WP_URL_APPOINTMENTS,
-    WP_API_KEY,
-    WP_URL_ENTITIES,
-    WP_URL_SINGLE_APPOINTMENT,
-)
+from django.conf import settings
 
 
 def get_massage_customer_data_from_wp(day_past, day_future):
@@ -18,8 +13,8 @@ def get_massage_customer_data_from_wp(day_past, day_future):
     )
 
     url = requests.get(
-        WP_URL_APPOINTMENTS,
-        headers={"Amelia": WP_API_KEY},
+        settings.WP_URL_APPOINTMENTS,
+        headers={"Amelia": settings.WP_API_KEY},
         data={"date_sync_before": date_sync_before, "date_sync_week": date_sync_week},
     )
     wp_massage_customer = url.json()
@@ -28,7 +23,9 @@ def get_massage_customer_data_from_wp(day_past, day_future):
 
 
 def get_therapist_service_data_from_wp():
-    url = requests.get(WP_URL_ENTITIES, headers={"Amelia": WP_API_KEY})
+    url = requests.get(
+        settings.WP_URL_ENTITIES, headers={"Amelia": settings.WP_API_KEY}
+    )
     wp_therapist_service = url.json()
 
     return wp_therapist_service
@@ -36,8 +33,8 @@ def get_therapist_service_data_from_wp():
 
 def get_single_appointment_data_from_wp(external_id):
     url = requests.get(
-        WP_URL_SINGLE_APPOINTMENT,
-        headers={"Amelia": WP_API_KEY, "external_id": external_id},
+        settings.WP_URL_SINGLE_APPOINTMENT,
+        headers={"Amelia": settings.WP_API_KEY, "external_id": external_id},
     )
     wp_single_appointment = url.json()
 
