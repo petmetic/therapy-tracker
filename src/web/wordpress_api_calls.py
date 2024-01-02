@@ -19,9 +19,6 @@ def get_massage_customer_data_from_wp(day_past, day_future):
         ),
         headers={"Amelia": settings.WP_API_KEY},
     )
-    # data={"dates": f'{date_sync_before},{date_sync_week}'})
-    # data={"date_sync_before": date_sync_before, "date_sync_week": date_sync_week},
-    # )
 
     wp_massage_customer = response.json()
 
