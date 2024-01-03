@@ -1,4 +1,4 @@
-from web.models import User, UserProfile, Service, Massage, Customer
+from web.models import User, UserProfile, Service, Massage, Customer, Price
 from datetime import datetime, timedelta
 import pytz
 import dictdiffer

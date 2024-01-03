@@ -37,6 +37,17 @@ class Massage(models.Model):
     def __str__(self):
         return f"{self.start}, {self.customer}"
 
+    def get_price(self):
+        massage_start = self.start
+        massage_end = self.end
+        price = (
+            self.service_record.price_set.filter(startdate__gte=massage_start)
+            .sort()
+            .frist()
+        )
+
+        return price
+
 
 class Customer(models.Model):
     name = models.CharField(max_length=200)
@@ -88,7 +99,7 @@ class Price(models.Model):
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
     cost = models.IntegerField(default=0, null=True)
-    payment = models.IntegerField(default=0, null=True)
+    payout = models.IntegerField(default=0, null=True)
 
     def __str__(self):
-        return f"price of {self.service}: {self.cost}, {self.payment}"
+        return f"price of {self.service}: {self.cost}, {self.payout}"
