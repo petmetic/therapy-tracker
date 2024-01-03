@@ -75,3 +75,16 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"external id: {self.external_id}, user: {self.user}"
+
+
+class Price(models.Model):
+    service = models.ForeignKey(
+        "Service", on_delete=models.CASCADE, default="", null=True
+    )
+    start_date = models.DateTimeField(blank=True, null=True)
+    end_date = models.DateTimeField(blank=True, null=True)
+    cost = models.IntegerField(default=0, null=True)
+    payment = models.IntegerField(default=0, null=True)
+
+    def __str__(self):
+        return f"price of {self.service}: {self.cost}, {self.payment}"

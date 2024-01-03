@@ -44,7 +44,7 @@ def get_single_appointment_data_from_wp(external_id):
 
 def get_massage_appointments(data: dict) -> list:
     """
-    Get a list of external_id from the wodrpess API call
+    Get a list of external_id from the WordPress API call
     """
     massages = data["data"]["appointments"]
     wordpress_api_db = []
