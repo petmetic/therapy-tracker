@@ -263,3 +263,43 @@ def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> list:
     only_in_wordpress_db = sorted(wordpress_api_db.difference(local_db))
 
     return only_in_local_db, only_in_wordpress_db
+
+
+def price_importer(data):
+    services = data["data"]["categories"]
+    for raw_service in services:
+        for individual_service in raw_service["serviceList"]:
+            service_list_id = individual_service["id"]
+            cost = individual_service["price"]
+
+            price, created = Price.objects.update_or_create(
+                Price,
+                service=service_list_id,
+                cost=cost,
+            )
+
+    massages = data["data"]["appointments"]
+    tz = pytz.timezone("Europe/Ljubljana")
+
+    for raw_appointment in massages.values():
+        individual_appointments = raw_appointment["appointments"]
+
+        for appointment in individual_appointments:
+            service = appointment["serviceId"]
+            massage_start = datetime.strptime(
+                appointment["bookingStart"], "%Y-%m-%d %H:%M:%S"
+            ).astimezone(tz=tz)
+            massage_end = datetime.strptime(
+                appointment["bookingEnd"], "%Y-%m-%d %H:%M:%S"
+            ).astimezone(tz=tz)
+
+            price, created = update_or_create_w_logging(
+                Price,
+                service=service,
+                defaults={
+                    "start_date": massage_start,
+                    "end_date": massage_end,
+                },
+            )
+
+    return price

@@ -25,6 +25,7 @@ class MassageAdmin(admin.ModelAdmin):
         "added",
         "changed",
     ]
+    list_display = ["external_id", "customer", "therapist", "start"]
 
 
 @admin.register(Service)
