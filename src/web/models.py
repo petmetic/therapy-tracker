@@ -79,7 +79,11 @@ class UserProfile(models.Model):
 
 class Price(models.Model):
     service = models.ForeignKey(
-        "Service", on_delete=models.CASCADE, default="", null=True
+        "Service",
+        on_delete=models.CASCADE,
+        default="",
+        null=True,
+        related_name="service_record",
     )
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
