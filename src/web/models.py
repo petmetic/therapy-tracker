@@ -101,5 +101,8 @@ class Price(models.Model):
     cost = models.IntegerField(default=0, null=True)
     payout = models.IntegerField(default=0, null=True)
 
+    added = models.DateTimeField(auto_now_add=True)
+    changed = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return f"price of {self.service}: {self.cost}, {self.payout}"

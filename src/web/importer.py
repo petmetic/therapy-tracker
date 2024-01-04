@@ -241,7 +241,7 @@ def single_massage_import(data: dict):
     return massage
 
 
-def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> list:
+def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> tuple[[list], [list]]:
     """
     Checking the db of massages for a day in past and week in future against the wordpress_api_ db from the Wordpress API.
     """
@@ -265,27 +265,28 @@ def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> list:
     return only_in_local_db, only_in_wordpress_db
 
 
-def price_importer(data):
+def price_parser(data: dict) -> list:
     services = data["data"]["categories"]
+    price_parser = []
     for raw_service in services:
         for individual_service in raw_service["serviceList"]:
-            service_list_id = individual_service["id"]
+            service_id = individual_service["id"]
             cost = individual_service["price"]
+            price_parser.append((service_id, cost))
 
-            price, created = Price.objects.update_or_create(
-                Price,
-                service=service_list_id,
-                cost=cost,
-            )
+    return price_parser
 
+
+def price_start_date_parser(data: dict) -> list:
     massages = data["data"]["appointments"]
     tz = pytz.timezone("Europe/Ljubljana")
+    time_parser = []
 
     for raw_appointment in massages.values():
         individual_appointments = raw_appointment["appointments"]
 
         for appointment in individual_appointments:
-            service = appointment["serviceId"]
+            service_id = appointment["serviceId"]
             massage_start = datetime.strptime(
                 appointment["bookingStart"], "%Y-%m-%d %H:%M:%S"
             ).astimezone(tz=tz)
@@ -293,13 +294,6 @@ def price_importer(data):
                 appointment["bookingEnd"], "%Y-%m-%d %H:%M:%S"
             ).astimezone(tz=tz)
 
-            price, created = update_or_create_w_logging(
-                Price,
-                service=service,
-                defaults={
-                    "start_date": massage_start,
-                    "end_date": massage_end,
-                },
-            )
+            time_parser.append((service_id, massage_start, massage_end))
 
-    return price
+    return time_parser
