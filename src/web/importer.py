@@ -278,6 +278,10 @@ def price_import(data: list):
                 current_price = Price.objects.get(service=service, end_date=None)
                 # compare WP prices with latest service price
                 if current_price.cost != amelia_service_price:
+                    logger.info(
+                        f"Imported new service: {service}"
+                        f"\n\tPrice change from {current_price.cost} eur to {amelia_service_price} eur."
+                    )
                     current_price.end_date = end_date
                     current_price.save()
                     # if price different -> New db entry

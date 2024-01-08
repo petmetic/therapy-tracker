@@ -76,7 +76,7 @@ class Service(models.Model):
     payout = models.IntegerField(default=0, null=True)
 
     def __str__(self):
-        return f"external_id: {self.external_id}, service group: {self.service_group}, name: {self.name}"
+        return f"name: {self.name}, external_id: {self.external_id}"
 
 
 class UserProfile(models.Model):
