@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-11 12:08+0200\n"
-"PO-Revision-Date: 2023-09-11 12:09+0200\n"
+"POT-Creation-Date: 2024-01-08 14:54+0100\n"
+"PO-Revision-Date: 2024-01-08 14:55+0100\n"
 "Last-Translator: meta <petmetic@gmail.com>\n"
 "Language-Team: \n"
 "Language: sl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: web/forms.py:14 web/forms.py:167
 msgid "Time of visit"
@@ -246,7 +246,7 @@ msgstr "Dodaj stranko"
 #: web/templates/web/customer_add.html:69
 #: web/templates/web/customer_edit.html:73
 #: web/templates/web/massage_add.html:85 web/templates/web/massage_edit.html:87
-#: web/templates/web/myreport.html:23 web/templates/web/reports.html:18
+#: web/templates/web/myreport.html:24 web/templates/web/reports.html:17
 msgid "Submit"
 msgstr "Pošlji"
 
@@ -271,7 +271,7 @@ msgid "reason for visit"
 msgstr "razlog za obisk"
 
 #: web/templates/web/customer_detail.html:24
-#: web/templates/web/report_hours.html:16 web/templates/web/reports.html:26
+#: web/templates/web/report_hours.html:16 web/templates/web/reports.html:24
 msgid "View"
 msgstr "Poglej"
 
@@ -307,8 +307,8 @@ msgstr "Termini za"
 msgid "You do not have appointments today"
 msgstr "Danes nimate predvidenih terminov masaž"
 
-#: web/templates/web/index.html:24 web/templates/web/myreport.html:44
-#: web/templates/web/report_hours_detail.html:29
+#: web/templates/web/index.html:24 web/templates/web/myreport.html:45
+#: web/templates/web/report_hours_detail.html:28
 msgid "at"
 msgstr "ob"
 
@@ -373,8 +373,9 @@ msgid "Edit massage for"
 msgstr "Uredi masažo za"
 
 #: web/templates/web/myreport.html:3
-#: web/templates/web/report_hours_detail.html:3
-msgid "Detail Breakdow of Hours"
+#, fuzzy
+#| msgid "Detail Breakdow of Hours"
+msgid "Detail Breakdown of Hours"
 msgstr "Podatki za obračun"
 
 #: web/templates/web/myreport.html:10
@@ -382,51 +383,52 @@ msgstr "Podatki za obračun"
 msgid "Therapist"
 msgstr "Maser"
 
-#: web/templates/web/myreport.html:14 web/templates/web/reports.html:10
+#: web/templates/web/myreport.html:14 web/templates/web/reports.html:9
 msgid "from"
 msgstr "od"
 
-#: web/templates/web/myreport.html:19 web/templates/web/reports.html:14
+#: web/templates/web/myreport.html:19 web/templates/web/reports.html:13
 msgid "to"
 msgstr "do"
 
-#: web/templates/web/myreport.html:28
+#: web/templates/web/myreport.html:30
 #: web/templates/web/report_hours_detail.html:13
 msgid "Report for"
 msgstr "Poročilo za"
 
-#: web/templates/web/myreport.html:34
+#: web/templates/web/myreport.html:36
 #: web/templates/web/report_hours_detail.html:19
 msgid "Date"
 msgstr "Datum"
 
-#: web/templates/web/myreport.html:35
+#: web/templates/web/myreport.html:37
 #: web/templates/web/report_hours_detail.html:20
 msgid "Customer"
 msgstr "Stranka"
 
-#: web/templates/web/myreport.html:36
+#: web/templates/web/myreport.html:38
 #: web/templates/web/report_hours_detail.html:21
 msgid "Service"
 msgstr "Masaža"
 
-#: web/templates/web/myreport.html:37
+#: web/templates/web/myreport.html:39
 #: web/templates/web/report_hours_detail.html:22
-msgid "Amount Paid"
-msgstr "Plačano"
+msgid "Duration"
+msgstr "Trajanje"
 
-#: web/templates/web/myreport.html:38
-#: web/templates/web/report_hours_detail.html:23
-msgid "Amount Due to Therapist"
-msgstr "Za plačilo"
-
-#: web/templates/web/myreport.html:55
+#: web/templates/web/myreport.html:49 web/templates/web/myreport.html:58
+#: web/templates/web/report_hours_detail.html:31
 #: web/templates/web/report_hours_detail.html:39
-msgid "To be paid in total to therapist"
-msgstr "Za izplačilo skupaj"
+msgid "hours"
+msgstr "ur"
+
+#: web/templates/web/myreport.html:56
+#: web/templates/web/report_hours_detail.html:37
+msgid "Total hours"
+msgstr "Skupaj ur"
 
 #: web/templates/web/report_hours.html:3 web/templates/web/report_hours.html:6
-#: web/templates/web/reports.html:25
+#: web/templates/web/reports.html:23
 msgid "Breakdown of Hours"
 msgstr "Podatki za obračun"
 
@@ -434,9 +436,22 @@ msgstr "Podatki za obračun"
 msgid "date"
 msgstr "datum"
 
+#: web/templates/web/report_hours_detail.html:3
+msgid "Detail Breakdow of Hours"
+msgstr "Podatki za obračun"
+
 #: web/templates/web/reports.html:3
 msgid "Metric Reports"
 msgstr "Poročila"
+
+#~ msgid "Amount Paid"
+#~ msgstr "Plačano"
+
+#~ msgid "Amount Due to Therapist"
+#~ msgstr "Za plačilo"
+
+#~ msgid "To be paid in total to therapist"
+#~ msgstr "Za izplačilo skupaj"
 
 #~ msgid "Name and Surname of Customer"
 #~ msgstr "Ime in priimek stranke"

@@ -46,7 +46,7 @@
                             {{ massage.start| time:"H:i"}}</td>
                         <td class="fw-light text-break">{{ massage.customer.surname }}, {{ massage.customer.name }}</td>
                         <td class="fw-light text-break">{{ massage.service.name }}</td>
-                        <td class="fw-light text-break">{{ massage.service.get_billing_duration }} hours</td>
+                        <td class="fw-light text-break">{{ massage.service.get_billing_duration }} {% translate "hours" %}</td>
 
                     </tr>
                 {% endfor %}
@@ -55,7 +55,7 @@
                 <tr>
                     <td colspan="3" class="col fw-bold uppercase">{% translate "Total hours" %}:
                     </td>
-                    <td colspan="1" class="col-sm fw-bold">{{ amount }} hours</td>
+                    <td colspan="1" class="col-sm fw-bold">{{ amount }} {% translate "hours" %}</td>
                 </tr>
                 </tfoot>
             </table>

@@ -20,7 +20,6 @@
                     <th scope="col" class="fw-bold text-break">{% translate "Customer" %}</th>
                     <th scope="col" class="fw-bold text-break">{% translate "Service" %}</th>
                     <th scope="col" class="fw-bold text-break">{% translate "Duration" %}</th>
-{#                    <th scope="col" class="fw-bold text-break">{% translate "Amount Due to Therapist" %}</th>#}
                 </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -29,7 +28,7 @@
                         <td class="fw-light text-break">{{ massage.start|date:"j. M Y"}} {% translate "at" %} {{ massage.start| time:"H:i"}}</td>
                         <td class="fw-light text-break">{{ massage.customer.surname }}, {{ massage.customer.name }}</td>
                         <td class="fw-light text-break">{{ massage.service.name }}</td>
-                        <td class="fw-light text-break">{{ massage.service.get_billing_duration }} hours</td>
+                        <td class="fw-light text-break">{{ massage.service.get_billing_duration }} {% translate "hours" %}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -37,7 +36,7 @@
                 <tr>
                     <td colspan="3" class="col fw-bold uppercase">{% translate "Total hours" %}:
                     </td>
-                    <td colspan="1" class="col-sm fw-bold">{{ duration_sum }} hours</td>
+                    <td colspan="1" class="col-sm fw-bold">{{ duration_sum }} {% translate "hours" %}</td>
                 </tr>
                 </tfoot>
             </table>
