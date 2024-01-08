@@ -142,14 +142,16 @@ class ReportTest(TestCase):
         self.assertNotContains(response, text="Mike")
         self.assertContains(response, text="Charlotte")
 
-        # Massage 50 min of 1.8.2023 at 17.00, customer='Doe, Jane', amount paid="45", Amount Due to therapist="15", Duration = "3600"
+        # Massage 50 min of 1.8.2023 at 17.00, customer='Doe, Jane', amount paid="45",
+        # Amount Due to therapist="15", Duration = "3600"
         self.assertContains(response, text="1. Aug 2023 at 17:00")
         self.assertContains(response, text="Doe, Jane")
         self.assertContains(response, text="Massage 50 min")
         self.assertContains(response, text="Duration")
         self.assertContains(response, text="1.0 hours")
 
-        # Massage 30 min of 1.8.2023 at 18.00, customer='Adam', amount paid="80, Amount Due to therapist="5", Duration= "1800"
+        # Massage 30 min of 1.8.2023 at 18.00, customer='Adam', amount paid="80,
+        # Amount Due to therapist="5", Duration= "1800"
         self.assertContains(response, text="Adam")
         self.assertContains(response, text="80")
         self.assertContains(response, text="Duration")
@@ -183,7 +185,8 @@ class ReportTest(TestCase):
         self.assertNotContains(response, text="Mike")
         self.assertContains(response, text="Charlotte")
 
-        # Massage 50 min of 1.8.2023 at 17.00, customer='Doe, Jane', amount paid="45", Amount Due to therapist="15", Duration= "3600 min"
+        # Massage 50 min of 1.8.2023 at 17.00, customer='Doe, Jane', amount paid="45",
+        # Amount Due to therapist="15", Duration= "3600 min"
         self.assertContains(response, text="17:00")
         self.assertContains(response, text="Doe, Jane")
         self.assertContains(response, text="Massage 50 min")
@@ -191,7 +194,8 @@ class ReportTest(TestCase):
         self.assertContains(response, text="1.0")
         self.assertContains(response, text="Total hours")
 
-        # Massage 30 min of 1.8.2023 at 18.00, customer='Adam', amount paid="80, Amount Due to therapist="5", Duration= "1800 min"
+        # Massage 30 min of 1.8.2023 at 18.00, customer='Adam', amount paid="80,
+        # Amount Due to therapist="5", Duration= "1800 min"
         self.assertContains(response, text="Adam")
         self.assertContains(response, text="80")
         self.assertContains(response, text="Duration")
