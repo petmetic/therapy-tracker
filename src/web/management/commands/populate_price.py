@@ -3,8 +3,10 @@ from datetime import datetime
 from django.core.management.base import BaseCommand
 from web.models import Price, Service
 import logging
+import pytz
 
 logger = logging.getLogger(__name__)
+tz = pytz.timezone("Europe/Ljubljana")
 
 
 class Command(BaseCommand):
@@ -14,7 +16,7 @@ class Command(BaseCommand):
         for service in Service.objects.all():
             service_price = service.price
             payout = service.payout
-            start_date = datetime(2023, 1, 1)
+            start_date = datetime(2023, 1, 1, 0, 00, 00).astimezone(tz=tz)
             Price.objects.create(
                 service=service,
                 cost=service_price,

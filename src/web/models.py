@@ -78,6 +78,10 @@ class Service(models.Model):
     def __str__(self):
         return f"name: {self.name}, external_id: {self.external_id}"
 
+    def get_billing_duration(self):
+        duration = int(self.duration) / 3600
+        return duration
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

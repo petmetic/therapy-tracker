@@ -6,6 +6,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+tz = pytz.timezone("Europe/Ljubljana")
+
 
 def update_or_create_w_logging(model, external_id, defaults):
     sync_time = datetime.now()
@@ -266,8 +268,8 @@ def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> tuple[[list], 
 
 
 def price_import(data: list):
-    start_date = datetime.now()
-    end_date = datetime.now()
+    start_date = datetime.now().astimezone(tz=tz)
+    end_date = datetime.now().astimezone(tz=tz)
 
     # get Services from the db
     for service in Service.objects.all():
