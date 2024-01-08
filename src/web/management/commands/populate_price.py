@@ -2,6 +2,9 @@ from datetime import datetime
 
 from django.core.management.base import BaseCommand
 from web.models import Price, Service
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -19,3 +22,6 @@ class Command(BaseCommand):
                 start_date=start_date,
                 end_date=None,
             )
+
+        sync_time = datetime.now()
+        logger.info(f"Successfully populated prices at {sync_time}")
