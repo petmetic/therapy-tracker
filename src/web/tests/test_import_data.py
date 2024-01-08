@@ -1,7 +1,7 @@
 import datetime
 import pytz
 from freezegun import freeze_time
-from django.test import override_settings
+
 
 from django.test import TestCase
 
