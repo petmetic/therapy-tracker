@@ -39,7 +39,6 @@ class Massage(models.Model):
 
     def get_price(self):
         massage_start = self.start
-        massage_end = self.end
         price = (
             self.service_record.price_set.filter(startdate__gte=massage_start)
             .sort()
