@@ -265,35 +265,26 @@ def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> tuple[[list], 
     return only_in_local_db, only_in_wordpress_db
 
 
-def price_parser(data: dict) -> list:
-    services = data["data"]["categories"]
-    price_parser = []
-    for raw_service in services:
-        for individual_service in raw_service["serviceList"]:
-            service_id = individual_service["id"]
-            cost = individual_service["price"]
-            price_parser.append((service_id, cost))
+def price_import(data: list):
+    start_date = datetime.now()
+    end_date = datetime.now()
 
-    return price_parser
-
-
-def price_start_date_parser(data: dict) -> list:
-    massages = data["data"]["appointments"]
-    tz = pytz.timezone("Europe/Ljubljana")
-    time_parser = []
-
-    for raw_appointment in massages.values():
-        individual_appointments = raw_appointment["appointments"]
-
-        for appointment in individual_appointments:
-            service_id = appointment["serviceId"]
-            massage_start = datetime.strptime(
-                appointment["bookingStart"], "%Y-%m-%d %H:%M:%S"
-            ).astimezone(tz=tz)
-            massage_end = datetime.strptime(
-                appointment["bookingEnd"], "%Y-%m-%d %H:%M:%S"
-            ).astimezone(tz=tz)
-
-            time_parser.append((service_id, massage_start, massage_end))
-
-    return time_parser
+    # get Services from the db
+    for service in Service.objects.all():
+        service_external_id = service.external_id
+        for amelia_service_id, amelia_service_price in data:
+            # check the latest price of service (end_date=None)
+            if service_external_id == amelia_service_id:
+                current_price = Price.objects.get(service=service, end_date=None)
+                # compare WP prices with latest service price
+                if current_price.cost != amelia_service_price:
+                    current_price.end_date = end_date
+                    current_price.save()
+                    # if price different -> New db entry
+                    Price.objects.create(
+                        service=service,
+                        cost=amelia_service_price,
+                        payout=current_price.payout,
+                        start_date=start_date,
+                        end_date=None,
+                    )

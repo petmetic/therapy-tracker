@@ -61,3 +61,15 @@ def get_massage_appointments(data: dict) -> list:
                 wordpress_api_db.append(external_id_massage)
 
     return wordpress_api_db
+
+
+def get_wp_prices(data: dict) -> list:
+    services = data["data"]["categories"]
+    wp_prices = []
+    for raw_service in services:
+        for individual_service in raw_service["serviceList"]:
+            service_id = individual_service["id"]
+            cost = individual_service["price"]
+            wp_prices.append((service_id, cost))
+
+    return wp_prices

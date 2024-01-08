@@ -95,7 +95,7 @@ class Price(models.Model):
         default="",
         null=True,
         related_name="service_record",
-    )
+    )  # django ID of Service
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
     cost = models.IntegerField(default=0, null=True)

@@ -12,11 +12,10 @@ class Command(BaseCommand):
             service_price = service.price
             payout = service.payout
             start_date = datetime(2023, 1, 1)
-            end_date = datetime(2023, 12, 31)
             Price.objects.create(
                 service=service,
                 cost=service_price,
                 payout=payout,
                 start_date=start_date,
-                end_date=end_date,
+                end_date=None,
             )
