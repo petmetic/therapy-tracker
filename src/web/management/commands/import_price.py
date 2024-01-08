@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.core.management.base import BaseCommand
 from web.wordpress_api_calls import (
     get_therapist_service_data_from_wp,
