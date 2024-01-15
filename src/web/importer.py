@@ -286,7 +286,7 @@ def price_import(data: list):
                     )
                     current_price.end_date = end_date
                     current_price.save()
-                    # if price different -> New db entry
+                    # because current price is different, create new Price entry
                     Price.objects.create(
                         service=service,
                         cost=amelia_service_price,
