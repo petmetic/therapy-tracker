@@ -76,3 +76,14 @@ class MassageFactory(factory.django.DjangoModelFactory):
     external_id = factory.Faker("pyint")
     status = "approved"
     service = factory.SubFactory(ServiceFactory)
+
+
+class PriceFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.Price
+
+    service = factory.SubFactory(ServiceFactory)
+    start_date = factory.Faker("date_time", tzinfo=tz)  # "%Y-%m-%d %H:%M:%S"
+    end_date = factory.Faker("date_time", tzinfo=tz)  # "%Y-%m-%d %H:%M:%S"
+    cost = factory.Faker("pyint")
+    payout = factory.Faker("pyint")

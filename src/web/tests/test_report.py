@@ -36,8 +36,12 @@ class ReportTest(TestCase):
         cls.customer2 = CustomerFactory(name="Adam")
         cls.customer3 = CustomerFactory(name="John")
 
-        cls.service1 = ServiceFactory(payout="15", name="Massage 50 min", price="45")
-        cls.service2 = ServiceFactory(payout="5", name="Massage 30 min", price="80")
+        cls.service1 = ServiceFactory(
+            duration="3600", name="Massage 50 min", price="45"
+        )
+        cls.service2 = ServiceFactory(
+            duration="1800", name="Massage 30 min", price="80"
+        )
 
         cls.massage1 = MassageFactory(
             therapist=cls.therapist2,
@@ -138,21 +142,25 @@ class ReportTest(TestCase):
         self.assertNotContains(response, text="Mike")
         self.assertContains(response, text="Charlotte")
 
-        # Massage 50 min of 1.8.2023 at 17.00, customer='Doe, Jane', amount paid="45", Amount Due to therapist="15"
+        # Massage 50 min of 1.8.2023 at 17.00, customer='Doe, Jane', amount paid="45",
+        # Amount Due to therapist="15", Duration = "3600"
         self.assertContains(response, text="1. Aug 2023 at 17:00")
         self.assertContains(response, text="Doe, Jane")
         self.assertContains(response, text="Massage 50 min")
-        self.assertContains(response, text="Amount Paid")
-        self.assertContains(response, text="45")
-        self.assertContains(response, text="Amount Due to Therapist")
-        self.assertContains(response, text="15")
+        self.assertContains(response, text="Duration")
+        self.assertContains(response, text="1.0 hours")
 
-        # Massage 30 min of 1.8.2023 at 18.00, customer='Adam', amount paid="80, Amount Due to therapist="5"
+        # Massage 30 min of 1.8.2023 at 18.00, customer='Adam', amount paid="80,
+        # Amount Due to therapist="5", Duration= "1800"
         self.assertContains(response, text="Adam")
         self.assertContains(response, text="80")
-        self.assertContains(response, text="Amount Paid")
-        self.assertContains(response, text="5")
+        self.assertContains(response, text="Duration")
+        self.assertContains(response, text="0.5 hours")
         self.assertContains(response, text="Massage 30 min")
+
+        # total hours massage: 1,5 hours
+        self.assertContains(response, text="Total hours")
+        self.assertContains(response, text="1.5")
 
     def test_myreport_shows(self):
         """ """
@@ -177,21 +185,19 @@ class ReportTest(TestCase):
         self.assertNotContains(response, text="Mike")
         self.assertContains(response, text="Charlotte")
 
-        # Massage 50 min of 1.8.2023 at 17.00, customer='Doe, Jane', amount paid="45", Amount Due to therapist="15"
+        # Massage 50 min of 1.8.2023 at 17.00, customer='Doe, Jane', amount paid="45",
+        # Amount Due to therapist="15", Duration= "3600 min"
         self.assertContains(response, text="17:00")
         self.assertContains(response, text="Doe, Jane")
         self.assertContains(response, text="Massage 50 min")
-        self.assertContains(response, text="Amount Paid")
-        self.assertContains(response, text="45")
-        self.assertContains(response, text="Amount Due to Therapist")
-        self.assertContains(response, text="15")
+        self.assertContains(response, text="Duration")
+        self.assertContains(response, text="1.0")
+        self.assertContains(response, text="Total hours")
 
-        # Massage 30 min of 1.8.2023 at 18.00, customer='Adam', amount paid="80, Amount Due to therapist="5"
+        # Massage 30 min of 1.8.2023 at 18.00, customer='Adam', amount paid="80,
+        # Amount Due to therapist="5", Duration= "1800 min"
         self.assertContains(response, text="Adam")
         self.assertContains(response, text="80")
-        self.assertContains(response, text="Amount Paid")
-        self.assertContains(response, text="5")
+        self.assertContains(response, text="Duration")
+        self.assertContains(response, text="0.5")
         self.assertContains(response, text="Massage 30 min")
-
-        self.assertContains(response, text="To be paid in total to therapist")
-        self.assertContains(response, text="20")

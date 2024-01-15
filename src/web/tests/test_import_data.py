@@ -2,6 +2,7 @@ import datetime
 import pytz
 from freezegun import freeze_time
 
+
 from django.test import TestCase
 
 from .factories import (
@@ -9,8 +10,9 @@ from .factories import (
     MassageFactory,
     UserProfileFactory,
     ServiceFactory,
+    PriceFactory,
 )
-from ..models import Massage, Customer, User, Service
+from ..models import Massage, Customer, User, Service, Price
 from ..importer import (
     therapist_import,
     services_import,
@@ -18,8 +20,9 @@ from ..importer import (
     massage_import,
     single_massage_import,
     massage_date_comparison_with_wp_db,
+    price_import,
 )
-from ..wordpress_api_calls import get_massage_appointments
+from ..wordpress_api_calls import get_massage_appointments, get_wp_prices
 
 tz = pytz.timezone("Europe/Ljubljana")
 
@@ -892,3 +895,110 @@ class ImportDataTest(TestCase):
         )
         self.assertEqual(only_in_local_db, [5])
         self.assertEqual(only_in_wordpress_db, [10])
+
+
+class PriceTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """
+        The are three services already in the database, with 3 different services.
+        """
+        cls.service1 = ServiceFactory(external_id=23, price=70)
+
+        cls.price1 = PriceFactory(
+            service=cls.service1,
+            cost=70,
+            start_date=datetime.datetime(2021, 4, 7, 9, 0, 0),
+            end_date=datetime.datetime(2021, 12, 31, 0, 0, 0),
+        )
+        cls.price2 = PriceFactory(
+            service=cls.service1,
+            cost=80,
+            start_date=datetime.datetime(2022, 1, 1, 0, 0, 0),
+            end_date=datetime.datetime(2022, 12, 31, 0, 0, 0),
+        )
+        cls.price3 = PriceFactory(
+            service=cls.service1,
+            cost=100,
+            start_date=datetime.datetime(2023, 1, 1, 0, 0, 0),
+            end_date=None,
+        )
+
+    def test_get_wp_prices(self):
+        """
+        Check if we get the new prices for massages with ID 23, 29, and 25.
+        """
+        data = {
+            "message": "Successfully retrieved entities",
+            "data": {
+                "categories": [
+                    {
+                        "id": 21,
+                        "status": "visible",
+                        "name": "Individualne masa\u017ee",
+                        "serviceList": [
+                            {
+                                "id": 23,
+                                "name": "Masa\u017ea 25 min",
+                                "price": 5,
+                                "deposit": 0,
+                                "position": 6,
+                                "duration": 1800,
+                                "timeBefore": None,
+                                "timeAfter": None,
+                            },
+                            {
+                                "id": 29,
+                                "name": "Masa\u017ea 50 minut",
+                                "price": 1,
+                                "duration": 3600,
+                                "timeBefore": None,
+                                "timeAfter": None,
+                            },
+                        ],
+                    },
+                    {
+                        "id": 22,
+                        "status": "visible",
+                        "name": "Masa\u017ee za pare",
+                        "serviceList": [
+                            {
+                                "id": 25,
+                                "name": "Spro\u0161\u010dujo\u010da masa\u017ea 50 min",
+                                "price": 3,
+                                "duration": 4800,
+                                "timeBefore": 600,
+                                "timeAfter": None,
+                            },
+                        ],
+                        "position": 2,
+                        "translations": None,
+                    },
+                ],
+            },
+        }
+
+        amelia_prices = get_wp_prices(data)
+        self.assertEqual(amelia_prices, [(23, 5), (29, 1), (25, 3)])
+
+    def test_price_import(self):
+        """
+        Check if the changed prices from WP create a new entry in Price model.
+        Price should have new entry.
+        """
+
+        data = [(23, 150), (29, 80), (25, 3)]
+
+        price_count = Price.objects.all().count()
+
+        price_import(data)
+
+        self.assertEqual(Price.objects.all().count(), price_count + 1)
+
+        price = Price.objects.latest("id")
+        self.assertEqual(price.cost, 150)
+
+        # check if the same price import does nothing to the Price table
+        price_count = Price.objects.all().count()
+        price_import(data)
+        self.assertEqual(Price.objects.all().count(), price_count)

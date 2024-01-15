@@ -1,10 +1,12 @@
-from web.models import User, UserProfile, Service, Massage, Customer
+from web.models import User, UserProfile, Service, Massage, Customer, Price
 from datetime import datetime, timedelta
 import pytz
 import dictdiffer
 import logging
 
 logger = logging.getLogger(__name__)
+
+tz = pytz.timezone("Europe/Ljubljana")
 
 
 def update_or_create_w_logging(model, external_id, defaults):
@@ -241,7 +243,7 @@ def single_massage_import(data: dict):
     return massage
 
 
-def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> list:
+def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> tuple[[list], [list]]:
     """
     Checking the db of massages for a day in past and week in future against the wordpress_api_ db from the Wordpress API.
     """
@@ -263,3 +265,32 @@ def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> list:
     only_in_wordpress_db = sorted(wordpress_api_db.difference(local_db))
 
     return only_in_local_db, only_in_wordpress_db
+
+
+def price_import(data: list):
+    start_date = datetime.now().astimezone(tz=tz)
+    end_date = datetime.now().astimezone(tz=tz)
+
+    # get Services from the db
+    for service in Service.objects.all():
+        service_external_id = service.external_id
+        for amelia_service_id, amelia_service_price in data:
+            # check the latest price of service (end_date=None)
+            if service_external_id == amelia_service_id:
+                current_price = Price.objects.get(service=service, end_date=None)
+                # compare WP prices with latest service price
+                if current_price.cost != amelia_service_price:
+                    logger.info(
+                        f"Imported new service: {service}"
+                        f"\n\tPrice change from {current_price.cost} eur to {amelia_service_price} eur."
+                    )
+                    current_price.end_date = end_date
+                    current_price.save()
+                    # because current price is different, create new Price entry
+                    Price.objects.create(
+                        service=service,
+                        cost=amelia_service_price,
+                        payout=current_price.payout,
+                        start_date=start_date,
+                        end_date=None,
+                    )

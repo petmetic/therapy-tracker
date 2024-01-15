@@ -37,6 +37,16 @@ class Massage(models.Model):
     def __str__(self):
         return f"{self.start}, {self.customer}"
 
+    def get_price(self):
+        massage_start = self.start
+        price = (
+            self.service_record.price_set.filter(startdate__gte=massage_start)
+            .sort()
+            .frist()
+        )
+
+        return price
+
 
 class Customer(models.Model):
     name = models.CharField(max_length=200)
@@ -66,7 +76,11 @@ class Service(models.Model):
     payout = models.IntegerField(default=0, null=True)
 
     def __str__(self):
-        return f"external_id: {self.external_id}, service group: {self.service_group}, name: {self.name}"
+        return f"name: {self.name}, external_id: {self.external_id}"
+
+    def get_billing_duration(self):
+        duration = int(self.duration) / 3600
+        return duration
 
 
 class UserProfile(models.Model):
@@ -75,3 +89,23 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"external id: {self.external_id}, user: {self.user}"
+
+
+class Price(models.Model):
+    service = models.ForeignKey(
+        "Service",
+        on_delete=models.CASCADE,
+        default="",
+        null=True,
+        related_name="service_record",
+    )  # django ID of Service
+    start_date = models.DateTimeField(blank=True, null=True)
+    end_date = models.DateTimeField(blank=True, null=True)
+    cost = models.IntegerField(default=0, null=True)
+    payout = models.IntegerField(default=0, null=True)
+
+    added = models.DateTimeField(auto_now_add=True)
+    changed = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"price of {self.service}: {self.cost}, {self.payout}"
