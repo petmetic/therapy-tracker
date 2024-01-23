@@ -201,3 +201,7 @@ class ReportTest(TestCase):
         self.assertContains(response, text="Duration")
         self.assertContains(response, text="0.5")
         self.assertContains(response, text="Massage 30 min")
+
+        # total hours massage: 1,5 hours
+        self.assertContains(response, text="Total hours")
+        self.assertContains(response, text="1.5")

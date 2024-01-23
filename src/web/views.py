@@ -215,6 +215,7 @@ def report_hours(request):
         User.objects.all()
         .exclude(first_name="Meta")
         .exclude(username="meta")
+        .exclude(first_name="Test")
         .order_by("first_name")
     )
     return render(
@@ -284,12 +285,13 @@ def my_report(request):
         .filter(status="approved")
         .filter(start__range=(start_day, end_day))
         .exclude(customer__name="prostovoljec")
+        .exclude(customer__name="kosilo")
         .order_by("start")
     )
 
-    amount = 0
+    duration_sum = 0
     for massage in massages:
-        amount += massage.service.payout
+        duration_sum += massage.service.get_billing_duration()
 
     return render(
         request,
@@ -297,7 +299,7 @@ def my_report(request):
         {
             "therapist": therapist,
             "massages": massages,
-            "amount": amount,
+            "duration_sum": duration_sum,
             "start_date": start_date,
             "end_date": end_date,
             "start_day": start_day,
