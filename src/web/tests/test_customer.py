@@ -190,9 +190,9 @@ class CustomerTest(TestCase):
     def test_search_customer_list(self):
         therapist = UserFactory()
         self.client.force_login(therapist)
-        customer1 = CustomerFactory(name="Peter", surname="Doe")
-        customer2 = CustomerFactory(name="Rebeca", surname="O'Sullivan")
-        customer3 = CustomerFactory(name="Petra", surname="Dunkirk")
+        CustomerFactory(name="Peter", surname="Doe")
+        CustomerFactory(name="Rebeca", surname="O'Sullivan")
+        CustomerFactory(name="Petra", surname="Dunkirk")
 
         q = "P"
 
