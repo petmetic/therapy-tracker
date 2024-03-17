@@ -194,7 +194,7 @@ class CustomerTest(TestCase):
         CustomerFactory(name="Rebeca", surname="O'Sullivan")
         CustomerFactory(name="Petra", surname="Dunkirk")
 
-        q = "P"
+        q = "Pe"
 
         response = self.client.get(reverse("customer_list") + f"?q={q}")
 
