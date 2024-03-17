@@ -9,6 +9,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models import Q
 
 from .models import Customer, Massage
 
@@ -20,6 +21,7 @@ from .forms import (
     CustomAuthenticationForm,
 )
 from .report import define_month
+
 
 tz = pytz.timezone("Europe/Ljubljana")
 
@@ -53,9 +55,17 @@ def index(request):
 
 @login_required
 def customer_list(request):
-    customers = Customer.objects.all().order_by("surname")
+    q = request.GET.get("q", "")
+    if q:
+        filtered_customers = Customer.objects.filter(
+            Q(surname__icontains=q) | Q(name__icontains=q)
+        )
+    else:
+        filtered_customers = Customer.objects.all().order_by("surname")
 
-    return render(request, "web/customer_list.html", {"customers_list": customers})
+    return render(
+        request, "web/customer_list.html", {"customers_list": filtered_customers}
+    )
 
 
 @login_required

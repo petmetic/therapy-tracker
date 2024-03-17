@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-08 14:54+0100\n"
-"PO-Revision-Date: 2024-01-08 14:55+0100\n"
+"POT-Creation-Date: 2024-03-17 15:25+0100\n"
+"PO-Revision-Date: 2024-03-17 15:26+0100\n"
 "Last-Translator: meta <petmetic@gmail.com>\n"
 "Language-Team: \n"
 "Language: sl\n"
@@ -181,23 +181,23 @@ msgstr "Uporabniško ime"
 msgid "Password"
 msgstr "Geslo"
 
-#: web/templates/base.html:28
+#: web/templates/base.html:26
 msgid "Customer List"
 msgstr "Seznam strank"
 
-#: web/templates/base.html:30
+#: web/templates/base.html:28
 msgid "Today's Appointments"
 msgstr "Današnji termini"
 
-#: web/templates/base.html:34 web/templates/web/reports.html:6
+#: web/templates/base.html:31 web/templates/web/reports.html:6
 msgid "Reports"
 msgstr "Poročila"
 
-#: web/templates/base.html:37
+#: web/templates/base.html:34
 msgid "My Report"
 msgstr "Moje poročilo"
 
-#: web/templates/base.html:39
+#: web/templates/base.html:36
 msgid "Logout"
 msgstr "Logout"
 
@@ -291,11 +291,20 @@ msgstr "Uredi stranko"
 msgid "Customer Listing"
 msgstr "Seznam strank"
 
-#: web/templates/web/customer_list.html:8
+#: web/templates/web/customer_list.html:7
 msgid "List of Customers"
 msgstr "Seznam strank"
 
-#: web/templates/web/customer_list.html:17
+#: web/templates/web/customer_list.html:11
+msgid "Search List of Customers"
+msgstr "Išči po seznamu strank"
+
+#: web/templates/web/customer_list.html:12
+#: web/templates/web/customer_list.html:13
+msgid "Search"
+msgstr "Išči"
+
+#: web/templates/web/customer_list.html:24
 msgid "View  "
 msgstr "Poglej "
 
