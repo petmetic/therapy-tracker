@@ -186,3 +186,23 @@ class CustomerTest(TestCase):
         # assert from db that the main concern is "bike accident"
         customer.refresh_from_db()
         self.assertEqual(customer.main_concern, "bike accident")
+
+    def test_search_customer_list(self):
+        therapist = UserFactory()
+        self.client.force_login(therapist)
+        customer1 = CustomerFactory(name="Peter", surname="Doe")
+        customer2 = CustomerFactory(name="Rebeca", surname="O'Sullivan")
+        customer3 = CustomerFactory(name="Petra", surname="Dunkirk")
+
+        q = "P"
+
+        response = self.client.get(reverse("customer_list") + f"?q={q}")
+
+        """
+        Because of search param "P". list should contain names "Peter" and "Petra" and not "Rebeca".
+        """
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Peter")
+        self.assertContains(response, "Petra")
+        self.assertNotContains(response, "Rebeca")
+        self.assertNotContains(response, "O'Sullivan")
