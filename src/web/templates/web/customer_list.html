@@ -4,15 +4,22 @@
 
 {% block content %}
 
-    {#<a class="btn btn-primary btn-body" href="{% url 'customer_add' %}">Add new customer</a>#}
     <h4 class="p-4 fw-lighter uppercase">{% translate "List of Customers" %}</h4>
     <hr>
+    <div class="col p-4">
+        <form action="{% url 'customer_list' %}" method="GET">
+            <label for="customer_name">{% translate "Search List of Customers" %}:</label>
+            <input id="customer_name" name="q" type="text" placeholder="{% translate "Search" %}" value="{{ q }}"/>
+            <button  class="btn btn-body" type="Submit">{% translate "Search" %}</button>
+        </form>
+    </div>
     <div class="p-2">
         <ul class="list-group">
             {% for customer in customers_list %}
 
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="fw-light"><span class="fw-bold">{{ customer.surname }}</span> , {{ customer.name }}</span>
+                    <span class="fw-light"><span
+                            class="fw-bold">{{ customer.surname }}</span> , {{ customer.name }}</span>
                     <a class="btn btn-body"
                        href="{% url 'customer_detail' pk=customer.pk %}">{% translate "View  " %}<span
                             class="badge text-bg-secondary">{{ customer.massage_set.count }}</span>

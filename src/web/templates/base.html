@@ -22,19 +22,16 @@
                                                  class="logo"/></a>
     {% if request.user.is_authenticated %}
         <ul class="nav">
-            {#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"#}
-            {#               href="{% url 'customer_add' %}">{% translate "New Customer" %}</a>#}
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
                href="{% url 'customer_list' %}">{% translate "Customer List" %}</a>
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="{% url 'index' %}">
                 {% translate "Today's Appointments" %}</a>
-            {#            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true" href="#">Search</a>#}
             {% if request.user.is_staff %}
                 <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
                    href="{% url 'reports' %}">{% translate "Reports" %}</a>
             {% endif %}
-                <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
-                   href="{% url 'my_report' %}">{% translate "My Report" %}</a>
+            <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
+               href="{% url 'my_report' %}">{% translate "My Report" %}</a>
             <a class="btn btn-nav" role="button" data-bs-toogle="button" aria-pressed="true"
                href="{% url 'logout' %}">{% translate "Logout" %}: {{ request.user.first_name }}</a>
 
