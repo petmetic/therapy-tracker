@@ -163,7 +163,6 @@ class ReportTest(TestCase):
         self.assertContains(response, text="1.5")
 
     def test_myreport_shows(self):
-        """ """
         self.client.force_login(self.therapist2)
 
         start_date = "2023-08-01"
