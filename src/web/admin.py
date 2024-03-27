@@ -31,6 +31,7 @@ class MassageAdmin(admin.ModelAdmin):
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_filter = ["name", "price"]
+    list_display = ["service_group", "name", "price"]
 
 
 @admin.register(Price)
