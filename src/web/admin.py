@@ -30,11 +30,17 @@ class MassageAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_filter = ["name", "price"]
-    list_display = ["service_group", "name", "price"]
+    list_filter = ["name", "price", "service_group"]
+    list_display = ["name", "service_group", "external_id", "price"]
 
 
 @admin.register(Price)
 class PriceAdmin(admin.ModelAdmin):
     list_filter = ["service", "start_date", "end_date", "cost", "payout"]
-    list_display = ["service", "start_date", "end_date", "cost", "payout"]
+    list_display = [
+        "service",
+        "start_date",
+        "end_date",
+        "cost",
+        "payout",
+    ]

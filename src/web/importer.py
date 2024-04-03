@@ -270,6 +270,7 @@ def massage_date_comparison_with_wp_db(wordpress_api_db: list) -> tuple[[list], 
 def price_import(data: list):
     start_date = datetime.now().astimezone(tz=tz)
     end_date = datetime.now().astimezone(tz=tz)
+    print(data)
 
     # get Services from the db
     for service in Service.objects.all():
@@ -277,9 +278,12 @@ def price_import(data: list):
         for amelia_service_id, amelia_service_price in data:
             # check the latest price of service (end_date=None)
             if service_external_id == amelia_service_id:
-                current_price = Price.objects.get(service=service, end_date=None)
+                # instead of .get you can use .filter().latest() to get the same result: item or None
+                current_price = Price.objects.filter(
+                    service=service, end_date=None
+                ).latest("id")
                 # compare WP prices with latest service price
-                if current_price.cost != amelia_service_price:
+                if current_price and (current_price.cost != amelia_service_price):
                     logger.info(
                         f"Imported new service: {service}"
                         f"\n\tPrice change from {current_price.cost} eur to {amelia_service_price} eur."
@@ -294,3 +298,13 @@ def price_import(data: list):
                         start_date=start_date,
                         end_date=None,
                     )
+                else:
+                    # create Price object
+                    Price.objects.create(
+                        service=service,
+                        cost=amelia_service_price,
+                        payout=current_price.payout,
+                        start_date=start_date,
+                        end_date=None,
+                    )
+                    logger.info(f"Imported new service: {service}")

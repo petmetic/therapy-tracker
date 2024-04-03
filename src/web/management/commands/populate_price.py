@@ -17,6 +17,7 @@ class Command(BaseCommand):
             service_price = service.price
             payout = service.payout
             start_date = datetime(2023, 1, 1, 0, 00, 00).astimezone(tz=tz)
+            # maybe add just prices that are new? do not have duplicates inside?
             Price.objects.create(
                 service=service,
                 cost=service_price,

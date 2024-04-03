@@ -901,9 +901,10 @@ class PriceTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         """
-        The are three services already in the database, with 3 different services.
+        There are three services already in the database, with 3 different services.
         """
         cls.service1 = ServiceFactory(external_id=23, price=70)
+        cls.service4 = ServiceFactory(external_id=100, price=None)
 
         cls.price1 = PriceFactory(
             service=cls.service1,
@@ -922,6 +923,12 @@ class PriceTest(TestCase):
             cost=100,
             start_date=datetime.datetime(2023, 1, 1, 0, 0, 0),
             end_date=None,
+        )
+        cls.price_new = PriceFactory.build(
+            service=cls.service4,
+            cost=80,
+            start_date=datetime.datetime(2022, 1, 1, 0, 0, 0),
+            end_date=datetime.datetime(2022, 12, 31, 0, 0, 0),
         )
 
     def test_get_wp_prices(self):
@@ -1002,3 +1009,22 @@ class PriceTest(TestCase):
         price_count = Price.objects.all().count()
         price_import(data)
         self.assertEqual(Price.objects.all().count(), price_count)
+
+    def test_new_price_import(self):
+        """
+        Check if price_new is added, the added price is processed.
+        """
+
+        amelia_prices = [
+            (23, 150),
+            (29, 80),
+            (25, 3),
+            (self.service4.external_id, self.price_new.cost),
+        ]
+
+        price_count = Price.objects.all().count()
+        price_import(amelia_prices)
+
+        self.assertEqual(Price.objects.all().count(), price_count + 1)
+
+        price = Price.objects.latest("id")
