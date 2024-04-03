@@ -75,6 +75,9 @@ class Service(models.Model):
     time_after = models.IntegerField(default=0)
     payout = models.IntegerField(default=0, null=True)
 
+    added = models.DateTimeField(auto_now_add=True)
+    changed = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return f"name: {self.name}, external_id: {self.external_id}"
 
