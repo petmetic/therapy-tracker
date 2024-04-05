@@ -271,26 +271,64 @@ def price_import(data: list):
     start_date = datetime.now().astimezone(tz=tz)
     end_date = datetime.now().astimezone(tz=tz)
 
-    # get Services from the db
+    """
+    1. Check if amelia_external_id is present in Services database
+    2. If present: return "id" if Service
+        2.a Check if id of Service exists in Price database
+            2.b If not exist: create new price entry in Price database
+            2.c If exist: check if amelia_service_price == cost in Price database
+                2.d if != : create new entry in Price database
+                2.e if == : continue with data list
+    3. If not present: return Error
+
+    """
+
     for service in Service.objects.all():
         service_external_id = service.external_id
+        # 1. Check if amelia_external_id is present in Services database
         for amelia_service_id, amelia_service_price in data:
-            # check the latest price of service (end_date=None)
-            if service_external_id == amelia_service_id:
-                current_price = Price.objects.get(service=service, end_date=None)
-                # compare WP prices with latest service price
-                if current_price.cost != amelia_service_price:
-                    logger.info(
-                        f"Imported new service: {service}"
-                        f"\n\tPrice change from {current_price.cost} eur to {amelia_service_price} eur."
-                    )
-                    current_price.end_date = end_date
-                    current_price.save()
-                    # because current price is different, create new Price entry
+            print(f"amelia_service_id {amelia_service_id}")
+            print(f"service_external_id {service_external_id}")
+            #  2. If present: return "id" if Service
+            if amelia_service_id == service_external_id:
+                # get internal_id of service
+                internal_service_id = service.id
+                print(f"internal_service_id {internal_service_id}")
+                # 2.a Check if id of Service exists in Price database
+                # check if service already in Price model
+                price = Price.objects.filter(pk=internal_service_id)
+                # 2.b If not exist: create new price entry in Price database
+                # if service not in Price model, create new service in Price model
+                if internal_service_id not in price:
+                    print("there was no service in Price model")
                     Price.objects.create(
                         service=service,
                         cost=amelia_service_price,
-                        payout=current_price.payout,
+                        payout=None,
                         start_date=start_date,
                         end_date=None,
                     )
+                    logger.info(f"Imported new service in Price: {service}")
+
+                # 2.c If exist: check if amelia_service_price == cost in Price database
+                else:
+                    current_price = Price.objects.get(service=service, end_date=None)
+                    print(f"current_price {current_price}")
+                    print(f"amelia_service_price {amelia_service_price}")
+                    # compare WP prices with latest service price
+                    # 2.d if != : create new entry in Price database
+                    if current_price.cost != amelia_service_price:
+                        current_price.end_date = end_date
+                        current_price.save()
+                        # because current price is different, create new Price entry
+                        Price.objects.create(
+                            service=service,
+                            cost=amelia_service_price,
+                            payout=current_price.payout,
+                            start_date=start_date,
+                            end_date=None,
+                        )
+                        logger.info(
+                            f"Imported new price for: {service}"
+                            f"\n\tPrice change from {current_price.cost} eur to {amelia_service_price} eur."
+                        )

@@ -901,9 +901,12 @@ class PriceTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         """
-        The are three services already in the database, with 3 different services.
+        There are three prices already in the database for only 1 service.
+        The other two services have no prices in Price model.
         """
         cls.service1 = ServiceFactory(external_id=23, price=70)
+        cls.service2 = ServiceFactory(external_id=29, price=70)
+        cls.service3 = ServiceFactory(name="Massage", external_id=25, price=70)
 
         cls.price1 = PriceFactory(
             service=cls.service1,
@@ -983,22 +986,31 @@ class PriceTest(TestCase):
 
     def test_price_import(self):
         """
-        Check if the changed prices from WP create a new entry in Price model.
-        Price should have new entry.
+        Check if the changed prices from WP created 3 new entries in Price model.
+        Price should have 3 new entries.
+
+        Check if the same changed prices are imported there are no new entries.
         """
 
         data = [(23, 150), (29, 80), (25, 3)]
 
+        price = Price.objects.latest("id")
+        self.assertEqual(price.cost, 100)
+
         price_count = Price.objects.all().count()
 
         price_import(data)
 
-        self.assertEqual(Price.objects.all().count(), price_count + 1)
+        self.assertEqual(Price.objects.all().count(), price_count + 3)
 
         price = Price.objects.latest("id")
-        self.assertEqual(price.cost, 150)
+        service = price.service.name
+        self.assertEqual(price.cost, 3)
+        self.assertEqual(service, "Massage")
 
-        # check if the same price import does nothing to the Price table
+        # check if same data is imported, there are no new added objects to Price model
+        # object count should be : 6
         price_count = Price.objects.all().count()
+        self.assertEqual(price_count, 6)
         price_import(data)
-        self.assertEqual(Price.objects.all().count(), price_count)
+        self.assertEqual(Price.objects.all().count(), 6)
