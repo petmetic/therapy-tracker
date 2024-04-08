@@ -279,7 +279,6 @@ def price_import(data: list):
             2.c If exist: check if amelia_service_price == cost in Price database
                 2.d if != : create new entry in Price database
                 2.e if == : continue with data list
-    3. If not present: return Error
     """
 
     for service in Service.objects.all():
