@@ -36,4 +36,4 @@ class ServiceAdmin(admin.ModelAdmin):
 @admin.register(Price)
 class PriceAdmin(admin.ModelAdmin):
     list_filter = ["service", "start_date", "end_date", "cost", "payout"]
-    list_display = ["service", "start_date", "end_date", "cost", "payout"]
+    list_display = ["service", "start_date", "end_date", "cost", "payout", "added"]

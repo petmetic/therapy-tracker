@@ -24,7 +24,7 @@ from ..importer import (
 )
 from ..wordpress_api_calls import get_massage_appointments, get_wp_prices
 
-tz = pytz.timezone("Europe/Ljubljana")
+tz = pytz.timezone("UTC")
 
 
 class ImportDataTest(TestCase):
@@ -901,26 +901,45 @@ class PriceTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         """
-        The are three services already in the database, with 3 different services.
+        There are three prices already in the database for only 1 service.
+        The other two services have no prices in Price model.
         """
-        cls.service1 = ServiceFactory(external_id=23, price=70)
+        cls.service1 = ServiceFactory(
+            name="Massage for service1", external_id=23, price=70
+        )
+        cls.service2 = ServiceFactory(
+            name="Massage for service2", external_id=29, price=70
+        )
+        cls.service3 = ServiceFactory(
+            name="Massage for service3", external_id=25, price=70
+        )
 
         cls.price1 = PriceFactory(
             service=cls.service1,
             cost=70,
-            start_date=datetime.datetime(2021, 4, 7, 9, 0, 0),
-            end_date=datetime.datetime(2021, 12, 31, 0, 0, 0),
+            start_date=datetime.datetime(
+                2021, 4, 7, 9, 0, 0, tzinfo=datetime.timezone.utc
+            ),
+            end_date=datetime.datetime(
+                2021, 12, 31, 0, 0, 0, tzinfo=datetime.timezone.utc
+            ),
         )
         cls.price2 = PriceFactory(
             service=cls.service1,
             cost=80,
-            start_date=datetime.datetime(2022, 1, 1, 0, 0, 0),
-            end_date=datetime.datetime(2022, 12, 31, 0, 0, 0),
+            start_date=datetime.datetime(
+                2022, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc
+            ),
+            end_date=datetime.datetime(
+                2022, 12, 15, 0, 0, 0, tzinfo=datetime.timezone.utc
+            ),
         )
         cls.price3 = PriceFactory(
             service=cls.service1,
             cost=100,
-            start_date=datetime.datetime(2023, 1, 1, 0, 0, 0),
+            start_date=datetime.datetime(
+                2023, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc
+            ),
             end_date=None,
         )
 
@@ -981,24 +1000,69 @@ class PriceTest(TestCase):
         amelia_prices = get_wp_prices(data)
         self.assertEqual(amelia_prices, [(23, 5), (29, 1), (25, 3)])
 
+    @freeze_time("2024-04-06 13:21:34", tz_offset=0)
     def test_price_import(self):
         """
-        Check if the changed prices from WP create a new entry in Price model.
-        Price should have new entry.
+        Check if the changed prices from WP created 3 new entries in Price model.
+        Price should have 3 new entries.
+
+        Check if the same changed prices are imported there are no new entries.
         """
 
         data = [(23, 150), (29, 80), (25, 3)]
 
+        price = Price.objects.latest("id")
+        self.assertEqual(price.cost, 100)
+
         price_count = Price.objects.all().count()
 
         price_import(data)
 
-        self.assertEqual(Price.objects.all().count(), price_count + 1)
+        self.assertEqual(Price.objects.all().count(), price_count + 3)
+
+        price1 = Price.objects.get(cost=70)
+        self.assertEqual(price1.service.external_id, 23)
+        self.assertEqual(price1.service.name, "Massage for service1")
+
+        price2 = Price.objects.get(cost=80, service=price1.service)
+        self.assertEqual(price2.service.external_id, 23)
+        self.assertEqual(price2.service.name, "Massage for service1")
+        self.assertEqual(
+            price2.end_date,
+            datetime.datetime(2022, 12, 15, 0, 0, tzinfo=datetime.timezone.utc),
+        )
+
+        price3 = Price.objects.get(cost=100)
+        self.assertEqual(price3.service.external_id, 23)
+        self.assertEqual(price3.service.name, "Massage for service1")
+        self.assertEqual(
+            price3.end_date.year,
+            2024,
+        )
+
+        price4 = Price.objects.get(cost=150)
+        self.assertEqual(price4.service.external_id, 23)
+        self.assertEqual(price4.service.name, "Massage for service1")
+        self.assertEqual(price4.end_date, None)
+
+        price5 = Price.objects.get(cost=80, end_date=None)
+        self.assertEqual(price5.service.external_id, 29)
+        self.assertEqual(price5.service.name, "Massage for service2")
+        self.assertEqual(price5.end_date, None)
+
+        price6 = Price.objects.latest("id")
+        self.assertEqual(price6.cost, 3)
+        self.assertEqual(price6.service.name, "Massage for service3")
+        self.assertEqual(price6.end_date, None)
+
+        # check if same data is imported, there are no new added objects to Price model
+        # object count should be : 6
+        price_count = Price.objects.all().count()
+        self.assertEqual(price_count, 6)
+        price_import(data)
+        self.assertEqual(Price.objects.all().count(), 6)
 
         price = Price.objects.latest("id")
-        self.assertEqual(price.cost, 150)
-
-        # check if the same price import does nothing to the Price table
-        price_count = Price.objects.all().count()
-        price_import(data)
-        self.assertEqual(Price.objects.all().count(), price_count)
+        service = price.service.name
+        self.assertEqual(price.cost, 3)
+        self.assertEqual(service, "Massage for service3")
