@@ -6,6 +6,8 @@ from web.wordpress_api_calls import (
     get_massage_customer_data_from_wp,
     get_massage_appointments,
     get_single_appointment_data_from_wp,
+    get_services_data_from_wp,
+    get_therapist_data_from_wp,
 )
 from web.importer import (
     therapist_import,
@@ -27,6 +29,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # API call for therapists and services
         data_entities = get_therapist_service_data_from_wp()
+        # data_entities = get_therapist_data_from_wp()
+        data_services = get_services_data_from_wp()
 
         # API call for customers and massages
         data_appointments = get_massage_customer_data_from_wp(day_past=1, day_future=7)

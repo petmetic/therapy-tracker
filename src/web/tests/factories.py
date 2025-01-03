@@ -1,7 +1,7 @@
 import factory
+import pytz
 
 from .. import models
-import pytz
 
 tz = pytz.timezone("Europe/Ljubljana")
 

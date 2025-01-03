@@ -34,6 +34,22 @@ def get_therapist_service_data_from_wp():
     return wp_therapist_service
 
 
+def get_therapist_data_from_wp():
+    response = requests.get(
+        settings.WP_URL_EMPLOYEES, headers={"Amelia": settings.WP_API_KEY}
+    )
+    wp_therapist = response.json()
+    return wp_therapist
+
+
+def get_services_data_from_wp():
+    response = requests.get(
+        settings.WP_URL_ENTITIES, headers={"Amelia": settings.WP_API_KEY}
+    )
+    wp_services = response.json()
+    return wp_services
+
+
 def get_single_appointment_data_from_wp(external_id):
     response = requests.get(
         settings.WP_URL_SINGLE_APPOINTMENT.format(external_id=external_id),
