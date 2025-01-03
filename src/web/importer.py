@@ -98,8 +98,95 @@ def therapist_import(data: dict):
     return user
 
 
+def therapist_new_import(data: dict):
+    therapists = data["data"]["users"]
+
+    for raw_therapist in therapists:
+        external_id = raw_therapist.get("id")
+        first_name = raw_therapist.get("firstName")
+        email = raw_therapist.get("email")
+        username = raw_therapist.get("email")
+
+        # check if external_id exists
+        if User.objects.filter(userprofile__external_id=external_id):
+            user_profile = UserProfile.objects.get(external_id=external_id)
+            changed = False
+            user = user_profile.user
+
+            if email != user.email:
+                logger.info(
+                    f"Changed therapist {user} with external_id: {user_profile.external_id}\n"
+                    f"\t email - from {user.email} to {email}\n"
+                    f"\t username - from {user.username} to {username}"
+                )
+                user.email = email
+                # email and username are the same
+                user.username = username
+                changed = True
+
+            if first_name != user.first_name:
+                logger.info(
+                    f"Changed therapist {user} with external_id: {user_profile.external_id}\n"
+                    f"\t first_name - from {user.first_name} to {first_name}"
+                )
+                user.first_name = first_name
+                changed = True
+
+            if changed:
+                user.save()
+
+        else:
+            # if not, create it
+            user = User.objects.create(
+                first_name=first_name,
+                email=email,
+                username=username,
+            )
+
+            UserProfile.objects.create(
+                user=user,
+                external_id=external_id,
+            )
+            logger.info(f"Imported new therapist with external_id: {external_id}")
+
+    return user
+
+
 def services_import(data: dict):
     services = data["data"]["categories"]
+    for raw_service in services:
+        service_group = raw_service["name"]
+        for individual_service in raw_service["serviceList"]:
+            service_list_id = individual_service["id"]
+            service_list_name = individual_service["name"]
+            price = individual_service["price"]
+            duration = individual_service["duration"]
+            time_before = individual_service["timeBefore"]
+            if time_before is None:
+                time_before = 0
+
+            time_after = individual_service["timeAfter"]
+            if time_after is None:
+                time_after = 0
+
+            service, created = update_or_create_w_logging(
+                Service,
+                external_id=service_list_id,
+                defaults={
+                    "service_group": service_group,
+                    "name": service_list_name,
+                    "price": price,
+                    "duration": duration,
+                    "time_before": time_before,
+                    "time_after": time_after,
+                },
+            )
+
+    return service
+
+
+def services_new_import(data: dict):
+    services = data["data"]["services"]
     for raw_service in services:
         service_group = raw_service["name"]
         for individual_service in raw_service["serviceList"]:
